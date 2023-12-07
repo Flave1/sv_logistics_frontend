@@ -1,0 +1,23 @@
+.widhdrow-side{
+	box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+	padding:1.25rem;
+}
+.withdrow-bx{
+	.form-select{
+		height:3rem;
+		border:unset;
+		border-bottom: 1px solid #8b919f66;
+		border-radius: unset;
+		margin-bottom:1.5rem;
+		&:focus{
+			box-shadow:unset;
+		}
+	}
+	.form-control{
+		height:3rem;
+		border:unset;
+		border-radius:unset;
+		border-bottom: 1px solid #8b919f66;
+		margin-bottom:1.5rem;
+	}
+}

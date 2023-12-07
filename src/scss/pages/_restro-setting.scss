@@ -1,0 +1,108 @@
+.form-switch{
+	.form-check-input{
+		//width:4rem;
+		//height:2rem;
+		width:3rem;
+		height:1.5rem;
+	}
+} 
+.location{
+	iframe{
+		width:23.438rem;
+		height:9.375rem;
+		border-radius:$radius;
+		border: 1px solid #7E808C!important;
+		@include respond ('phone'){
+			width:100%;
+		}
+	}
+	margin-bottom:2.5rem;
+}
+.drop{
+	display:inline-block;
+	width:7.5rem;
+	height:7.5rem;
+	line-height:7.5rem;
+	text-align:center;
+	border: 2px dashed #7E808C;
+	border-radius:$radius-sm;
+}
+.face-id{
+	.form-check{
+		.form-check-input{
+			top:0;
+			
+			
+		}
+		.form-check-input:checked{
+			position:relative;
+			background-color:transparent;
+			&:after{
+				top: 50%;
+				left: 50%;
+				width: 8px;
+				height: 8px;
+				border-radius: 100%;
+				position: absolute;
+				content: '';
+				background-color: var(--primary);
+				transform: translate(-50%, -50%);
+			}
+		}
+	}
+	
+}
+		.change-btn{
+			input::file-selector-button {
+			  
+			    color: $headings-color;
+			    background-color:$white;
+			    font-weight:500;
+			}
+			input[type='file'] {
+			       display:none;
+					
+			}
+			.dlab-upload{
+				border:1px solid $border-color;
+				padding:10px;
+				margin-bottom:0;
+				border-radius:$radius;
+				margin-left:10px;
+			}
+
+			.form-control{
+				background-color:$white!important
+			}
+			
+		}
+.avatar-upload {
+   
+	
+	
+
+    .avatar-edit {
+        position: absolute;
+        right: 0.75rem;
+        z-index: 1;
+        top: 0.625rem;
+    }
+    .avatar-preview {
+       
+        > div {
+          display:inline-block;
+			width:7.5rem;
+			height:7.5rem;
+			background-size:cover;
+			background-repeat:no-repeat;
+			background-position: center;
+			border-radius:$radius-sm;
+        }
+    }
+}
+.perference{
+	@include respond ('tab-land'){
+		width:75%;
+	}
+}
+

@@ -1,0 +1,300 @@
+.accordion{
+	&.style-1{
+		.accordion-item{
+			margin-bottom:0;
+			&:last-child{
+				border-bottom:0;
+			}
+		}
+		.accordion-button{
+			border:0;
+			display: flex;
+			flex-flow:wrap;
+			align-items: center;
+			background:var(--primary);
+			justify-content: space-between;
+			@include transitionFast;
+			border-radius:unset;
+			padding:1.125rem 4.0625rem 0.313rem 1.875rem;
+			color:$white;
+			border-top-left-radius:$radius;
+			border-top-right-radius:$radius;
+			@include respond ('laptop'){
+				padding:0.625rem 1.663rem;
+			}
+			.cash{
+				margin-right:7rem;
+			}
+			h5,p{
+				color:$white;
+			}
+			.bgl-success{
+				background: rgba(255, 255, 255, 0.5);
+				color: white;
+				border-color:$white;
+			}
+			.bgl-primary{
+				background: rgba(255, 255, 255, 0.5);
+				color: white;
+				border-color:$white;
+			}
+			.bgl-danger{
+				background: rgba(255, 255, 255, 0.5);
+				color: white;
+				border-color:$white;
+			}
+			
+			.price{
+				color:$white;
+			}
+			svg{
+				path{
+					fill: $white;
+				}
+			}
+				.form-check-input{
+					//background-color:transparent;
+					
+					&:checked{
+						border-color:$white;
+					}
+				}
+			
+			&.collapsed{
+				color:black;
+				h5,p{
+					color:black;
+				}
+			
+				.bgl-success{
+					background: $success-light;
+					border-color: $success;
+					color:$success;
+				}
+				.bgl-primary{
+					background: var(--rgba-primary-1);
+					border-color:var(--primary);
+					color:var(--primary);
+	
+				}
+				.bgl-danger{
+					 background: $danger-light;
+					border-color: $danger;
+					color:$danger;
+				}
+				.text-primary{
+					color:$white;
+				}
+				.price{
+					color:var(--primary);
+				}
+				svg{
+					path{
+						fill:var(--primary);
+					}
+				}
+				.form-check-input{
+					
+					&:checked{
+						border-color:var(--primary);
+					}
+				}
+				
+				
+			}
+			.user-info{
+				color:$white;
+				a{
+					color:$white;
+				}
+			}
+			&:after{
+				content: "\f078";
+				color: #fff;
+				font-size: 1rem;
+				font-family: 'FontAwesome';
+				width:2.5rem;
+				height:2.5rem;
+				line-height:2.5rem;
+				border-radius:$radius-sm;
+				text-align:center;
+				padding:0;
+				background: rgba(255, 255, 255, 0.3);
+			}
+			&.collapsed:after{
+				color: #7E808C;
+				content: "\f054";
+				background-color:#F5F5F5;
+			}
+			// .accordion-header-indicator{
+				// width:2.5rem;
+				// height:2.5rem;
+				// line-height:2.5rem;
+				// background-color:#F5F5F5;
+				// border-radius:$radius-sm;
+				// text-align:center;
+				// padding:0;
+			// 	@include respond ('phone-land'){
+			// 		margin-top:3.625rem;
+			// 	}
+			// 	@include respond ('phone'){
+			// 		margin-top:8.313rem;
+			// 	}
+				
+			// 	&:before{
+			// 		content:"\f078";
+			// 		font-family: 'Font Awesome 6 Free';
+			// 		font-size:1rem;
+			// 		font-weight:900;
+			// 		color:#fff;
+			// 	}
+				
+			// 	&.style-1{
+			// 		@include respond ('phone-land'){
+			// 			margin-top:3.625rem;
+			// 		}
+			// 		@include respond ('phone'){
+			// 			margin-top:4rem;
+			// 		}
+			// 	}
+			// }
+			.profile-image{	
+				position:relative;
+				margin-right:1.25rem;
+				img{
+					height:3.938rem;
+					width:3.938rem;
+					border-radius:3rem;
+					@include transitionFast;
+				}
+				span{
+					height:2.25rem;
+					width:2.25rem;
+					line-height:2.25rem;
+					text-align:center;
+					display:inline-block;
+					border:2px solid $white;
+					border-radius:3rem;
+					position: absolute;
+					bottom: -2px;
+					right: -10px;
+				}
+			}
+			.accordion-header-indicator{
+				background: rgba(255,255,255,0.3);
+				
+			}
+			&.collapsed{
+				background:transparent;
+				border-bottom:0;
+				&>span{
+					color:$black;
+				}
+				.user-info{
+					color:$black;
+					a{
+						color:$black;
+					}
+				}
+				.accordion-header-indicator{
+					background: #F5F5F5;
+				}
+				
+				.accordion-header-indicator:before{
+					content:"\f054";
+					color:#7E808C;
+					font-size:1rem;
+				}
+				.profile-image{	
+					img{
+						height:3.938rem;
+						width:3.938rem;
+						border-radius:50%;
+					}
+				}
+			}
+			
+			
+			&>*{
+				padding-right:15px;
+				margin-bottom:15px;
+			}
+		}
+		.accordion-body-text{
+			padding:1.5rem 1.75rem 0.625rem 1.75rem;
+		}
+		.accordion-body{
+			border-radius: 0 0 1rem 1rem;
+			background-color:#eee;
+			border-radius:unset;
+			padding: 0;
+			@include transitionFast;
+			// &.show{
+			// 	@include transitionFast;
+
+			// }
+			.payment-details{
+				display:flex;
+				flex-flow:wrap;
+				justify-content:space-between;
+				.info{
+					display:flex;
+					padding: 0.5rem 0.938rem;
+					align-items:center;
+					background:#EEEEEE;
+					border-radius:1rem;
+				}
+				span{
+					font-size:1rem;
+				}
+			}
+		}
+	}
+}
+.action{
+	z-index: 1;
+    height: auto;
+	border-radius:1.25rem;
+	padding: 2rem 2rem;
+	position:relative;
+	background: rgba(34, 81, 248, 1);
+	&:after{
+		z-index: -1;
+		position: absolute;
+		height: 100%;
+		width: 100%;
+		content: "";
+		top: 0;
+		left: 0;
+		//background-image: url(../images/pattern/pattern7.png);
+		background-size: cover;
+		background-position: inherit;
+		background-repeat: no-repeat;	
+	}
+}
+.invoice-list{
+	display:flex;
+	align-items:center;
+	padding:1.25rem 1.875rem;
+	border-bottom:1px solid $border-color;
+	&:last-child{
+		border-bottom:0;
+	}
+	img{
+		height:3.125rem;
+		width:3.125rem;
+	}
+}
+.satus{
+	li{
+		font-size:1.125rem;
+		font-weight:500;
+		span{
+			font-size:1.125rem;
+			font-weight:500;
+		}
+	}
+}
+.dlab-space{
+	margin:0 0.938rem;
+}

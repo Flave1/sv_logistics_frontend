@@ -1,0 +1,25 @@
+.media-bx{
+	img{
+		width:3.5rem;
+		height:3.5rem;
+		object-fit:cover;
+	}
+}
+.order-history {
+	 .default-select{
+		color:#3D4152;
+	}
+}
+.table-list{
+	th{
+		color:#3D4152;
+	}
+}
+.order-drop{
+	.order-drop-select{
+		position: absolute;
+		right: 15px;
+		font-size: 14px;
+		color: #eee;
+	}
+}

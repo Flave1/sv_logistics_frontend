@@ -1,0 +1,65 @@
+.card{
+	&.income-bx{
+		background-color:#FFF4E4;
+		border-color:var(--primary);
+		.line {
+			&:after{
+				    content: "";
+					position: absolute;
+					background-color: $border-color;
+					width: 1px;
+					height: 5rem;
+					top: 0;
+					right: 0.563rem;
+			}
+			@include respond('phone'){
+			
+				&:after{
+					right:-0.313rem;
+				}
+				
+			}
+			
+		}
+		
+	}
+	&.style-2{
+		background-color:#E2F3FF;
+		border-color:#33A9FF;
+	}
+	&.style-3{
+		background-color:#F5F5F5;
+		border: 1px solid #0000004D;
+		border-radius:$radius;
+	}
+	&.style-4{
+		background-color:#FFF1F1;
+		border-color:#EB5757;
+		overflow:hidden;
+		
+		
+	}
+	&.food-grap{
+		border-color:var(--primary);
+	}
+}
+.data-info{
+	color:$white;
+	h3{
+		color:$white;
+	}
+	p{
+		opacity:0.7;
+	}
+	.data-content{
+		border-bottom:1px solid #ffffff69;
+		
+		h6{
+			color:$white;
+		}
+		span{
+			color:$white;
+			opacity:0.7;
+		}
+	}
+}

@@ -1,0 +1,94 @@
+.menu-bx{
+	img{
+		width:6.5rem;
+		height:4.375rem;
+		object-fit:cover;
+		margin-right:0.688rem;
+		margin-top:0.938rem;
+		@include respond ('tab-port'){
+			width:5.5rem;
+		}
+
+	}
+}
+.promo-bx{
+	.dlab-media-1{
+		position:relative;
+		img{
+			width:6.25rem;
+			height:6.563rem;
+			object-fit:cover;
+			position:absolute;
+			bottom:15px;
+			right:0;
+			@include respond ('phone-land'){
+				width:5.25rem;
+				height:5.25rem;
+			}
+		}
+		
+	}
+}
+.modal-inside{
+	margin-bottom:1rem;
+}
+.veg{
+	display:flex;
+	align-items:center;
+	.form-check{
+		.form-check-input{
+			width:1.25rem;
+			height:1.25rem;
+			border-radius:unset;
+			top:0;
+			border-color:$light;
+		}
+	
+		
+		.form-check-input:checked{
+			position:relative;
+			background-color:transparent;
+			border-color:$danger;
+			&:after{
+				top: 0.188rem;
+				left: 0.188rem;
+				width: 0.625rem;
+				height:0.625rem;
+				border-radius: 100%; 
+				position:absolute;
+				content:'';
+				background-color:$danger;
+			}
+			
+		}
+	
+		&.style-1{
+			
+			.form-check-input{
+				border-color:$light;
+				&:focus{
+					border-color:$success;
+				}
+				
+			}
+			.form-check-input:checked{
+				position:relative;
+				background-color:transparent;
+				border-color:$success;
+				&:after{
+					top: 0.188rem;
+					left: 0.188rem;
+					width: 0.625rem;
+					height:0.625rem;
+					border-radius: 100%; 
+					position:absolute;
+					content:'';
+					background-color:$success;
+				}
+				
+			}
+			
+		}
+	}
+}
+

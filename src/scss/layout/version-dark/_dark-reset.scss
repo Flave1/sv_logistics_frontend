@@ -1,0 +1,52 @@
+@import "./../../abstracts/variable";
+
+
+
+[data-theme-version="dark"] {
+    background: $d-bg;
+    color: $d-ctl;
+	
+	--nav-headbg: #FC8019;
+	--sidebar-bg : #{$d-bg};
+	--headerbg: #FC8019;
+	
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        color: $white;
+    }
+    a.link {
+        color: $d-ctd;
+    }
+    a.link:focus,
+    a.link:hover {
+        color: $info;
+    }
+
+    a {
+        &:hover {
+            color: $white;
+        }
+    }
+	.dlabnav:before{
+		background:var(--sidebar-bg);
+	}
+	
+    //Generating border classess
+    @each $value in $borders {
+        @if $value == "" {
+            .border {
+                border: 0.0625rem solid $d-border !important;
+            }
+        } @else {
+            .border-#{$value} {
+                border-#{$value}: 0.0625rem solid $d-border !important;
+            }
+        }
+    }
+
+
+}

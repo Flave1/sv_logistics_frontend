@@ -1,0 +1,55 @@
+.grid-tab{
+	.nav-link{
+		border:1px solid $border;
+		width:3rem;
+		height:3rem;
+		padding:0;
+		svg{
+			path{
+				fill:#7E808C;
+			}
+		}
+		&.active{
+			background-color: #F8B6021A;
+			svg{
+				path{
+					fill:#FC8019;
+				}
+			}
+			box-shadow:unset;
+			border-color:var(--rgba-primary-1);
+
+		}
+	}
+}		
+
+.booking-table{
+	img{
+		width: 4.375rem;
+		height: 4.375rem;
+		object-fit: cover;
+		margin-left: 1.25rem;
+		border: 1px solid var(--primary);
+		border-radius:0.625rem;
+		padding: 0.438rem 0.438rem;
+	}
+	.plus{
+			display: inline-block;
+			width: 2.5rem;
+			height: 2.5rem;
+			background: var(--primary);
+			text-align: center;
+			line-height: 2.5rem;
+			color: $white;
+			border-radius:0.5rem
+		}
+		ul{
+			li{
+				margin-right:0.5rem;
+			}
+		}
+}
+		.dlab-table-bottom-line > td{
+			border:0;
+		}
+

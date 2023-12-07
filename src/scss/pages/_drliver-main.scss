@@ -1,0 +1,67 @@
+.d-profile{
+	img{
+		width: 9.375rem;
+		height: 9.375rem;;
+		object-fit: cover;
+		border-radius: 0.938rem;
+		margin-right: 2rem;
+		margin-bottom: 2rem;
+		
+		@include respond ('laptop'){
+			width: 7.375rem;
+			height: 7.375rem;
+			margin-right:1rem;
+			margin-bottom:3rem;
+		}
+		@include respond ('phone'){
+			width:6.375rem;
+			height:6.375rem;
+			margin-right:1rem;
+			margin-bottom:1rem;
+		}
+	}
+}
+.icon-bx{
+	width:3.75rem;
+	height:3.75rem;
+	line-height:3.75rem;
+	border-radius:$radius-sm;
+	
+	&.style-1{
+		width:2rem;
+		height:2rem;
+		border-radius:0.5rem;
+		line-height:2rem;
+		background-color:#F5F5F5;
+		display:inline-block;
+		text-align:center;
+		margin-left:1.5rem;
+	}
+	&.style-2{
+		width:4.5rem;
+		height:4.5rem;
+		line-height:4.5rem;
+		border-radius:0.5rem;
+		border: 1px solid #DBDBDB;
+	}
+	&.style-3{
+		width:3rem;
+		height:3rem;
+		display:inline-block;
+		text-align:center;
+		line-height:2.75rem;
+		border: 2px solid #DBDBDB;
+	}
+	
+}
+.content-space{
+	@include custommq ($max:1200px){
+		margin-bottom:8px!important;
+	}
+	@include respond('tab-land'){
+		margin-bottom:0px!important;
+	}
+	@include respond('phone'){
+		margin-bottom:8px!important;
+	}
+}

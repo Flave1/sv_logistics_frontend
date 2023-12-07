@@ -1,0 +1,51 @@
+.order-menu{
+	img{
+		width:3.313rem;
+		height:3.313rem;
+		object-fit:contain;
+		border:1px solid var(--primary);
+		border-radius:0.625rem;
+	}
+	.order-items{
+		h6{
+			font-size:1rem;
+			//font-weght:600;
+		}
+	}
+	h6{
+		font-size:1rem;
+	}
+	&.style-1{
+		img{
+			width:5rem;
+			height:5rem;
+			object-fit:contain;
+			border:1px solid var(--primary);
+			border-radius:0.625rem;
+			
+		}
+	}
+	
+	&.style-3{
+		img{
+			width: 4.375rem;
+			height: 4.375rem;
+			object-fit: cover;
+			padding: 0.313rem;
+		}
+	}
+}
+.tracker-bx{
+	iframe{
+		width:21.563rem;
+		height:23.438rem;
+		overflow:hidden;
+		margin-bottom:1rem;
+		border-radius:$radius;
+		
+		@include custommq ($max:1600px){
+			width:100%;
+		}
+	}
+
+}

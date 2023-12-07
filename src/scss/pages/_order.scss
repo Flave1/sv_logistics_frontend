@@ -1,0 +1,66 @@
+.orderin-bx{
+	border: 1px solid #DBDBDB;
+	padding:1.375rem 1.5rem;
+	border-radius:$radius;
+	margin-bottom:1rem;
+	.icon-bx{
+		width:2rem;
+		height:2rem;
+		line-height:2rem;
+		display:inline-block;
+		text-align:center;
+		background-color:#f5f5f5;
+		border-radius:$radius;
+		margin-left: 0.5rem;
+		i{
+			color:#7E808C;
+		}
+	
+	}
+	&:hover{
+		background-color:#F8B6021A;
+		border-color:var(--primary);
+		.icon-bx{
+			background-color:var(--primary);
+			i{
+				color:$white;
+			}
+		}
+	}
+}
+.order-tab{
+	margin-bottom: 1.063rem;
+	.nav-tabs{
+		background:#F5F5F5;
+		border-bottom:0;
+		overflow: hidden;
+		border-radius: $radius;
+
+		.nav-link{
+			border:0;
+			//padding: 0.813rem 1.375rem;
+			padding:0.813rem 1.125rem;
+			border-radius: 0;
+			width: 33.33%;
+			@include respond ('laptop'){
+				    padding: 0.813rem 0.375rem;
+			}
+
+			&.active{
+				background:var(--primary)!important;
+				color:$white;
+				border-radius:0;
+			}
+		}
+	}
+}
+
+.orders-img{
+	img{
+		width:3rem;
+		height:3rem;
+		object-fit:cover;
+		border-radius:$radius;
+		margin-right:0.5rem;
+	}
+}

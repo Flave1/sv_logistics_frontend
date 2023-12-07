@@ -1,0 +1,23 @@
+.restro-review{
+	img{
+		width:3.5rem;
+		height:3.5rem;
+		object-fit:cover;
+		border-radius:$radius;
+		margin-right:1rem;
+	
+	}
+}
+.recent-review{
+	img{
+		width:3.25rem;
+		height:2.625rem;
+		object-fit:over;
+		margin-right:1.125rem;
+	}
+	ul{
+		li{
+			margin-right:0.5rem;
+		}
+	}
+}

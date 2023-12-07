@@ -1,0 +1,91 @@
+.setting-bx{
+	margin-bottom:1rem;
+	padding:1rem;
+	transition:all 0.5s;
+	
+	svg{
+		margin-right: 1rem;
+		min-width: 1.5rem;
+	}
+	&.active{
+		background-color:#F5F5F5!important;
+		border-radius:$radius;
+		
+			border:1px solid transparent;
+			border-color:transparent!important;
+		
+	}
+		&:hover{
+			//border:none;
+			border:1px solid transparent;
+			border-color:transparent!important;
+			
+			
+		}
+		&:focus{
+			//border:none;
+				border:1px solid transparent;
+				border-color:transparent!important;
+		}
+	.setting-info{
+		text-align:start;
+	}
+	
+}
+.setting-right{
+	.notification-svg{
+		min-width:50px;
+	}
+	.setting-img{
+		img{
+			width:7.5rem;
+			height:7.5rem;
+			border-radius:$radius;
+			object-fit:cover;
+		}
+		.change{
+			border-radius:$radius-sm;
+			
+			padding:0.688rem 0.875rem;
+		
+			@include respond ('phone'){
+				margin-left:1rem;
+			}
+		}
+		@include respond ('phone'){
+			    flex-wrap: wrap;
+		}
+	}
+	.setting-input{
+		margin-bottom:1.5rem;
+		.form-label{
+			font-size:1.125rem;
+		}
+		textarea{
+			height:9.563rem!important;
+		
+			@include custommq ($max:1600px){
+				height:9.6rem;
+				
+			}
+		}
+		input{
+			&::placeholder{
+				color:$headings-color;
+			}
+		}
+		.form-control{
+			padding-left:1rem;
+			height:3rem;
+			font-size:1rem;
+		}
+		iframe{
+			border-radius: $radius;
+			height:9.813rem;
+		}
+		.form-select{
+			height:3rem;
+			border-radius:$radius;
+		}
+	}
+}
