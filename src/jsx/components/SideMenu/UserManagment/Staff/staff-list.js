@@ -4,12 +4,9 @@ import { Dropdown } from "react-bootstrap";
 
 /// images
 import avartar5 from "../../../../../images/avatar/5.png";
-import avartar1 from "../../../../../images/avatar/1.png";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { getAllStaff } from "../../../../../store/actions/UserActions";
-import { socket } from "../../../../../services/socket/SocketService";
-import { UserManagmentEvent } from "../../../../../services/socket/events/CommonEvents";
 
 const StaffList = (props) => {
 
