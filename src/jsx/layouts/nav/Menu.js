@@ -117,7 +117,7 @@ export const MenuList = [
     content: [
       {
         title: "Staff",
-        to: "dashboard",
+        to: "staff-users",
       },
       {
         title: "Drivers",

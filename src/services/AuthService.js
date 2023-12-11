@@ -1,9 +1,10 @@
-import axios from 'axios';
 import swal from "sweetalert";
 import {
     loginConfirmedAction,
     Logout,
 } from '../store/actions/AuthActions';
+import axios from "axios";
+import axiosInstance from "./axios-instance";
 
 export function signUp(email, password) {
     //axios call
@@ -24,10 +25,11 @@ export function login(email, password) {
         password,
         returnSecureToken: true,
     };
-    return axios.post(
-        `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyD3RPAp3nuETDn9OQimqn_YF6zdzqWITII`,
-        postData,
-    );
+    return axiosInstance.post( `authentication/login`, postData);
+}
+
+export async function getUserContext() {
+    return await axiosInstance.get( `users/me`);
 }
 
 export function formatError(errorResponse) {
@@ -58,16 +60,24 @@ export function saveTokenInLocalStorage(tokenDetails) {
     );
     localStorage.setItem('userDetails', JSON.stringify(tokenDetails));
 }
+export function saveTokenDeatailInLocalStorage(tokenDetails) {
+    tokenDetails.expireDate = new Date(
+        new Date().getTime() + tokenDetails.expiresIn * 1000,
+    );
+    localStorage.setItem('userDetails', JSON.stringify(tokenDetails));
+}
+export async function saveAccessTokenInSessionStorage(token) {
+    localStorage.setItem('token', token);
+}
 
 export function runLogoutTimer(dispatch, timer, navigate) {
     setTimeout(() => {
-        //dispatch(Logout(history));
         dispatch(Logout(navigate));
     }, timer);
 }
 
 export function checkAutoLogin(dispatch, navigate) {
-    const tokenDetailsString = localStorage.getItem('userDetails');
+    const tokenDetailsString = localStorage.getItem('userDetails');    
     let tokenDetails = '';
     if (!tokenDetailsString) {
         dispatch(Logout(navigate));

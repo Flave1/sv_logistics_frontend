@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { connect, useDispatch } from 'react-redux';
-import { Link, NavLink, useNavigate } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { loadingToggleAction,loginAction,
 } from '../../store/actions/AuthActions';
 
@@ -11,10 +11,10 @@ import bgimage from '../../images/login-img/pic-5.jpg';
 
 function Login (props) {
 	const navigate = useNavigate();
-    const [email, setEmail] = useState('demo@example.com');
+    const [email, setEmail] = useState('user1@demo.com');//demo@example.com
     let errorsObj = { email: '', password: '' };
     const [errors, setErrors] = useState(errorsObj);
-    const [password, setPassword] = useState('123456');
+    const [password, setPassword] = useState('Foodie@123');
     const dispatch = useDispatch();
 
     function onLogin(e) {

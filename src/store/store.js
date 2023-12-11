@@ -1,8 +1,9 @@
 import { applyMiddleware, combineReducers, compose,createStore,} from 'redux';
-import PostsReducer from './reducers/PostsReducer';
+import PostsReducer from './selectors/reducers/PostsReducer';
 import thunk from 'redux-thunk';
-import { AuthReducer } from './reducers/AuthReducer';
-import todoReducers from './reducers/Reducers';
+import { AuthReducer } from './selectors/reducers/AuthReducer';
+import todoReducers from './selectors/reducers/Reducers';
+import { UserReducer } from './selectors/reducers/UserReducer';
 //import { reducer as reduxFormReducer } from 'redux-form';
 const middleware = applyMiddleware(thunk);
 
@@ -13,6 +14,7 @@ const reducers = combineReducers({
     posts: PostsReducer,
     auth: AuthReducer,
 		todoReducers,
+    user: UserReducer
 	//form: reduxFormReducer,	
 	
 });

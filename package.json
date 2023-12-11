@@ -1,6 +1,6 @@
 {
-  "name": "Fooddesk",
-  "homepage": "https://fooddesk.dexignlab.com/react/demo",
+  "name": "fooddesk",
+  "homepage": "https://fooddesk.dexignlab.com/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -49,9 +49,11 @@
     "recharts": "^2.1.16",
     "redux": "^4.2.0",
     "redux-thunk": "^2.4.2",
+    "socket.io-client": "^4.7.2",
     "sweetalert": "^2.1.2",
     "sweetalert2": "^11.6.15",
     "swiper": "^8.4.5",
+    "valtio": "^1.12.1",
     "web-vitals": "^2.1.4",
     "yup": "^0.32.11"
   },

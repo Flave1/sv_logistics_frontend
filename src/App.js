@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 
 /// Components
 import Index from "./jsx";
@@ -16,6 +16,9 @@ import { isAuthenticated } from "./store/selectors/AuthSelectors";
 /// Style
 import "./vendor/bootstrap-select/dist/css/bootstrap-select.min.css";
 import "./css/style.css";
+import { socket } from "./services/socket/SocketService";
+import { getAllStaff } from "./store/actions/UserActions";
+import { eventActions } from "./services/socket/map-event-actions";
 
 const SignUp = lazy(() => import("./jsx/pages/Registration"));
 const ForgotPassword = lazy(() => import("./jsx/pages/ForgotPassword"));
@@ -43,6 +46,28 @@ function App(props) {
   useEffect(() => {
     checkAutoLogin(dispatch, navigate);
   }, []);
+
+  // const [isConnected, setIsConnected] = useState(socket.connected);
+
+  function connectToGateway(evAc) {
+    if (evAc.dispatchAble) return evAc.action()(dispatch);
+    else return evAc.action();
+  }
+  useEffect(() => {
+    if (socket) {
+      eventActions &&
+        eventActions.forEach((evAc) => {
+          socket.on(evAc.event, () => connectToGateway(evAc));
+        });
+  
+      return () => {
+        eventActions &&
+          eventActions.forEach((evAc) => {
+            socket.off(evAc.event);
+          });
+      };
+    }
+  }, [socket]);
 
   let routeblog = (
     <Routes>

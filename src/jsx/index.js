@@ -122,6 +122,7 @@ import Error500 from "./pages/Error500";
 import Error503 from "./pages/Error503";
 import { ThemeContext } from "../context/ThemeContext";
 import MainDashboard from "./pages/dashboard/main-dashboard";
+import StaffList from "./components/SideMenu/UserManagment/Staff/staff-list";
 
 
 
@@ -142,6 +143,13 @@ const Markup = () => {
     { url: "checkout", component: <CheckoutPage /> },
     //custom
     { url: "main-dashboard", component: <MainDashboard /> },
+
+
+
+
+
+    //user management
+    { url: "staff-users", component: <StaffList /> },
 
     
     // Restaurant

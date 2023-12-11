@@ -5,7 +5,7 @@ import {
     LOGOUT_ACTION,
     SIGNUP_CONFIRMED_ACTION,
     SIGNUP_FAILED_ACTION,
-} from '../actions/AuthActions';
+} from '../../actions/AuthActions';
 
 const initialState = {
     auth: {
@@ -14,6 +14,7 @@ const initialState = {
         localId: '',
         expiresIn: '',
         refreshToken: '',
+        socket: null
     },
     errorMessage: '',
     successMessage: '',
