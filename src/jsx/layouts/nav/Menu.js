@@ -121,11 +121,11 @@ export const MenuList = [
       },
       {
         title: "Drivers",
-        to: "dashboard",
+        to: "driver-users",
       },
       {
         title: "Customers",
-        to: "dashboard",
+        to: "customer-users",
       },
     ],
   },

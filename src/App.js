@@ -18,6 +18,7 @@ import "./vendor/bootstrap-select/dist/css/bootstrap-select.min.css";
 import "./css/style.css";
 import { socket } from "./services/socket/SocketService";
 import { getAllStaff } from "./store/actions/UserActions";
+import { getAllDrivers } from "./store/actions/UserActions";
 import { eventActions } from "./services/socket/map-event-actions";
 
 const SignUp = lazy(() => import("./jsx/pages/Registration"));

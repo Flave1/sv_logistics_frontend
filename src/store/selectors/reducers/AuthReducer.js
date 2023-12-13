@@ -5,6 +5,9 @@ import {
     LOGOUT_ACTION,
     SIGNUP_CONFIRMED_ACTION,
     SIGNUP_FAILED_ACTION,
+    CREATE_STAFF_CONFIRMED_ACTION,
+    CREATE_STAFF_FAILED_ACTION,
+    CREATE_STAFF_LOADING_ACTION
 } from '../../actions/AuthActions';
 
 const initialState = {
@@ -69,6 +72,34 @@ export function AuthReducer(state = initialState, action) {
     }
 
     if (action.type === LOADING_TOGGLE_ACTION) {
+        return {
+            ...state,
+            showLoading: action.payload,
+        };
+    }
+
+    if (action.type === CREATE_STAFF_CONFIRMED_ACTION) {
+        return {
+            ...state,
+            auth: action.payload,
+            errorMessage: '',
+            successMessage: 'Staff Successfully Created',
+            showLoading: false,
+        };
+    }
+
+    if (
+        action.type === CREATE_STAFF_FAILED_ACTION
+    ) {
+        return {
+            ...state,
+            errorMessage: action.payload,
+            successMessage: '',
+            showLoading: false,
+        };
+    }
+
+    if (action.type === CREATE_STAFF_LOADING_ACTION) {
         return {
             ...state,
             showLoading: action.payload,

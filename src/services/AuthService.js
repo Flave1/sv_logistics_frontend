@@ -98,3 +98,7 @@ export function checkAutoLogin(dispatch, navigate) {
     const timer = expireDate.getTime() - todaysDate.getTime();
     runLogoutTimer(dispatch, timer, navigate);
 }
+
+export function createStaff(payload) {
+    return axiosInstance.post( `authentication/create-user`, payload);
+}

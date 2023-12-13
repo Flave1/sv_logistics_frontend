@@ -123,7 +123,8 @@ import Error503 from "./pages/Error503";
 import { ThemeContext } from "../context/ThemeContext";
 import MainDashboard from "./pages/dashboard/main-dashboard";
 import StaffList from "./components/SideMenu/UserManagment/Staff/staff-list";
-
+import DriverList from "./components/SideMenu/UserManagment/Drivers/driver-list";
+import CustomerList from "./components/SideMenu/UserManagment/Customers/customer-list";
 
 
 const Markup = () => {
@@ -150,6 +151,8 @@ const Markup = () => {
 
     //user management
     { url: "staff-users", component: <StaffList /> },
+    { url: "driver-users", component: <DriverList /> },
+    { url: "customer-users", component: <CustomerList /> },
 
     
     // Restaurant

@@ -10,6 +10,7 @@ import {
   saveTokenDeatailInLocalStorage,
   saveTokenInLocalStorage,
   signUp,
+  createStaff
 } from "../../services/AuthService";
 import swal from "sweetalert";
 
@@ -19,6 +20,9 @@ export const LOGIN_CONFIRMED_ACTION = "[login action] confirmed login";
 export const LOGIN_FAILED_ACTION = "[login action] failed login";
 export const LOADING_TOGGLE_ACTION = "[Loading action] toggle loading";
 export const LOGOUT_ACTION = "[Logout action] logout action";
+export const CREATE_STAFF_CONFIRMED_ACTION = "[staff action] create staff success";
+export const CREATE_STAFF_FAILED_ACTION = "[staff action] create staff failed";
+export const CREATE_STAFF_LOADING_ACTION = "[staff action] create staff loading";
 
 export function signupAction(email, password, navigate) {
   return (dispatch) => {
@@ -103,4 +107,33 @@ export function loadingToggleAction(status) {
     type: LOADING_TOGGLE_ACTION,
     payload: status,
   };
+}
+
+export function createStaffConfirmedAction(data) {
+  return {
+    type: CREATE_STAFF_CONFIRMED_ACTION,
+    payload: data,
+  };
+}
+
+export function createStaffFailedAction(data) {
+  return {
+    type: CREATE_STAFF_FAILED_ACTION,
+    payload: data,
+  };
+}
+
+export function createStaffAction (payload, navigate) {
+  return (dispatch) => {
+    createStaff(payload)
+    .then((response) => {
+      swal("Successful", "Staff successfully created", "success");
+      dispatch(createStaffConfirmedAction("Staff successfully created"));
+    })
+    .catch((error) => {
+      const errorMessage = formatError(error.response.data);
+      swal("Oops", errorMessage, "error");
+      dispatch(createStaffFailedAction(errorMessage));
+    });
+};
 }
