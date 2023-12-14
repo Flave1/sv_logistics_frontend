@@ -1,4 +1,4 @@
-import { getAllStaff } from "../../store/actions";
+import { getAllDrivers, getAllCustomers, getAllStaff } from "../../store/actions";
 
 export const eventActions: any = [
   {
@@ -16,6 +16,16 @@ export const eventActions: any = [
     event: "get_all_staff_event",
     dispatchAble: true,
   },
+  {
+    action: getAllDrivers,
+    event: "get_all_drivers_event",
+    dispatchAble: true,
+  },
+  {
+    action: getAllCustomers,
+    event: "get_all_customers_event",
+    dispatchAble: true,
+  }
 ];
 
 function onConnect() {

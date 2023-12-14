@@ -98,3 +98,4 @@ export function checkAutoLogin(dispatch, navigate) {
     const timer = expireDate.getTime() - todaysDate.getTime();
     runLogoutTimer(dispatch, timer, navigate);
 }
+

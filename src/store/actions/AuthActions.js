@@ -1,6 +1,6 @@
 //import { useNavigate } from "react-router-dom";
 
-import { ref } from "valtio";
+import { ref } from 'valtio';
 import {
   formatError,
   getUserContext,
@@ -10,15 +10,16 @@ import {
   saveTokenDeatailInLocalStorage,
   saveTokenInLocalStorage,
   signUp,
-} from "../../services/AuthService";
-import swal from "sweetalert";
+  createStaff,
+} from '../../services/AuthService';
+import swal from 'sweetalert';
 
-export const SIGNUP_CONFIRMED_ACTION = "[signup action] confirmed signup";
-export const SIGNUP_FAILED_ACTION = "[signup action] failed signup";
-export const LOGIN_CONFIRMED_ACTION = "[login action] confirmed login";
-export const LOGIN_FAILED_ACTION = "[login action] failed login";
-export const LOADING_TOGGLE_ACTION = "[Loading action] toggle loading";
-export const LOGOUT_ACTION = "[Logout action] logout action";
+export const SIGNUP_CONFIRMED_ACTION = '[signup action] confirmed signup';
+export const SIGNUP_FAILED_ACTION = '[signup action] failed signup';
+export const LOGIN_CONFIRMED_ACTION = '[login action] confirmed login';
+export const LOGIN_FAILED_ACTION = '[login action] failed login';
+export const LOADING_TOGGLE_ACTION = '[Loading action] toggle loading';
+export const LOGOUT_ACTION = '[Logout action] logout action';
 
 export function signupAction(email, password, navigate) {
   return (dispatch) => {
@@ -27,11 +28,11 @@ export function signupAction(email, password, navigate) {
         saveTokenInLocalStorage(response.data);
         runLogoutTimer(
           dispatch,
-          response.data.expiresIn * 1000
+          response.data.expiresIn * 1000,
           //history,
         );
         dispatch(confirmedSignupAction(response.data));
-        navigate("/dashboard");
+        navigate('/dashboard');
         //history.push('/dashboard');
       })
       .catch((error) => {
@@ -42,8 +43,8 @@ export function signupAction(email, password, navigate) {
 }
 
 export function Logout(navigate) {
-  localStorage.removeItem("userDetails");
-  navigate("/login");
+  localStorage.removeItem('userDetails');
+  navigate('/login');
   return {
     type: LOGOUT_ACTION,
   };
@@ -58,13 +59,13 @@ export function loginAction(email, password, navigate) {
             runLogoutTimer(dispatch, context.data.expiresIn * 1000, navigate);
             saveTokenDeatailInLocalStorage(context.data);
             dispatch(loginConfirmedAction(context.data));
-            navigate("/main-dashboard");
+            navigate('/main-dashboard');
           });
         });
       })
       .catch((error) => {
         const errorMessage = error.response.data.message; //formatError(error.response.data);
-        swal("Oops", errorMessage, "error");
+        swal('Oops', errorMessage, 'error');
         dispatch(loginFailedAction(errorMessage));
       });
   };
