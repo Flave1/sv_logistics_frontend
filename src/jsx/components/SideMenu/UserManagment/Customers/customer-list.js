@@ -169,7 +169,7 @@ function TR({ row, chack, drop }) {
       </td>
       <td className="py-2 ps-5 wspace-no">{row.address}</td>
       <td className="py-2">{row.createdAt}</td>
-      <td className="py-2 text-right">{drop}</td>
+      {/* <td className="py-2 text-right">{drop}</td> */}
     </tr>
   );
 }
