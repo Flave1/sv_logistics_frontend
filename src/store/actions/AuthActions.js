@@ -1,6 +1,4 @@
 //import { useNavigate } from "react-router-dom";
-
-import { ref } from 'valtio';
 import {
   formatError,
   getUserContext,
@@ -10,7 +8,6 @@ import {
   saveTokenDeatailInLocalStorage,
   saveTokenInLocalStorage,
   signUp,
-  createStaff,
 } from '../../services/AuthService';
 import swal from 'sweetalert';
 

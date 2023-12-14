@@ -132,7 +132,7 @@ function TR({ row, dispatch, editItem }) {
 
 function Form({ show, setShowForm, dispatch, selectedItem, setSelectedItem }) {
   const validation = Yup.object().shape({
-    email: Yup.string().min(2, 'Email Too Short!').max(50, 'Email Too Long!').email('Invalid email'),
+    email: Yup.string().required().min(2, 'Email Too Short!').max(50, 'Email Too Long!').email('Invalid email'),
     firstName: Yup.string().required('First Name Required').min(4, 'First Name must be a minimum of 4 characters'),
     lastName: Yup.string().required('Last name Required').min(4, 'Last name must be a minimum of 4 characters'),
     phoneNumber: Yup.string().required('Phone Number Required').min(4, 'Phone Number must be a minimum of 4 characters'),
@@ -146,10 +146,7 @@ function Form({ show, setShowForm, dispatch, selectedItem, setSelectedItem }) {
       lastName: selectedItem ? selectedItem.lastName : '',
       phoneNumber: selectedItem ? selectedItem.phoneNumber : '',
       address: selectedItem ? selectedItem.address : '',
-      restaurantId: 1,
-      userType: 2,
-      courierType: 1,
-      id: selectedItem ? selectedItem.address : '',
+      id: selectedItem ? selectedItem.id : '',
     },
     enableReinitialize: true,
     validationSchema: validation,
@@ -327,6 +324,7 @@ const deleteItem = (ids, dispatch) => {
   const payload = {
     id: ids,
   };
+  console.log("delete", payload)
   FoodieAlert.confirmAction('Are you sure you want to delete this staff').then((isYes) => {
     if (isYes) {
       deleteStaffAction(payload)(dispatch);
