@@ -34,12 +34,18 @@ const StaffList = (props) => {
     <Fragment>
       <div className="d-flex align-items-center justify-content-between">
         <PageTitle activeMenu="Staff List" motherMenu="User Management" />
+        <button type="button" className="me-2 btn" id='deleteBtn' style={{display: 'none'}} onClick={() => deleteSelected(dispatch)}>
+          <span className="btn-icon-start text-info">
+            <i className="fa fa-trash"></i>
+          </span>
+        </button>
         <button type="button" className="me-2 btn btn-primary" data-target="#staffModal" onClick={() => setShowForm(!showForm)}>
           <span className="btn-icon-start text-info">
             <i className="fa fa-plus color-info"></i>
           </span>
           Add
         </button>
+      
       </div>
 
       <div className="row">
@@ -324,8 +330,18 @@ const deleteItem = (ids, dispatch) => {
   const payload = {
     id: ids,
   };
-  console.log("delete", payload)
-  FoodieAlert.confirmAction('Are you sure you want to delete this staff').then((isYes) => {
+  FoodieAlert.confirmAction('Are you sure you want to delete this staff ?').then((isYes) => {
+    if (isYes) {
+      deleteStaffAction(payload)(dispatch);
+    }
+  });
+};
+
+const deleteSelected = (dispatch) => {
+  const payload = {
+    id: selectedItemIds,
+  };
+  FoodieAlert.confirmAction('Are you sure you want to delete selected staff ?').then((isYes) => {
     if (isYes) {
       deleteStaffAction(payload)(dispatch);
     }
@@ -333,6 +349,7 @@ const deleteItem = (ids, dispatch) => {
 };
 
 const checkboxFun = (type) => {
+  const deleteBtn = document.querySelector('#deleteBtn');
   setTimeout(() => {
     const chackbox = document.querySelectorAll('.customer_shop_single input');
     const motherChackBox = document.querySelector('.customer_shop input');
@@ -359,6 +376,12 @@ const checkboxFun = (type) => {
       }
     }
   }, 100);
+
+  if(selectedItemIds.length > 0){
+    deleteBtn.style.display = 'block'
+  }else{
+    deleteBtn.style.display = 'none'
+  }
 };
 
 const Check = ({ i, row }) => (
