@@ -99,6 +99,3 @@ export function checkAutoLogin(dispatch, navigate) {
     runLogoutTimer(dispatch, timer, navigate);
 }
 
-export function createStaff(payload) {
-    return axiosInstance.post( `authentication/create-user`, payload);
-}

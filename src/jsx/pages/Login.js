@@ -14,7 +14,7 @@ function Login (props) {
     const [email, setEmail] = useState('user1@demo.com');//demo@example.com
     let errorsObj = { email: '', password: '' };
     const [errors, setErrors] = useState(errorsObj);
-    const [password, setPassword] = useState('Foodie@123');
+    const [password, setPassword] = useState('Password123');
     const dispatch = useDispatch();
 
     function onLogin(e) {
