@@ -125,7 +125,7 @@ import MainDashboard from "./pages/dashboard/main-dashboard";
 import StaffList from "./components/SideMenu/UserManagment/Staff/staff-list";
 import DriverList from "./components/SideMenu/UserManagment/Drivers/driver-list";
 import CustomerList from "./components/SideMenu/UserManagment/Customers/customer-list";
-
+import MenuCategory from "./components/SideMenu/MenuManagement/MenuCategory/menu-category";
 
 const Markup = () => {
 
@@ -146,7 +146,8 @@ const Markup = () => {
     { url: "main-dashboard", component: <MainDashboard /> },
 
 
-
+    //MenuManagement
+    { url: "menu-category", component: <MenuCategory /> },
 
 
     //user management
