@@ -1,5 +1,5 @@
 import { getAllDrivers, getAllCustomers, getAllStaff } from "../../store/actions";
-import { getMenuCategories } from "../../store/actions/MenuActions";
+import { getMenuCategoriesAction, getMenuByCategoryIdAction } from "../../store/actions/MenuActions";
 
 export const eventActions: any = [
   {
@@ -30,10 +30,15 @@ export const eventActions: any = [
   
   ///Menu Management
   {
-    action: getMenuCategories,
+    action: getMenuCategoriesAction,
     event: "get_restaurant_menu_categories_event",
     dispatchAble: true,
   },
+  // {
+  //   action: getMenuByCategoryIdAction(),
+  //   event: "get_restaurant_menu_by_category_event",
+  //   dispatchAble: true,
+  // },
 ];
 
 function onConnect() {
