@@ -90,15 +90,10 @@ const SideBar = () => {
           {MenuList.map((data, index) => {
             let menuClass = data.classsChange;
             if (menuClass === "menu-title") {
-              return <li className={menuClass}>{data.title}</li>;
+              return <li key={index} className={menuClass}>{data.title}</li>;
             } else {
               return (
-                <li
-                  className={` ${
-                    state.active === data.title ? "mm-active" : ""
-                  }`}
-                  key={index}
-                >
+                <li className={` ${ state.active === data.title ? "mm-active" : "" }`} key={index} >
                   {data.content && data.content.length > 0 ? (
                     <Link
                       to={"#"}
@@ -125,8 +120,7 @@ const SideBar = () => {
                       {data.content &&
                         data.content.map((data, index) => {
                           return (
-                            <>
-                              <li
+                            <li
                                 key={index}
                                 className={`${
                                   state.activeSubmenu === data.title
@@ -183,7 +177,6 @@ const SideBar = () => {
                                   </ul>
                                 </Collapse>
                               </li>
-                            </>
                           );
                         })}
                     </ul>

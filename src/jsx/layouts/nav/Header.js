@@ -16,7 +16,13 @@ import HeaderSlider from './HeaderSlider';
 //import avatar from "../../../images/avatar/1.jpg";
 import profile from "../../../images/banner-img/pic-1.png";
 
-const LocationIcon = <i className="fa-solid fa-location-dot mx-2 " />;
+const countries = [
+	'Nigeria',
+	'Sierra Leone',
+	'Guinea'
+]
+
+const LocationIcon = ({key}) => <i className="fa-solid fa-location-dot mx-2 " key={key} />;
 
 
 //return BoxTab.classList.toggle("active"),SearchBlog.classList.toggle("active");
@@ -37,7 +43,7 @@ function  AddSearchSlider(){
 
 const Header = ({ onNote }) => {
 	//const [rightSelect, setRightSelect] = useState('Eng');
-	const [selectCountry, setSelectCountry] = useState([LocationIcon, 'India']);
+	const [selectCountry, setSelectCountry] = useState([countries[0]]);
 	//For fix header
 	const [headerFix, setheaderFix] = useState(false);
 	useEffect(() => {
@@ -58,31 +64,6 @@ const Header = ({ onNote }) => {
 		});
 	}, []); 
 	
-  //const [searchBut, setSearchBut] = useState(false);	
-  //var path = window.location.pathname.split("/");
-  //var name = path[path.length - 1].split("-");
-  //var filterName = name.length >= 3 ? name.filter((n, i) => i > 0) : name;
-  //var finalName = filterName.includes("app")
-  //  ? filterName.filter((f) => f !== "app")
-  //  : filterName.includes("ui")
-  //  ? filterName.filter((f) => f !== "ui")
-  //  : filterName.includes("uc")
-  //  ? filterName.filter((f) => f !== "uc")
-  //  : filterName.includes("basic")
-  //  ? filterName.filter((f) => f !== "basic")
-  //  : filterName.includes("table")
-  //  ? filterName.filter((f) => f !== "table")
-  //  : filterName.includes("page")
-  //  ? filterName.filter((f) => f !== "page")
-  //  : filterName.includes("email")
-  //  ? filterName.filter((f) => f !== "email")
-  //  : filterName.includes("ecom")
-  //  ? filterName.filter((f) => f !== "ecom")
-  //  : filterName.includes("chart")
-  //  ? filterName.filter((f) => f !== "chart")
-  //  : filterName.includes("editor")
-  //  ? filterName.filter((f) => f !== "editor")
-  //  : filterName;
   return ( 
     <div className={`header ${headerFix ? "is-fixed" : ""}`}>
       <div className="header-content">
@@ -91,33 +72,18 @@ const Header = ({ onNote }) => {
 				<div className="d-flex align-items-center justify-content-sm-between justify-content-end">
 					<div className="header-left">
 						<div className="nav-item d-flex align-items-center">
-							<div className="d-flex header-bx" id="Search-Blog">									
-								{/* <select className="selectpicker">
-									<option data-icon="fa-solid fa-location-dot mx-2">India</option>
-									<option data-icon="fa-solid fa-location-dot mx-2">Nepal</option>
-									<option data-icon="fa-solid fa-location-dot mx-2">Bangladesh</option>
-									<option data-icon="fa-solid fa-location-dot mx-2">Brazil</option>
-									<option data-icon="fa-solid fa-location-dot mx-2">China</option> 
-									<option data-icon="fa-solid fa-location-dot mx-2">Denmark</option> 
-									<option data-icon="fa-solid fa-location-dot mx-2">Germany</option>
-									<option data-icon="fa-solid fa-location-dot mx-2">Japan</option>
-									<option data-icon="fa-solid fa-location-dot mx-2">Lithuania</option>
-								</select> */}
+							<div className="d-flex header-bx" id="Search-Blog">
 
 								<Dropdown className="bootstrap-select">
 									<Dropdown.Toggle className="header-select-toggle btn btn-light i-false" as="div"> 
 										{selectCountry} <i className="header-select-icon fa-solid fa-sort-down"></i>
 									</Dropdown.Toggle>
 									<Dropdown.Menu className="">
-										<Dropdown.Item onClick={()=>setSelectCountry([LocationIcon, 'India'])}>{LocationIcon} India</Dropdown.Item>
-										<Dropdown.Item onClick={()=>setSelectCountry([LocationIcon, 'Nepal'])}>{LocationIcon} Nepal</Dropdown.Item>
-										<Dropdown.Item onClick={()=>setSelectCountry([LocationIcon, 'Bangladesh'])}>{LocationIcon} Bangladesh</Dropdown.Item>
-										<Dropdown.Item onClick={()=>setSelectCountry([LocationIcon, 'Brazil'])}>{LocationIcon} Brazil</Dropdown.Item>
-										<Dropdown.Item onClick={()=>setSelectCountry([LocationIcon, 'China'])}>{LocationIcon} China</Dropdown.Item>
-										<Dropdown.Item onClick={()=>setSelectCountry([LocationIcon, 'Denmark'])}>{LocationIcon} Denmark</Dropdown.Item>
-										<Dropdown.Item onClick={()=>setSelectCountry([LocationIcon, 'Germany'])}>{LocationIcon} Germany</Dropdown.Item>
-										<Dropdown.Item onClick={()=>setSelectCountry([LocationIcon, 'Japan'])}>{LocationIcon} Japan</Dropdown.Item>
-										<Dropdown.Item onClick={()=>setSelectCountry([LocationIcon, 'Lithuania'])}>{LocationIcon} Lithuania</Dropdown.Item>
+										{
+											countries.map((country, idx) => {
+												return <Dropdown.Item key={idx} onClick={()=>setSelectCountry([<LocationIcon key={idx} />, country])}>{<LocationIcon key={idx} />} {country}</Dropdown.Item>
+											})
+										}
 									</Dropdown.Menu>
 								</Dropdown>
 								<div className="input-group search-area2 ps-3" id="Serach-bar"
