@@ -126,6 +126,7 @@ import StaffList from "./components/SideMenu/UserManagment/Staff/staff-list";
 import DriverList from "./components/SideMenu/UserManagment/Drivers/driver-list";
 import CustomerList from "./components/SideMenu/UserManagment/Customers/customer-list";
 import MenuCategory from "./components/SideMenu/MenuManagement/MenuCategory/menu-category";
+import RestaurantMenu from "./components/SideMenu/MenuManagement/Menu/menu";
 
 const Markup = () => {
 
@@ -148,6 +149,7 @@ const Markup = () => {
 
     //MenuManagement
     { url: "menu-category", component: <MenuCategory /> },
+    { url: "restaurant-menu/:categoryId", component: <RestaurantMenu /> },
 
 
     //user management
