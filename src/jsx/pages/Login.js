@@ -11,7 +11,7 @@ import bgimage from '../../images/login-img/pic-5.jpg';
 
 function Login (props) {
 	const navigate = useNavigate();
-    const [email, setEmail] = useState('favour45@gmail.com');//demo@example.com
+    const [email, setEmail] = useState('cafayadmin@gmail.com');//demo@example.com
     let errorsObj = { email: '', password: '' };
     const [errors, setErrors] = useState(errorsObj);
     const [password, setPassword] = useState('Password123');

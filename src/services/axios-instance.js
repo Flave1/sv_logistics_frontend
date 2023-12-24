@@ -1,6 +1,6 @@
 import axios from 'axios';
 const axiosInstance = axios.create({
-    // baseURL: 'http://flavetechs.com/fws/client',
+    // baseURL: 'http://44.202.240.52:3200/',
     baseURL:'http://localhost:3200/',
     headers: {
         Authorization: '',
