@@ -1,8 +1,10 @@
 import { getRestaurantMenuCategories, createMenuCategory, getMenuByCategoryId, createMenu, getSingleMenu, updateMenu, deleteMenu, getSingleMenuCategory, 
-  updateCategoryMenu, deleteMenuCategory} from "../../services/MenuService";
+  updateCategoryMenu, deleteMenuCategory, getAllRestaurantMenu} from "../../services/MenuService";
 import swal from 'sweetalert';
 
 export const GET_ALL_RESTAURANT_MENU_CATEGORIES = '[get action] get all restaurant menu categories';
+
+export const GET_ALL_RESTAURANT_MENU = '[get action] get all restaurant menu';
 
 ///Menu Actions
 export function getMenuCategoriesAction() {
@@ -15,7 +17,7 @@ export function getMenuCategoriesAction() {
           });
         })
         .catch((error) => {
-          const errorMessage = error.response.data.message; //formatError(error.response.data);
+          const errorMessage = error.response; //formatError(error.response.data);
           swal('Oops', errorMessage, 'error');
         });
     };
@@ -45,6 +47,33 @@ export async function getMenuByCategoryIdAction(id) {
       const errorMessage = error.response.data.message;
       swal('Oops', errorMessage, 'error');
     });
+}
+
+export function getMenuCategoriesAction2() {
+  return getRestaurantMenuCategories()
+      .then((response) => {
+        return response.data.data
+        })
+      .catch((error) => {
+        const errorMessage = error.response; //formatError(error.response.data);
+        swal('Oops', errorMessage, 'error');
+      });
+};
+
+export function getAllMenuAction() {
+  return (dispatch) => {
+    getAllRestaurantMenu()
+      .then((response) => {
+        dispatch({
+          type: GET_ALL_RESTAURANT_MENU,
+          payload: response.data.data,
+        });
+      })
+      .catch((error) => {
+        const errorMessage = error.response.data.message; //formatError(error.response.data);
+        swal('Oops', errorMessage, 'error');
+      });
+  };
 }
 
 export function createMenuAction(payload, setShowForm, resetForm) {

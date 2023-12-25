@@ -25,6 +25,10 @@ export function getSingleMenu(id) {
   return axiosInstance.get(`menu/restaurant-menu/${id}`);
 }
 
+export function getAllRestaurantMenu() {
+  return axiosInstance.get(`menu/restaurant-menu`);
+}
+
 export function updateMenu(payload) {
   return axiosInstance.post(`menu/update-menu`, payload);
 }

@@ -40,9 +40,9 @@ const MenuCategorySlider = (props) => {
 
   return (
     <>
-      <div className="row">
+      <div className="row mt-5">
         <div className="col-xl-12">
-          <div className="d-flex align-items-center justify-content-between mb-2 flex-wrap">
+          {/* <div className="d-flex align-items-center justify-content-between mb-2 flex-wrap">
             <div className="input-group search-area2">
               <span className="input-group-text p-0">
                 <Link to={'#'}>
@@ -60,7 +60,7 @@ const MenuCategorySlider = (props) => {
             <button type="button" className="btn btn-primary mt-3 mt-sm-0" data-target="#categoryModal" onClick={() => setShowForm(!showForm)}>
               Add Category
             </button>
-          </div>
+          </div> */}
         
           <Swiper
             className="mySwiper-2"
@@ -153,7 +153,7 @@ const MenuCategorySlider = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    menucategories: state.menu.categories,
+    menucategories: state.menuCategory.categories,
   };
 };
 const mapDispatchToProps = (dispatch) => {
