@@ -1,7 +1,7 @@
 import { getAllDrivers, getAllCustomers, getAllStaff } from "../../store/actions";
 import { getMenuCategoriesAction, getMenuByCategoryIdAction } from "../../store/actions/MenuActions";
 
-export const eventActions: any = [
+export const eventActions = [
   {
     action: onConnect,
     event: "connect",

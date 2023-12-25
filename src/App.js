@@ -1,31 +1,24 @@
-import { lazy, Suspense, useEffect, useState } from "react";
+import { lazy, Suspense, useEffect } from 'react';
 
 /// Components
-import Index from "./jsx";
-import { connect, useDispatch } from "react-redux";
-import {
-  Route,
-  Routes,
-  useLocation,
-  useNavigate,
-  useParams,
-} from "react-router-dom";
+import Index from './jsx';
+import { connect, useDispatch } from 'react-redux';
+import { Route, Routes, useLocation, useNavigate, useParams } from 'react-router-dom';
 // action
-import { checkAutoLogin } from "./services/AuthService";
-import { isAuthenticated } from "./store/selectors/AuthSelectors";
+import { checkAutoLogin } from './services/AuthService';
+import { isAuthenticated } from './store/selectors/AuthSelectors';
 /// Style
-import "./vendor/bootstrap-select/dist/css/bootstrap-select.min.css";
-import "./css/style.css";
-import { socket } from "./services/socket/SocketService";
-import { getAllStaff } from "./store/actions/UserActions";
-import { getAllDrivers } from "./store/actions/UserActions";
-import { eventActions } from "./services/socket/map-event-actions";
+import './vendor/bootstrap-select/dist/css/bootstrap-select.min.css';
+import './css/style.css';
+import { socket } from './services/socket/SocketService';
+import { eventActions } from './services/socket/map-event-actions';
+import React from 'react';
 
-const SignUp = lazy(() => import("./jsx/pages/Registration"));
-const ForgotPassword = lazy(() => import("./jsx/pages/ForgotPassword"));
+const SignUp = lazy(() => import('./jsx/pages/Registration'));
+const ForgotPassword = lazy(() => import('./jsx/pages/ForgotPassword'));
 const Login = lazy(() => {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(import("./jsx/pages/Login")), 500);
+    setTimeout(() => resolve(import('./jsx/pages/Login')), 500);
   });
 });
 
@@ -48,19 +41,44 @@ function App(props) {
     checkAutoLogin(dispatch, navigate);
   }, []);
 
-  // const [isConnected, setIsConnected] = useState(socket.connected);
-
   function connectToGateway(evAc) {
     if (evAc.dispatchAble) return evAc.action()(dispatch);
     else return evAc.action();
   }
+
+  useEffect(() => {
+    if (socket) {
+      props.socket.rooms.length > 0 &&
+        props.socket.rooms.forEach((evAc) => {
+          const roomid = evAc.roomId;
+          socket.emit('join_room', { roomName: roomid }, (response) => {
+            console.log('response', response);
+            socket.on(roomid, () => evAc.action(roomid));
+          });
+        });
+
+      return () => {
+        props.socket.rooms.length > 0 &&
+          props.socket.rooms.forEach((evAc) => {
+            const roomid = evAc.roomId;
+            socket.emit('leave_room', { roomName: roomid }, (response) => {
+              console.log('response', response);
+              
+            });
+          });
+      };
+    }
+  }, [socket, props.socket.rooms]);
+
+  console.log('socket state', props.socket);
+
   useEffect(() => {
     if (socket) {
       eventActions &&
         eventActions.forEach((evAc) => {
           socket.on(evAc.event, () => connectToGateway(evAc));
         });
-  
+
       return () => {
         eventActions &&
           eventActions.forEach((evAc) => {
@@ -74,7 +92,7 @@ function App(props) {
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/page-register" element={<SignUp />} />
-      <Route path="/page-forgot-password" element={<ForgotPassword />} />
+      <Route path="/page-forgot-password" element={<ForgotPassword history={undefined} />} />
     </Routes>
   );
   if (props.isAuthenticated) {
@@ -119,6 +137,7 @@ function App(props) {
 const mapStateToProps = (state) => {
   return {
     isAuthenticated: isAuthenticated(state),
+    socket: state.socket,
   };
 };
 

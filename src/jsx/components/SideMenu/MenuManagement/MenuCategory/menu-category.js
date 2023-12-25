@@ -12,11 +12,13 @@ import {
   getSingleMenuCategoryAction,
   updateCategoryMenuAction,
   deleteMenuCategoryAction,
+  getMenuByCategoryIdAction,
 } from '../../../../../store/actions/MenuActions';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper';
 import { connect } from 'react-redux';
 import FoodieAlert from '../../../../utils/alert';
+import { JoinRoomAction, LeaveRoomAction } from '../../../../../services/socket/socket-actions';
 
 let modalTitle = '';
 const MenuCategorySlider = (props) => {
@@ -34,8 +36,13 @@ const MenuCategorySlider = (props) => {
   };
 
   useEffect(() => {
-    modalTitle = 'Add New Category';
+    // modalTitle = 'Add New Category';
     props.get_restaurant_menu_categories();
+
+    // JoinRoomAction('28389423-32323842-23482342-23423', getMenuByCategoryIdAction)(dispatch);
+    return () => {
+      // LeaveRoomAction('28389423-32323842-23482342-23423')(dispatch);
+    };
   }, []);
 
   return (
@@ -61,7 +68,7 @@ const MenuCategorySlider = (props) => {
               Add Category
             </button>
           </div>
-        
+
           <Swiper
             className="mySwiper-2"
             speed={1200}
@@ -97,7 +104,7 @@ const MenuCategorySlider = (props) => {
           >
             {props.menucategories.map((item, idx) => (
               <SwiperSlide key={idx}>
-                <div className="cate-bx text-center" >
+                <div className="cate-bx text-center">
                   <div className="card">
                     <div className="card-body">
                       <Link to={'/restaurant-menu/' + item.id}>

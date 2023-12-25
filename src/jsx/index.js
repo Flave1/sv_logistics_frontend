@@ -249,7 +249,7 @@ const Markup = () => {
   return (
     <>
         <Routes>
-            <Route path='page-lock-screen' element= {<LockScreen />} />
+            <Route path='page-lock-screen' element= {<LockScreen history={undefined} />} />
             <Route path='page-error-400' element={<Error400/>} />
             <Route path='page-error-403' element={<Error403/>} />
             <Route path='page-error-404' element={<Error404/>} />

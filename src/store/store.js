@@ -5,6 +5,7 @@ import { AuthReducer } from './selectors/reducers/AuthReducer';
 import todoReducers from './selectors/reducers/Reducers';
 import { UserReducer } from './selectors/reducers/UserReducer';
 import { MenuCategoryReducer } from './selectors/reducers/MenuCategoryReducer';
+import { SocketReducer } from './selectors/reducers/socket-reducer';
 //import { reducer as reduxFormReducer } from 'redux-form';
 const middleware = applyMiddleware(thunk);
 
@@ -16,7 +17,8 @@ const reducers = combineReducers({
     auth: AuthReducer,
 		todoReducers,
     user: UserReducer,
-    menu: MenuCategoryReducer
+    menu: MenuCategoryReducer,
+    socket: SocketReducer
 	//form: reduxFormReducer,	
 	
 });
