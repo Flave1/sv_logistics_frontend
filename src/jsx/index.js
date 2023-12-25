@@ -129,6 +129,7 @@ import MenuCategoryList from "./components/SideMenu/MenuManagement/MenuCategory/
 import RestaurantMenu from "./components/SideMenu/MenuManagement/Menu/menu";
 import AllRestaurantMenu from "./components/SideMenu/MenuManagement/Menu/all-menu";
 
+
 const Markup = () => {
 
   const allroutes = [
