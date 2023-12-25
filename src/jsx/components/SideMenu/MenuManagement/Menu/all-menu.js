@@ -17,7 +17,7 @@ import {
 } from '../../../../../store/actions/MenuActions';
 import { Dropdown } from 'react-bootstrap';
 import FoodieAlert from '../../../../utils/alert';
-import MenuCategorySlider from '../MenuCategory/menu-category';
+import MenuCategorySlider from '../MenuCategory/menu-category-slider';
 
 let selectedItemIds = [];
 const AllRestaurantMenu = (props) => {
@@ -224,7 +224,7 @@ const AllRestaurantMenu = (props) => {
           <MenuCategorySlider />
         </div>
         
-        <CategorySidebar />
+        <CategorySidebar categoryList = {categoryList} />
       </div>
     </>
   );
@@ -738,43 +738,37 @@ const mapDispatchToProps = (dispatch) => {
 
 export default connect(mapStateToProps, mapDispatchToProps)(AllRestaurantMenu);
 
-const CategorySidebar = () => {
+const CategorySidebar = ({categoryList}) => {
   return (
-    <div class="col-xl-3 col-lg-4">
-      <div class="email-left-box">
-        <div class="p-0">
-          <a class="btn btn-primary btn-block" href="/react/demo/email-compose">
+    <div className="col-xl-3 col-lg-4">
+      <div className="email-left-box">
+        <div className="p-0">
+          <Link to="/menu-category" className="btn btn-primary btn-block">
             Manage Category
-          </a>
+          </Link>
         </div>
-        <div class="mail-list rounded overflow-hidden mt-4">
-          <div class="intro-title d-flex justify-content-between my-0">
+        <div className="mail-list rounded overflow-hidden mt-4">
+          <div className="intro-title d-flex justify-content-between my-0">
             <h5>Categories</h5>
           </div>
-          <a class="list-group-item" href="/react/demo/email-inbox">
-            <span class="icon-warning">
-              <i class="fa fa-circle" aria-hidden="true"></i>
-            </span>
-            Work
-          </a>
-          <a class="list-group-item" href="/react/demo/email-inbox">
-            <span class="icon-primary">
-              <i class="fa fa-circle" aria-hidden="true"></i>
-            </span>
-            Private
-          </a>
-          <a class="list-group-item" href="/react/demo/email-inbox">
-            <span class="icon-success">
-              <i class="fa fa-circle" aria-hidden="true"></i>
-            </span>
-            Support
-          </a>
-          <a class="list-group-item" href="/react/demo/email-inbox">
-            <span class="icon-dpink">
-              <i class="fa fa-circle" aria-hidden="true"></i>
-            </span>
-            Social
-          </a>
+          {categoryList?.map((item) => (
+                 <a className="list-group-item" href="#" key={item.id}>
+                 <span className="icon-warning">
+                    <input
+                    type="radio"
+                    value={item}
+                    name="categoryGroup"
+                    className="form-check-input"
+                     />
+                   {/* <i className="fa fa-circle" aria-hidden="true"></i> */}
+                 </span>
+                 &nbsp;
+                 &nbsp;
+                 <span> 
+                    {item.name}
+                 </span> 
+               </a>
+          ))} 
         </div>
       </div>
     </div>
