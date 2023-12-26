@@ -16,7 +16,19 @@ import {
 import { useFormik } from 'formik';
 
 import * as Yup from 'yup';
+import {
+  createCategoryAction,
+  getMenuCategoriesAction,
+  getSingleMenuCategoryAction,
+  updateCategoryMenuAction,
+  deleteMenuCategoryAction,
+  getMenuByCategoryIdAction,
+} from '../../../../../store/actions/MenuActions';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay } from 'swiper';
+import { connect } from 'react-redux';
 import FoodieAlert from '../../../../utils/alert';
+import { JoinRoomAction, LeaveRoomAction } from '../../../../../services/socket/socket-actions';
 
 let selectedItemIds = [];
 const MenuCategoryList = (props) => {
@@ -33,7 +45,13 @@ const MenuCategoryList = (props) => {
   };
 
   useEffect(() => {
+    // modalTitle = 'Add New Category';
     props.get_restaurant_menu_categories();
+
+    // JoinRoomAction('28389423-32323842-23482342-23423', getMenuByCategoryIdAction)(dispatch);
+    return () => {
+      // LeaveRoomAction('28389423-32323842-23482342-23423')(dispatch);
+    };
   }, []);
 
   return (
@@ -83,6 +101,88 @@ const MenuCategoryList = (props) => {
               </div>
             </div>
           </div>
+
+          <Swiper
+            className="mySwiper-2"
+            speed={1200}
+            slidesPerView={5}
+            spaceBetween={20}
+            //loop={true}
+            autoplay={{
+              delay: 1200,
+            }}
+            modules={[Autoplay]}
+            breakpoints={{
+              360: {
+                slidesPerView: 2,
+                spaceBetween: 20,
+              },
+              600: {
+                slidesPerView: 3,
+                spaceBetween: 20,
+              },
+              768: {
+                slidesPerView: 4,
+                spaceBetween: 20,
+              },
+              1200: {
+                slidesPerView: 3,
+                spaceBetween: 20,
+              },
+              1920: {
+                slidesPerView: 5,
+                spaceBetween: 20,
+              },
+            }}
+          >
+            {props.menucategories.map((item, idx) => (
+              <SwiperSlide key={idx}>
+                <div className="cate-bx text-center">
+                  <div className="card">
+                    <div className="card-body">
+                      <Link to={'/restaurant-menu/' + item.id}>
+                        <img
+                          src={`data:image/jpeg;base64, ${item.image}`}
+                          className="card-img-top"
+                          alt={`Image for ${item.name}`}
+                          width="100"
+                          height="100"
+                          viewBox="0 0 50 50"
+                          fill="none"
+                        />
+                        <h6 className="mb-0 font-w500">{item.name}</h6>
+                      </Link>
+                      {/* <div className="row">
+                        <div className="col-md-6 text-left">
+                          <button
+                            type="button"
+                            className="me-2 btn"
+                            id="deleteBtn"
+                            onClick={() => {
+                              const id = item.id;
+                              deleteItem([id.toString()], dispatch);
+                            }}
+                          >
+                            <span className="text-info">
+                              <i className="fa fa-trash"></i>
+                            </span>
+                          </button>
+                        </div>
+                        <div className="col-md-6 text-right">
+                          <button type="button" className="me-2 btn" id="editBtn" onClick={() => editItem(item)}>
+                            <span className=" text-info">
+                              <i className="fa fa-edit"></i>
+                            </span>
+                          </button>
+                        </div>
+                      </div> */}
+                    </div>
+                  </div>
+                </div>
+              </SwiperSlide>
+            ))}
+            <div className="swiper-pagination"></div>
+          </Swiper>
         </div>
       </div>
 
