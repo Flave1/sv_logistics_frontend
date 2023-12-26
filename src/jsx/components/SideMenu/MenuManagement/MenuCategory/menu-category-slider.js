@@ -97,12 +97,12 @@ const MenuCategorySlider = (props) => {
           >
             {props.menucategories.map((item, idx) => (
               <SwiperSlide key={idx}>
-                <div className="cate-bx text-center" >
+                <div className="cate-bx text-center "  >
                   <div className="card">
                     <div className="card-body">
                       <Link to={'/restaurant-menu/' + item.id}>
                         <img
-                          src={`data:image/jpeg;base64, ${item.image}`}
+                          src={item.image}
                           className="card-img-top"
                           alt={`Image for ${item.name}`}
                           width="100"
@@ -112,30 +112,7 @@ const MenuCategorySlider = (props) => {
                         />
                         <h6 className="mb-0 font-w500">{item.name}</h6>
                       </Link>
-                      {/* <div className="row">
-                        <div className="col-md-6 text-left">
-                          <button
-                            type="button"
-                            className="me-2 btn"
-                            id="deleteBtn"
-                            onClick={() => {
-                              const id = item.id;
-                              deleteItem([id.toString()], dispatch);
-                            }}
-                          >
-                            <span className="text-info">
-                              <i className="fa fa-trash"></i>
-                            </span>
-                          </button>
-                        </div>
-                        <div className="col-md-6 text-right">
-                          <button type="button" className="me-2 btn" id="editBtn" onClick={() => editItem(item)}>
-                            <span className=" text-info">
-                              <i className="fa fa-edit"></i>
-                            </span>
-                          </button>
-                        </div>
-                      </div> */}
+                     
                     </div>
                   </div>
                 </div>

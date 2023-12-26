@@ -63,14 +63,11 @@ function App(props) {
             const roomid = evAc.roomId;
             socket.emit('leave_room', { roomName: roomid }, (response) => {
               console.log('response', response);
-              
             });
           });
       };
     }
   }, [socket, props.socket.rooms]);
-
-  console.log('socket state', props.socket);
 
   useEffect(() => {
     if (socket) {

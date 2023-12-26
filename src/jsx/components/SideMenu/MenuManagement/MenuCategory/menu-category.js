@@ -1,33 +1,31 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import PageTitle from '../../../../layouts/PageTitle';
 import { Dropdown } from 'react-bootstrap';
-import { Button, Modal } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 /// images
-import avartar5 from '../../../../../images/avatar/5.png';
 import { Link } from 'react-router-dom';
 import { connect, useDispatch } from 'react-redux';
 import {
-    createCategoryAction,
-    getMenuCategoriesAction,
-    getSingleMenuCategoryAction,
-    updateCategoryMenuAction,
-    deleteMenuCategoryAction,
-  } from '../../../../../store/actions/MenuActions';
+  createCategoryAction,
+  getMenuCategoriesAction,
+  updateCategoryMenuAction,
+  deleteMenuCategoryAction,
+} from '../../../../../store/actions/MenuActions';
 import { useFormik } from 'formik';
 
 import * as Yup from 'yup';
 import FoodieAlert from '../../../../utils/alert';
+import { formatDate } from '../../../../utils/common';
+import swal from 'sweetalert';
 
 let selectedItemIds = [];
 const MenuCategoryList = (props) => {
   const [showForm, setShowForm] = useState(false);
   const dispatch = useDispatch();
   const [selectedItem, setSelectedItem] = useState(null);
-
   const editItem = async (row) => {
-    const itemInfo = await getSingleMenuCategoryAction(row.id);
-    if (itemInfo) {
-      setSelectedItem(itemInfo);
+    if (row) {
+      setSelectedItem(row);
       setShowForm(true);
     }
   };
@@ -39,19 +37,32 @@ const MenuCategoryList = (props) => {
   return (
     <Fragment>
       <div className="d-flex align-items-center justify-content-between">
-        <PageTitle activeMenu="Staff List" motherMenu="Category Management" />
-        <button type="button" className="me-2 btn" id='deleteBtn' style={{display: 'none'}} onClick={() => deleteSelected(dispatch)}>
+        <PageTitle activeMenu="Category List" motherMenu="Category Management" />
+        <button type="button" className="me-2 btn" id="deleteBtn" style={{ display: 'none' }} onClick={() => deleteSelected(dispatch)}>
           <span className="btn-icon-start text-info">
             <i className="fa fa-trash"></i>
           </span>
         </button>
-        <button type="button" className="me-2 btn btn-primary" data-target="#staffModal" onClick={() => setShowForm(!showForm)}>
+        <Link to={'/restaurant-menu'} className="me-2 btn btn-primary">
+          <span className="btn-icon-start text-info">
+            <i className="fa fa-arrow-left color-info"></i>
+          </span>
+          Back
+        </Link>
+        <button
+          type="button"
+          className="me-2 btn btn-primary"
+          data-target="#staffModal"
+          onClick={() => {
+            setSelectedItem(null);
+            setShowForm(!showForm);
+          }}
+        >
           <span className="btn-icon-start text-info">
             <i className="fa fa-plus color-info"></i>
           </span>
           Add
         </button>
-      
       </div>
 
       <div className="row">
@@ -69,14 +80,14 @@ const MenuCategoryList = (props) => {
                         </div>
                       </th>
                       <th>Name</th>
-                      <th>Created At</th>
+                      <th>Date Created</th>
                       <th></th>
                     </tr>
                   </thead>
                   <tbody id="customers">
                     {props.menucategories &&
                       props.menucategories.map((row, idx) => {
-                        return <TR row={row} dispatch={dispatch} editItem={editItem} key={idx}/>;
+                        return <TR row={row} dispatch={dispatch} editItem={editItem} key={idx} />;
                       })}
                   </tbody>
                 </table>
@@ -92,15 +103,15 @@ const MenuCategoryList = (props) => {
 };
 
 const mapStateToProps = (state) => {
-    return {
-      menucategories: state.menuCategory.categories,
-    };
+  return {
+    menucategories: state.menuCategory.categories,
   };
-  const mapDispatchToProps = (dispatch) => {
-    return {
-      get_restaurant_menu_categories: () => getMenuCategoriesAction()(dispatch),
-    };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    get_restaurant_menu_categories: () => getMenuCategoriesAction()(dispatch),
   };
+};
 export default connect(mapStateToProps, mapDispatchToProps)(MenuCategoryList);
 
 function TR({ row, dispatch, editItem }) {
@@ -109,15 +120,15 @@ function TR({ row, dispatch, editItem }) {
       <td className="customer_shop_single">
         <Check i={1} row={row} />
       </td>
-      <td className="py-3">
-        <Link to="/ecom-customers">
-        <div className="media-bx d-flex py-3  align-items-center">
-          <img className="me-3 rounded-circle" src={`data:image/jpeg;base64, ${row.image}`} alt={`Image for ${row.name}`} />
-              <h5 className="mb-0 fs--1">{row.name}</h5>
+      <td className="">
+        <Link onClick={() => editItem(row)}>
+          <div className="media-bx d-flex align-items-center">
+            <img className="me-3 rounded-circle" src={row.image} alt={`Image for ${row.name}`} />
+            <h5 className="mb-0 fs--1">{row.name}</h5>
           </div>
         </Link>
       </td>
-      <td className="py-2">{row.createdAt}</td>
+      <td className="py-2">{formatDate(row.createdAt)}</td>
       <td className="py-2 text-right">
         <DropMenu row={row} dispatch={dispatch} editItem={editItem} />
       </td>
@@ -126,106 +137,127 @@ function TR({ row, dispatch, editItem }) {
 }
 
 function Form({ show, setShowForm, dispatch, selectedItem, setSelectedItem }) {
-    const validation = Yup.object().shape({
-      name: Yup.string().required().min(2, 'Category Name Is Too Short!').max(50, 'Category Name Is Too Long!'),
-      description: Yup.string().required('Description Is Required').min(4, 'Description must be a minimum of 4 characters'),
-      // file: Yup.mixed().test('fileType', 'Unsupported file type', (value) => {
-      //     if(!value) return true;
-      //     const supportedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/PNG'];
-      //     return supportedTypes.includes(value.type);
-      // }),
-    });
+  const [image, setImage] = useState();
+  const [title, setTitle] = useState();
+  const validation = Yup.object().shape({
+    name: Yup.string().required().min(2, 'Category Name Is Too Short!').max(50, 'Category Name Is Too Long!'),
+    description: Yup.string().required('Description Is Required').min(4, 'Description must be a minimum of 4 characters'),
+  });
+
+  useEffect(() => {
+    selectedItem?.image && setImage(selectedItem.image);
+
+    if (selectedItem) {
+      setTitle('Edit Menu Category');
+    } else {
+      setTitle('Add Menu Category');
+    }
+
+    if (show == false) {
+      setImage(null);
+    }
+  }, [selectedItem?.image]);
+
+  console.log('show', show);
   
-    const { handleChange, handleSubmit, values, setFieldValue, handleBlur, errors, touched } = useFormik({
-      initialValues: {
-        name: selectedItem ? selectedItem.name : '',
-        description: selectedItem ? selectedItem.description : '',
-        status: selectedItem ? selectedItem.status : true,
-        file: selectedItem ? selectedItem.file : null,
-        id: selectedItem ? selectedItem.id : '',
-      },
-      enableReinitialize: true,
-      validationSchema: validation,
-      onSubmit: (values, { resetForm }) => {
-        const formData = new FormData();
-        formData.append('id', values.id);
-        formData.append('name', values.name);
-        formData.append('description', values.description);
-        formData.append('status', values.status);
+
+  const { handleChange, handleSubmit, values, setFieldValue, handleBlur, errors, touched } = useFormik({
+    initialValues: {
+      name: selectedItem ? selectedItem.name : '',
+      description: selectedItem ? selectedItem.description : '',
+      status: selectedItem ? selectedItem.status : true,
+      file: null,
+      id: selectedItem ? selectedItem.id : '',
+    },
+    enableReinitialize: true,
+    validationSchema: validation,
+    onSubmit: (values, { resetForm }) => {
+      const formData = new FormData();
+      formData.append('id', values.id);
+      formData.append('name', values.name);
+      formData.append('description', values.description);
+      formData.append('status', values.status);
+
+      if (values.file) {
         formData.append('file', values.file);
-  
-        if (selectedItem) {
-          updateCategoryMenuAction(formData, setShowForm, resetForm, setSelectedItem)(dispatch);
-        } else {
-          createCategoryAction(formData, setShowForm, resetForm)(dispatch);
-        }
-      },
-    });
-  
-    return (
-      <Modal className="modal fade" show={show} id="categoryModal">
-        <div className="modal-header">
-          <h5 className="modal-title" id="exampleModalLabel">
-            Add Menu Category
-          </h5>
-          <button type="button" className="btn-close" onClick={() => setShowForm(!show)}></button>
-        </div>
-        <div className="modal-body">
-          <form onSubmit={handleSubmit}>
-            <div className="modal-inside">
-              <label htmlFor="val-name" className="form-label">
-                Name <span className="text-danger">*</span>
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                id="val-name"
-                name="val-name"
-                placeholder="Enter category name"
-                value={values.name}
-                onChange={(e) => {
-                  handleChange('name');
-                  setFieldValue('name', e.target.value);
-                }}
-              />
-              {errors.name && touched.name && <div className="text-danger fs-12">{errors.name}</div>}
-            </div>
-            <div className="modal-inside">
-              <label htmlFor="val-description" className="form-label">
-                Description <span className="text-danger">*</span>
-              </label>
-              <textarea
-                className="form-control"
-                id="val-description"
-                name="val-description"
-                // rows="5"
-                placeholder="Enter description"
-                value={values.description}
-                onChange={(e) => {
-                  handleChange('description');
-                  setFieldValue('description', e.target.value);
-                }}
-              ></textarea>
-              {errors.description && touched.description && <div className="text-danger fs-12">{errors.description}</div>}
-            </div>
-            <div className="modal-inside">
-              <input
-                className="form-check-input"
-                type="checkbox"
-                name="val-status"
-                id="val-status"
-                value={values.status}
-                onChange={(e) => {
-                  handleChange('status');
-                  setFieldValue('status', e.target.value);
-                }}
-              />
-              <label className="form-check-label" htmlFor="val-status">
-                Status
-              </label>
-              {errors.status && touched.status && <div className="text-danger fs-12">{errors.status}</div>}
-            </div>
-            <div className="modal-inside">
+      } else if (!selectedItem && !values.file) {
+        swal('Oops', 'Select image for this category', 'error');
+        return;
+      }
+
+      if (selectedItem) {
+        updateCategoryMenuAction(formData, setShowForm, resetForm, setSelectedItem)(dispatch);
+      } else {
+        createCategoryAction(formData, setShowForm, resetForm)(dispatch);
+      }
+    },
+  });
+  return (
+    <Modal className="modal fade" show={show} id="categoryModal">
+      <div className="modal-header">
+        <h5 className="modal-title" id="exampleModalLabel">
+          {title}
+        </h5>
+        <button type="button" className="btn-close" onClick={() => setShowForm(!show)}></button>
+      </div>
+      <div className="modal-body">
+        <form onSubmit={handleSubmit}>
+          <div className="modal-inside">
+            <label htmlFor="val-name" className="form-label">
+              Name <span className="text-danger">*</span>
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id="val-name"
+              name="val-name"
+              placeholder="Enter category name"
+              value={values.name}
+              onChange={(e) => {
+                handleChange('name');
+                setFieldValue('name', e.target.value);
+              }}
+            />
+            {errors.name && touched.name && <div className="text-danger fs-12">{errors.name}</div>}
+          </div>
+          <div className="modal-inside">
+            <label htmlFor="val-description" className="form-label">
+              Description <span className="text-danger">*</span>
+            </label>
+            <textarea
+              className="form-control"
+              id="val-description"
+              name="val-description"
+              // rows="5"
+              placeholder="Enter description"
+              value={values.description}
+              onChange={(e) => {
+                handleChange('description');
+                setFieldValue('description', e.target.value);
+              }}
+            ></textarea>
+            {errors.description && touched.description && <div className="text-danger fs-12">{errors.description}</div>}
+          </div>
+          <div className="modal-inside">
+            <input
+              className="form-check-input"
+              type="checkbox"
+              name="val-status"
+              id="val-status"
+              checked={values.status}
+              value={values.status}
+              onChange={(e) => {
+                handleChange('status');
+                setFieldValue('status', e.target.value);
+              }}
+            />
+            <label className="form-check-label" htmlFor="val-status">
+              Status
+            </label>
+            {errors.status && touched.status && <div className="text-danger fs-12">{errors.status}</div>}
+          </div>
+          <div className="modal-inside row">
+            <div className="col-md-6">
               <label htmlFor="val-file" className="form-label">
                 Image <span className="text-danger">*</span>
               </label>
@@ -239,23 +271,30 @@ function Form({ show, setShowForm, dispatch, selectedItem, setSelectedItem }) {
                 onChange={(e) => {
                   handleChange('file');
                   setFieldValue('file', e.currentTarget.files[0]);
+                  if (e.currentTarget.files[0]) {
+                    const imageUrl = URL.createObjectURL(e.currentTarget.files[0]);
+                    setImage(imageUrl);
+                  }
                 }}
               />
-              {errors.file && touched.file && <div className="text-danger fs-12">{errors.file}</div>}
             </div>
-            <div className="modal-footer">
-              <button type="button" className="btn btn-default" onClick={() => setShowForm(!show)}>
-                Close
-              </button>
-              <button type="submit" className="btn btn-primary">
-                Submit
-              </button>
-            </div>
-          </form>
-        </div>
-      </Modal>
-    );
-  }
+
+            <div className="col-md-6">{image && <img src={image} alt={`Image`} className="img-thumbnail mb-2 " style={{ maxWidth: '150px' }} />}</div>
+            {errors.file && touched.file && <div className="text-danger fs-12">{errors.file}</div>}
+          </div>
+          <div className="modal-footer">
+            <button type="button" className="btn btn-default" onClick={() => setShowForm(!show)}>
+              Close
+            </button>
+            <button type="submit" className="btn btn-primary">
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+    </Modal>
+  );
+}
 
 const DropMenu = ({ row, dispatch, editItem }) => (
   <Dropdown>
@@ -304,7 +343,7 @@ const deleteSelected = (dispatch) => {
   };
   FoodieAlert.confirmAction('Are you sure you want to delete selected staff ?').then((isYes) => {
     if (isYes) {
-        deleteMenuCategoryAction(payload)(dispatch);
+      deleteMenuCategoryAction(payload)(dispatch);
     }
   });
 };
@@ -338,10 +377,10 @@ const checkboxFun = (type) => {
     }
   }, 100);
 
-  if(selectedItemIds.length > 0){
-    deleteBtn.style.display = 'block'
-  }else{
-    deleteBtn.style.display = 'none'
+  if (selectedItemIds.length > 0) {
+    deleteBtn.style.display = 'block';
+  } else {
+    deleteBtn.style.display = 'none';
   }
 };
 
@@ -353,7 +392,6 @@ const Check = ({ i, row }) => (
 );
 
 const pushItemId = (id, checked = false) => {
-  
   if (!selectedItemIds.includes(id) && checked == true) {
     selectedItemIds.push(id);
   }

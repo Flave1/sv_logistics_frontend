@@ -11,7 +11,7 @@ export const MenuList = [
     title: "Menu Management",
     classsChange: "mm-collapse",
     iconStyle: "bi bi-shop-window",
-    to: "all-menu",
+    to: "restaurant-menu",
   },
   //Order
   {

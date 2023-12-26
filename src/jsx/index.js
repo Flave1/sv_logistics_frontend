@@ -151,8 +151,8 @@ const Markup = () => {
 
     //MenuManagement
     { url: "menu-category", component: <MenuCategoryList /> },
-    { url: "all-menu", component: <AllRestaurantMenu /> },
-    { url: "restaurant-menu/:categoryId", component: <RestaurantMenu /> },
+    { url: "restaurant-menu", component: <AllRestaurantMenu /> },
+    // { url: "restaurant-menu/:categoryId", component: <RestaurantMenu /> },
 
 
     //user management
