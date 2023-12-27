@@ -1,5 +1,5 @@
 import { getAllDrivers, getAllCustomers, getAllStaff } from "../../store/actions";
-import { getMenuCategoriesAction, getMenuByCategoryIdAction } from "../../store/actions/MenuActions";
+import { getMenuCategoriesAction, getMenuByCategoryIdAction, getAllMenuAction } from "../../store/actions/MenuActions";
 
 export const eventActions = [
   {
@@ -34,6 +34,11 @@ export const eventActions = [
     event: "get_restaurant_menu_categories_event",
     dispatchAble: true,
   },
+  {
+    action: getAllMenuAction,
+    event: "get_restaurant_menu_event",
+    dispatchAble: true,
+  }
   // {
   //   action: getMenuByCategoryIdAction(),
   //   event: "get_restaurant_menu_by_category_event",

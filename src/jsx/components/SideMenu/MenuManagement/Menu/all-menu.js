@@ -36,6 +36,14 @@ const AllRestaurantMenu = (props) => {
   const params = new URLSearchParams(window.location.search);
   const categoryId = params.get('categoryId') || null;
 
+  const editItem = async (row) => {
+    const itemInfo = await getSingleMenuAction(row.id);
+    if (itemInfo) {
+      setSelectedItem(itemInfo);
+      setShowForm(true);
+    }
+  };
+
   useEffect(() => {
     const getCategories = async (item) => {
       const categories = await getMenuCategoriesAction2();
@@ -87,7 +95,10 @@ const AllRestaurantMenu = (props) => {
                     setShowForm(!showForm);
                   }}
                 >
-                  Add Menu
+                <span className="btn-icon-start text-info">
+                    <i className="fa fa-plus color-info"></i>
+                </span>
+                  Add
                 </button>
                 &nbsp; &nbsp;
                 <Nav.Item as="li" className="nav-item" role="presentation">
@@ -136,6 +147,9 @@ const AllRestaurantMenu = (props) => {
                                   </div>
                                 </th>
                                 <th>Name</th>
+                                <th>Price</th>
+                                <th>Category</th>
+                                <th>Status</th>
                                 <th>Date Created</th>
                                 <th></th>
                               </tr>
@@ -143,7 +157,7 @@ const AllRestaurantMenu = (props) => {
                             <tbody id="customers">
                               {props?.menu &&
                                 props.menu.map((row, idx) => {
-                                  return <TR dispatch={dispatch} row={row} key={idx} />;
+                                  return <TR dispatch={dispatch} row={row} key={idx} editItem={editItem} />;
                                 })}
                             </tbody>
                           </table>
@@ -163,6 +177,7 @@ const AllRestaurantMenu = (props) => {
                                                         onClick={()=>handleClick('heart', item.id)}
                                                     ></i> */}
                           <div className="card-body pb-0 pt-3">
+                          <Link onClick={() => editItem(item)}>
                             <div className="text-center mb-2">
                               <img
                                 src={item.image}
@@ -174,8 +189,11 @@ const AllRestaurantMenu = (props) => {
                                 fill="none"
                               />
                             </div>
+                           </Link>
                             <div className="border-bottom pb-3">
+                            <Link onClick={() => editItem(item)}>
                               <h4 className="font-w500 mb-1">{item.menuCategory.name}</h4>
+                            </Link>
                               <div className="d-flex align-items-center">
                                 <svg width="16" height="15" viewBox="0 0 16 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                                   <path
@@ -198,7 +216,7 @@ const AllRestaurantMenu = (props) => {
                           <div className="card-footer border-0 pt-2">
                             <div className="common d-flex align-items-center justify-content-between">
                               <div>
-                                <Link to={'#'}>
+                               <Link onClick={() => editItem(item)}>
                                   <h4>{item.name}</h4>
                                 </Link>
                                 <h3 className=" mb-0 text-primary">&#8358;{item.price}</h3>
@@ -241,6 +259,10 @@ function Form({ show, setShowForm, dispatch, categoryId, selectedItem, setSelect
     } else {
       setTitle('Add Menu');
     }
+
+    if (show == false) {
+        setImage(null);
+      }
   }, [selectedItem?.image]);
 
   const validation = Yup.object().shape({
@@ -249,21 +271,19 @@ function Form({ show, setShowForm, dispatch, categoryId, selectedItem, setSelect
     category: Yup.string().required('Category Is Required'),
     description: Yup.string().required('Description Is Required').min(4, 'Description must be a minimum of 4 characters'),
     price: Yup.number().required('Price Is Required'),
-    discount: Yup.number().required('Discount Is Required'),
-    dietaryInfo: Yup.string().required('Dietary Information Is Required').min(4, 'Dietary Information must be a minimum of 4 characters'),
   });
 
   const { handleChange, handleSubmit, values, setFieldValue, handleBlur, errors, touched } = useFormik({
     initialValues: {
       name: selectedItem ? selectedItem.name : '',
-      category: selectedItem ? selectedItem.category : '',
+      category: selectedItem ? selectedItem.menuCategory.id : '',
       description: selectedItem ? selectedItem.description : '',
       price: selectedItem ? selectedItem.price : '',
       availability: selectedItem ? selectedItem.availability : 'false',
       status: selectedItem ? selectedItem.status : 'true',
       discount: selectedItem ? selectedItem.discount : 0,
       dietaryInfo: selectedItem ? selectedItem.dietaryInformation : '',
-      file: selectedItem ? selectedItem.file : null,
+      file: null,
       id: selectedItem ? selectedItem.id : '',
     },
     enableReinitialize: true,
@@ -299,7 +319,7 @@ function Form({ show, setShowForm, dispatch, categoryId, selectedItem, setSelect
     <Modal className="modal fade" size="lg" show={show} id="menuModal">
       <div className="modal-header">
         <h5 className="modal-title" id="exampleModalLabel">
-          Add Menu
+        {title}
         </h5>
         <button type="button" className="btn-close" onClick={() => setShowForm(!show)}></button>
       </div>
@@ -395,6 +415,7 @@ function Form({ show, setShowForm, dispatch, categoryId, selectedItem, setSelect
                 type="checkbox"
                 name="val-status"
                 id="val-status"
+                checked={values.status}
                 value={values.status}
                 onChange={(e) => {
                   handleChange('status');
@@ -412,6 +433,7 @@ function Form({ show, setShowForm, dispatch, categoryId, selectedItem, setSelect
                 type="checkbox"
                 name="val-availability"
                 id="val-availability"
+                checked={values.availability}
                 value={values.availability}
                 onChange={(e) => {
                   handleChange('availability');
@@ -427,7 +449,7 @@ function Form({ show, setShowForm, dispatch, categoryId, selectedItem, setSelect
 
           <div className="modal-inside">
             <label htmlFor="val-name" className="form-label">
-              Discount <span className="text-danger">*</span>
+              Discount
             </label>
             <input
               type="number"
@@ -445,7 +467,7 @@ function Form({ show, setShowForm, dispatch, categoryId, selectedItem, setSelect
           </div>
           <div className="modal-inside">
             <label htmlFor="val-description" className="form-label">
-              Dietary Information <span className="text-danger">*</span>
+              Dietary Information
             </label>
             <textarea
               className="form-control"
@@ -550,77 +572,6 @@ const DropdownItem = ({ row, dispatch, editItem }) => {
   );
 };
 
-const RestaurantMenuList = ({ menuList, showForm, setShowForm, selectedItem, setSelectedItem }) => {
-  const editItem = async (row) => {
-    const itemInfo = await getSingleMenuAction(row.id);
-    if (itemInfo) {
-      setSelectedItem(itemInfo.data);
-      setShowForm(true);
-    }
-  };
-
-  const chackboxFun = (type) => {
-    setTimeout(() => {
-      const checkbox = document.querySelectorAll('.application_sorting_1 input');
-      const motherCheckBox = document.querySelector('.sorting_asc input');
-      for (let i = 0; i < checkbox.length; i++) {
-        const element = checkbox[i];
-        if (type === 'all') {
-          if (motherCheckBox.checked) {
-            element.checked = true;
-          } else {
-            element.checked = false;
-          }
-        } else {
-          if (!element.checked) {
-            motherCheckBox.checked = false;
-            break;
-          } else {
-            motherCheckBox.checked = true;
-          }
-        }
-      }
-    }, 200);
-  };
-
-  useEffect(() => {
-    //chackboxFun()
-  }, []);
-  return (
-    <>
-      <div className="card h-auto">
-        <div className="card-body p-0">
-          <div className="table-responsive">
-            <table className="table table-list i-table style-1 mb-4 border-0" id="guestTable-all3">
-              <thead>
-                <tr>
-                  <th className="bg-none sorting_asc">
-                    <div className="form-check style-3">
-                      <input className="form-check-input" type="checkbox" value="" id="checkAll" onClick={() => chackboxFun('all')} />
-                    </div>
-                  </th>
-                  <th>Menu</th>
-                  <th>Date</th>
-                  <th>Price</th>
-                  <th>Category</th>
-                  <th>Status</th>
-                  <th className="bg-none"></th>
-                  <th className="bg-none"></th>
-                </tr>
-              </thead>
-              <tbody>
-                {menuList &&
-                  menuList?.map((row, idx) => {
-                    return <TR row={row} editItem={editItem} key={idx} />;
-                  })}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </>
-  );
-};
 function TR({ row, dispatch, editItem }) {
   return (
     <tr className="btn-reveal-trigger">
@@ -628,18 +579,20 @@ function TR({ row, dispatch, editItem }) {
         <Check i={1} row={row} />
       </td>
       <td className="">
-        <Link
-        // onClick={() => editItem(row)}
-        >
+      <Link onClick={() => editItem(row)}>
           <div className="media-bx d-flex align-items-center">
             <img className="me-3 rounded-circle" src={row.image} alt={`Image for ${row.name}`} />
             <h5 className="mb-0 fs--1">{row.name}</h5>
           </div>
         </Link>
       </td>
+      <td className="py-2">{row.price}</td>
+      <td className="py-2">{row.menuCategory.name}</td>
+      <td className="py-2">{row.status ? "Active": "InActive"}</td>
       <td className="py-2">{formatDate(row.createdAt)}</td>
       <td className="py-2 text-right">
-        <DropMenu row={row} dispatch={dispatch} editItem={editItem} />
+        {/* <DropMenu row={row} dispatch={dispatch} editItem={editItem} /> */}
+        <DropdownItem row={row} dispatch={dispatch} editItem={editItem} />
       </td>
     </tr>
   );

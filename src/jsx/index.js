@@ -126,7 +126,6 @@ import StaffList from "./components/SideMenu/UserManagment/Staff/staff-list";
 import DriverList from "./components/SideMenu/UserManagment/Drivers/driver-list";
 import CustomerList from "./components/SideMenu/UserManagment/Customers/customer-list";
 import MenuCategoryList from "./components/SideMenu/MenuManagement/MenuCategory/menu-category";
-import RestaurantMenu from "./components/SideMenu/MenuManagement/Menu/menu";
 import AllRestaurantMenu from "./components/SideMenu/MenuManagement/Menu/all-menu";
 
 
