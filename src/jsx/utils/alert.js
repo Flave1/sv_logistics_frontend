@@ -1,7 +1,7 @@
 import Swal from 'sweetalert2'
 
 class FoodieAlert {
-    static showSuccess(message: string) {
+    static showSuccess(message) {
         Swal.fire({
             icon: 'success',
             title: 'success',
@@ -9,7 +9,7 @@ class FoodieAlert {
             footer: '<a href="">Why do I have this issue?</a>'
           })
     }
-    static showError(text: string, title: string) {
+    static showError(text, title) {
         Swal.fire({
             title,
             text,
@@ -23,7 +23,7 @@ class FoodieAlert {
         })
     }
 
-    static async confirmAction(actionMsg: string): Promise<boolean> {
+    static async confirmAction(actionMsg){
         return Swal.fire({
             title: 'Are you sure?',
             text: actionMsg,

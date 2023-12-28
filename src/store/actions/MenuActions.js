@@ -1,24 +1,37 @@
-import { getRestaurantMenuCategories, createMenuCategory, getMenuByCategoryId, createMenu, getSingleMenu, updateMenu, deleteMenu, getSingleMenuCategory, 
-  updateCategoryMenu, deleteMenuCategory} from "../../services/MenuService";
+import {
+  getRestaurantMenuCategories,
+  createMenuCategory,
+  getMenuByCategoryId,
+  createMenu,
+  getSingleMenu,
+  updateMenu,
+  deleteMenu,
+  getSingleMenuCategory,
+  updateCategoryMenu,
+  deleteMenuCategory,
+  getAllRestaurantMenu,
+} from '../../services/MenuService';
 import swal from 'sweetalert';
 
-export const GET_ALL_RESTAURANT_MENU_CATEGORIES = '[get action] get all restaurant menu categories';
+export const GET_ALL_RESTAURANT_MENU_CATEGORIES = '[GET_ALL_RESTAURANT_MENU_CATEGORIES] get all restaurant menu categories';
+
+export const GET_ALL_RESTAURANT_MENU = '[GET_ALL_RESTAURANT_MENU] get all restaurant menu';
 
 ///Menu Actions
 export function getMenuCategoriesAction() {
-    return (dispatch) => {
-        getRestaurantMenuCategories()
-        .then((response) => {
-          dispatch({
-            type: GET_ALL_RESTAURANT_MENU_CATEGORIES,
-            payload: response.data.data,
-          });
-        })
-        .catch((error) => {
-          const errorMessage = error.response.data.message; //formatError(error.response.data);
-          swal('Oops', errorMessage, 'error');
+  return (dispatch) => {
+    getRestaurantMenuCategories()
+      .then((response) => {
+        dispatch({
+          type: GET_ALL_RESTAURANT_MENU_CATEGORIES,
+          payload: response.data,
         });
-    };
+      })
+      .catch((error) => {
+        const errorMessage = error.response;
+        swal('Oops', errorMessage, 'error');
+      });
+  };
 }
 
 export function createCategoryAction(payload, setShowForm, resetForm) {
@@ -36,15 +49,47 @@ export function createCategoryAction(payload, setShowForm, resetForm) {
   };
 }
 
-export async function getMenuByCategoryIdAction(id) {
-  return getMenuByCategoryId(id)
+export function getMenuByCategoryIdAction(id) {
+  return (dispatch) => {
+    getMenuByCategoryId(id)
+      .then((response) => {
+        dispatch({
+          type: GET_ALL_RESTAURANT_MENU,
+          payload: response.data,
+        });
+      })
+      .catch((error) => {
+        const errorMessage = error.response.data.message;
+        swal('Oops', errorMessage, 'error');
+      });
+  };
+}
+
+export function getMenuCategoriesAction2() {
+  return getRestaurantMenuCategories()
     .then((response) => {
-      return response.data.data;
+      return response.data;
     })
     .catch((error) => {
-      const errorMessage = error.response.data.message;
+      const errorMessage = error.response; //formatError(error.response.data);
       swal('Oops', errorMessage, 'error');
     });
+}
+
+export function getAllMenuAction() {
+  return (dispatch) => {
+    getAllRestaurantMenu()
+      .then((response) => {
+        dispatch({
+          type: GET_ALL_RESTAURANT_MENU,
+          payload: response.data,
+        });
+      })
+      .catch((error) => {
+        const errorMessage = error.response.data.message;
+        swal('Oops', errorMessage, 'error');
+      });
+  };
 }
 
 export function createMenuAction(payload, setShowForm, resetForm) {
