@@ -326,25 +326,7 @@ function Form({ show, setShowForm, dispatch, categoryId, selectedItem, setSelect
       <div className="modal-body">
         <form onSubmit={handleSubmit}>
           <div className="row modal-inside">
-            <div className="col-6">
-              <label htmlFor="val-name" className="form-label">
-                Menu <span className="text-danger">*</span>
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                id="val-name"
-                name="val-name"
-                placeholder="Enter menu"
-                value={values.name}
-                onChange={(e) => {
-                  handleChange('name');
-                  setFieldValue('name', e.target.value);
-                }}
-              />
-              {errors.name && touched.name && <div className="text-danger fs-12">{errors.name}</div>}
-            </div>
-            <div className="col-6">
+          <div className="col-6">
               <label htmlFor="val-category" className="form-label">
                 Category <span className="text-danger">*</span>
               </label>
@@ -367,6 +349,24 @@ function Form({ show, setShowForm, dispatch, categoryId, selectedItem, setSelect
                 ))}
               </select>
               {errors.category && touched.category && <div className="text-danger fs-12">{errors.category}</div>}
+            </div>
+            <div className="col-6">
+              <label htmlFor="val-name" className="form-label">
+                Menu <span className="text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="val-name"
+                name="val-name"
+                placeholder="Enter menu"
+                value={values.name}
+                onChange={(e) => {
+                  handleChange('name');
+                  setFieldValue('name', e.target.value);
+                }}
+              />
+              {errors.name && touched.name && <div className="text-danger fs-12">{errors.name}</div>}
             </div>
           </div>
           <div className="modal-inside row">
