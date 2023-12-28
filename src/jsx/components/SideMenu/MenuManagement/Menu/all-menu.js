@@ -95,9 +95,9 @@ const AllRestaurantMenu = (props) => {
                     setShowForm(!showForm);
                   }}
                 >
-                <span className="btn-icon-start text-info">
+                  <span className="btn-icon-start text-info">
                     <i className="fa fa-plus color-info"></i>
-                </span>
+                  </span>
                   Add
                 </button>
                 &nbsp; &nbsp;
@@ -177,23 +177,23 @@ const AllRestaurantMenu = (props) => {
                                                         onClick={()=>handleClick('heart', item.id)}
                                                     ></i> */}
                           <div className="card-body pb-0 pt-3">
-                          <Link onClick={() => editItem(item)}>
-                            <div className="text-center mb-2">
-                              <img
-                                src={item.image}
-                                className="card-img-top"
-                                alt={`Image for ${item.name}`}
-                                width="100"
-                                height="100"
-                                viewBox="0 0 50 50"
-                                fill="none"
-                              />
-                            </div>
-                           </Link>
-                            <div className="border-bottom pb-3">
                             <Link onClick={() => editItem(item)}>
-                              <h4 className="font-w500 mb-1">{item.menuCategory.name}</h4>
+                              <div className="text-center mb-2">
+                                <img
+                                  src={item.image}
+                                  className="card-img-top"
+                                  alt={`Image for ${item.name}`}
+                                  width="100"
+                                  height="100"
+                                  viewBox="0 0 50 50"
+                                  fill="none"
+                                />
+                              </div>
                             </Link>
+                            <div className="border-bottom pb-3">
+                              <Link onClick={() => editItem(item)}>
+                                <h4 className="font-w500 mb-1">{item.menuCategory.name}</h4>
+                              </Link>
                               <div className="d-flex align-items-center">
                                 <svg width="16" height="15" viewBox="0 0 16 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                                   <path
@@ -216,7 +216,7 @@ const AllRestaurantMenu = (props) => {
                           <div className="card-footer border-0 pt-2">
                             <div className="common d-flex align-items-center justify-content-between">
                               <div>
-                               <Link onClick={() => editItem(item)}>
+                                <Link onClick={() => editItem(item)}>
                                   <h4>{item.name}</h4>
                                 </Link>
                                 <h3 className=" mb-0 text-primary">&#8358;{item.price}</h3>
@@ -261,8 +261,8 @@ function Form({ show, setShowForm, dispatch, categoryId, selectedItem, setSelect
     }
 
     if (show == false) {
-        setImage(null);
-      }
+      setImage(null);
+    }
   }, [selectedItem?.image]);
 
   const validation = Yup.object().shape({
@@ -319,7 +319,7 @@ function Form({ show, setShowForm, dispatch, categoryId, selectedItem, setSelect
     <Modal className="modal fade" size="lg" show={show} id="menuModal">
       <div className="modal-header">
         <h5 className="modal-title" id="exampleModalLabel">
-        {title}
+          {title}
         </h5>
         <button type="button" className="btn-close" onClick={() => setShowForm(!show)}></button>
       </div>
@@ -447,23 +447,45 @@ function Form({ show, setShowForm, dispatch, categoryId, selectedItem, setSelect
             </div>
           </div>
 
-          <div className="modal-inside">
-            <label htmlFor="val-name" className="form-label">
-              Discount
-            </label>
-            <input
-              type="number"
-              className="form-control"
-              id="val-discount"
-              name="val-discount"
-              placeholder="Enter discount"
-              value={values.discount}
-              onChange={(e) => {
-                handleChange('discount');
-                setFieldValue('discount', e.target.value);
-              }}
-            />
-            {errors.discount && touched.discount && <div className="text-danger fs-12">{errors.discount}</div>}
+          <div className="row modal-inside">
+            <div className="col-6">
+              <label htmlFor="val-name" className="form-label">
+                Discount (Discount in %) eg. 0.4%
+              </label>
+              <input
+                type="number"
+                className="form-control"
+                id="val-discount"
+                name="val-discount"
+                placeholder="Enter discount"
+                // value={values.discount}
+                onChange={(e) => {
+                  if (values.price < 1) {
+                    swal('');
+                    return;
+                  }
+
+                  const percentageAmount = (values.price * e.target.value) / 100;
+                  handleChange('discount');
+                  setFieldValue('discount', values.price - percentageAmount);
+                }}
+              />
+              {errors.discount && touched.discount && <div className="text-danger fs-12">{errors.discount}</div>}
+            </div>
+            <div className="col-6">
+              <label htmlFor="val-name" className="form-label">
+                Discounted price
+              </label>
+              <input
+                readOnly={true}
+                type="number"
+                className="form-control text-center"
+                id="val-discount"
+                name="val-discount"
+                placeholder="Enter discount"
+                value={values.discount}
+              />
+            </div>
           </div>
           <div className="modal-inside">
             <label htmlFor="val-description" className="form-label">
@@ -579,7 +601,7 @@ function TR({ row, dispatch, editItem }) {
         <Check i={1} row={row} />
       </td>
       <td className="">
-      <Link onClick={() => editItem(row)}>
+        <Link onClick={() => editItem(row)}>
           <div className="media-bx d-flex align-items-center">
             <img className="me-3 rounded-circle" src={row.image} alt={`Image for ${row.name}`} />
             <h5 className="mb-0 fs--1">{row.name}</h5>
@@ -588,7 +610,7 @@ function TR({ row, dispatch, editItem }) {
       </td>
       <td className="py-2">{row.price}</td>
       <td className="py-2">{row.menuCategory.name}</td>
-      <td className="py-2">{row.status ? "Active": "InActive"}</td>
+      <td className="py-2">{row.status ? 'Active' : 'InActive'}</td>
       <td className="py-2">{formatDate(row.createdAt)}</td>
       <td className="py-2 text-right">
         {/* <DropMenu row={row} dispatch={dispatch} editItem={editItem} /> */}
