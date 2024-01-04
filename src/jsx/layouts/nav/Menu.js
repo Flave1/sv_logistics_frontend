@@ -136,8 +136,8 @@ export const MenuList = [
     iconStyle: "bi bi-gear",
     content: [
       {
-        title: "Configuration",
-        to: "dashboard",
+        title: "Country",
+        to: "country-list",
       },
     ],
   },

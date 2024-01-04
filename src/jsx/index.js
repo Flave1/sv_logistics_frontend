@@ -127,6 +127,7 @@ import DriverList from "./components/SideMenu/UserManagment/Drivers/driver-list"
 import CustomerList from "./components/SideMenu/UserManagment/Customers/customer-list";
 import MenuCategoryList from "./components/SideMenu/MenuManagement/MenuCategory/menu-category";
 import AllRestaurantMenu from "./components/SideMenu/MenuManagement/Menu/all-menu";
+import CountryList from "./components/SideMenu/Settings/Country/country-list";
 
 
 const Markup = () => {
@@ -158,6 +159,9 @@ const Markup = () => {
     { url: "staff-users", component: <StaffList /> },
     { url: "driver-users", component: <DriverList /> },
     { url: "customer-users", component: <CustomerList /> },
+
+    //Settings
+    { url: "country-list", component: <CountryList /> },
 
     
     // Restaurant

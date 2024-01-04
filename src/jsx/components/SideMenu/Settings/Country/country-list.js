@@ -5,21 +5,16 @@ import { Modal } from 'react-bootstrap';
 /// images
 import { Link } from 'react-router-dom';
 import { connect, useDispatch } from 'react-redux';
-import {
-  createCategoryAction,
-  getMenuCategoriesAction,
-  updateCategoryMenuAction,
-  deleteMenuCategoryAction,
-} from '../../../../../store/actions/MenuActions';
 import { useFormik } from 'formik';
 
 import * as Yup from 'yup';
 import FoodieAlert from '../../../../utils/alert';
 import { formatDate } from '../../../../utils/common';
 import swal from 'sweetalert';
+import { createCountryAction, deleteCountryAction, getAllCountryAction, updateCountryAction } from '../../../../../store/actions/CountryActions';
 
 let selectedItemIds = [];
-const MenuCategoryList = (props) => {
+const CountryList = (props) => {
   const [showForm, setShowForm] = useState(false);
   const dispatch = useDispatch();
   const [selectedItem, setSelectedItem] = useState(null);
@@ -31,28 +26,22 @@ const MenuCategoryList = (props) => {
   };
 
   useEffect(() => {
-    props.get_restaurant_menu_categories();
+    props.get_all_countries();
   }, []);
 
   return (
     <Fragment>
       <div className="d-flex align-items-center justify-content-between">
-        <PageTitle activeMenu="Category List" motherMenu="Category Management" />
+        <PageTitle activeMenu="Country List" motherMenu="Country Management" />
         <button type="button" className="me-2 btn" id="deleteBtn" style={{ display: 'none' }} onClick={() => deleteSelected(dispatch)}>
           <span className="btn-icon-start text-info">
             <i className="fa fa-trash"></i>
           </span>
         </button>
-        <Link to={'/restaurant-menu'} className="me-2 btn btn-primary">
-          <span className="btn-icon-start text-info">
-            <i className="fa fa-arrow-left color-info"></i>
-          </span>
-          Back
-        </Link>
         <button
           type="button"
           className="me-2 btn btn-primary"
-          data-target="#staffModal"
+          data-target="#countryModal"
           onClick={() => {
             setSelectedItem(null);
             setShowForm(!showForm);
@@ -79,14 +68,18 @@ const MenuCategoryList = (props) => {
                           <label className="form-check-label" htmlFor="checkAll"></label>
                         </div>
                       </th>
-                      <th>Name</th>
+                      <th>Country Name</th>
+                      <th>Country Code</th>
+                      <th>Currency Name</th>
+                      <th>Currency Code</th>
+                      <th>Status</th>
                       <th>Date Created</th>
                       <th></th>
                     </tr>
                   </thead>
                   <tbody id="customers">
-                    {props.menucategories &&
-                      props.menucategories.map((row, idx) => {
+                    {props.allcountry &&
+                      props.allcountry.map((row, idx) => {
                         return <TR row={row} dispatch={dispatch} editItem={editItem} key={idx} />;
                       })}
                   </tbody>
@@ -104,15 +97,15 @@ const MenuCategoryList = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    menucategories: state.menuCategory.categories,
+    allcountry: state.country.allcountry,
   };
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    get_restaurant_menu_categories: () => getMenuCategoriesAction()(dispatch),
+    get_all_countries: () => getAllCountryAction()(dispatch),
   };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(MenuCategoryList);
+export default connect(mapStateToProps, mapDispatchToProps)(CountryList);
 
 function TR({ row, dispatch, editItem }) {
   return (
@@ -122,12 +115,13 @@ function TR({ row, dispatch, editItem }) {
       </td>
       <td className="">
         <Link onClick={() => editItem(row)}>
-          <div className="media-bx d-flex align-items-center">
-            <img className="me-3 rounded-circle" src={row.image} alt={`Image for ${row.name}`} />
-            <h5 className="mb-0 fs--1">{row.name}</h5>
-          </div>
+          {row.countryName}
         </Link>
       </td>
+      <td className="py-2">{row.countryCode}</td>
+      <td className="py-2">{row.currencyName}</td>
+      <td className="py-2">{row.currencyCode}</td>
+      {row.status == true ? <td className="py-2">Active</td> : <td className="py-2">InActive</td>}
       <td className="py-2">{formatDate(row.createdAt)}</td>
       <td className="py-2 text-right">
         <DropMenu row={row} dispatch={dispatch} editItem={editItem} />
@@ -140,55 +134,43 @@ function Form({ show, setShowForm, dispatch, selectedItem, setSelectedItem }) {
   const [image, setImage] = useState();
   const [title, setTitle] = useState();
   const validation = Yup.object().shape({
-    name: Yup.string().required().min(2, 'Category Name Is Too Short!').max(50, 'Category Name Is Too Long!'),
-    description: Yup.string().required('Description Is Required').min(4, 'Description must be a minimum of 4 characters'),
+    countryName: Yup.string().required("Country Name Is Required").min(2, 'Country Name Is Too Short!').max(50, 'Country Name Is Too Long!'),
+    countryCode: Yup.string().required('Country Code Is Required'),
+    currencyName: Yup.string().required('Currency Name Is Required'),
+    currencyCode: Yup.string().required('Currency Code Is Required'),
   });
 
   useEffect(() => {
     selectedItem?.image && setImage(selectedItem.image);
 
     if (selectedItem) {
-      setTitle('Edit Menu Category');
+      setTitle('Edit Country');
     } else {
-      setTitle('Add Menu Category');
+      setTitle('Add Country');
     }
 
     if (show == false) {
       setImage(null);
     }
   }, [selectedItem?.image]);
-
-  console.log('show', show);
   
 
   const { handleChange, handleSubmit, values, setFieldValue, handleBlur, errors, touched } = useFormik({
     initialValues: {
-      name: selectedItem ? selectedItem.name : '',
-      description: selectedItem ? selectedItem.description : '',
+      countryName: selectedItem ? selectedItem.countryName : '',
+      countryCode: selectedItem ? selectedItem.countryCode : '',
+      currencyName: selectedItem ? selectedItem.currencyName : '',
+      currencyCode: selectedItem ? selectedItem.currencyCode : '',
       status: selectedItem ? selectedItem.status : true,
-      file: null,
       id: selectedItem ? selectedItem.id : '',
     },
     enableReinitialize: true,
     validationSchema: validation,
     onSubmit: (values, { resetForm }) => {
-      const formData = new FormData();
-      formData.append('id', values.id);
-      formData.append('name', values.name);
-      formData.append('description', values.description);
-      formData.append('status', values.status);
-
-      if (values.file) {
-        formData.append('file', values.file);
-      } else if (!selectedItem && !values.file) {
-        swal('Oops', 'Select image for this category', 'error');
-        return;
-      }
-
       if (selectedItem) {
-        updateCategoryMenuAction(formData, setShowForm, resetForm, setSelectedItem)(dispatch);
+        updateCountryAction(values, setShowForm, resetForm, setSelectedItem)(dispatch);
       } else {
-        createCategoryAction(formData, setShowForm, resetForm)(dispatch);
+        createCountryAction(values, setShowForm, resetForm)(dispatch);
       }
     },
   });
@@ -203,40 +185,78 @@ function Form({ show, setShowForm, dispatch, selectedItem, setSelectedItem }) {
       <div className="modal-body">
         <form onSubmit={handleSubmit}>
           <div className="modal-inside">
-            <label htmlFor="val-name" className="form-label">
-              Name <span className="text-danger">*</span>
+            <label htmlFor="val-countryName" className="form-label">
+              Country Name <span className="text-danger">*</span>
             </label>
             <input
               type="text"
               className="form-control"
-              id="val-name"
-              name="val-name"
-              placeholder="Enter category name"
-              value={values.name}
+              id="val-countryName"
+              name="val-countryName"
+              placeholder="Enter country name"
+              value={values.countryName}
               onChange={(e) => {
-                handleChange('name');
-                setFieldValue('name', e.target.value);
+                handleChange('countryName');
+                setFieldValue('countryName', e.target.value);
               }}
             />
-            {errors.name && touched.name && <div className="text-danger fs-12">{errors.name}</div>}
+            {errors.countryName && touched.countryName && <div className="text-danger fs-12">{errors.countryName}</div>}
           </div>
           <div className="modal-inside">
-            <label htmlFor="val-description" className="form-label">
-              Description <span className="text-danger">*</span>
+            <label htmlFor="val-countryCode" className="form-label">
+              Country Code <span className="text-danger">*</span>
             </label>
-            <textarea
+            <input
+              type="text"
               className="form-control"
-              id="val-description"
-              name="val-description"
-              // rows="5"
-              placeholder="Enter description"
-              value={values.description}
+              id="val-countryCode"
+              name="val-countryCode"
+              placeholder="Enter country code"
+              value={values.countryCode}
               onChange={(e) => {
-                handleChange('description');
-                setFieldValue('description', e.target.value);
+                handleChange('countryCode');
+                setFieldValue('countryCode', e.target.value);
               }}
-            ></textarea>
-            {errors.description && touched.description && <div className="text-danger fs-12">{errors.description}</div>}
+            />
+            {errors.countryCode && touched.countryCode && <div className="text-danger fs-12">{errors.countryCode}</div>}
+          </div>
+
+          <div className="modal-inside">
+            <label htmlFor="val-currencyName" className="form-label">
+              Currency Name <span className="text-danger">*</span>
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id="val-currencyName"
+              name="val-currencyName"
+              placeholder="Enter currency name"
+              value={values.currencyName}
+              onChange={(e) => {
+                handleChange('currencyName');
+                setFieldValue('currencyName', e.target.value);
+              }}
+            />
+            {errors.currencyName && touched.currencyName && <div className="text-danger fs-12">{errors.currencyName}</div>}
+          </div>
+
+          <div className="modal-inside">
+            <label htmlFor="val-currencyCode" className="form-label">
+              Currency Code <span className="text-danger">*</span>
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id="val-currencyCode"
+              name="val-currencyCode"
+              placeholder="Enter currency code"
+              value={values.currencyCode}
+              onChange={(e) => {
+                handleChange('currencyCode');
+                setFieldValue('currencyCode', e.target.value);
+              }}
+            />
+            {errors.currencyCode && touched.currencyCode && <div className="text-danger fs-12">{errors.currencyCode}</div>}
           </div>
           <div className="modal-inside">
             <input
@@ -255,32 +275,6 @@ function Form({ show, setShowForm, dispatch, selectedItem, setSelectedItem }) {
               Status
             </label>
             {errors.status && touched.status && <div className="text-danger fs-12">{errors.status}</div>}
-          </div>
-          <div className="modal-inside row">
-            <div className="col-md-6">
-              <label htmlFor="val-file" className="form-label">
-                Image <span className="text-danger">*</span>
-              </label>
-              <input
-                type="file"
-                className="form-control"
-                name="val-file"
-                id="val-file"
-                placeholder=""
-                value={undefined}
-                onChange={(e) => {
-                  handleChange('file');
-                  setFieldValue('file', e.currentTarget.files[0]);
-                  if (e.currentTarget.files[0]) {
-                    const imageUrl = URL.createObjectURL(e.currentTarget.files[0]);
-                    setImage(imageUrl);
-                  }
-                }}
-              />
-            </div>
-
-            <div className="col-md-6">{image && <img src={image} alt={`Image`} className="img-thumbnail mb-2 " style={{ maxWidth: '150px' }} />}</div>
-            {errors.file && touched.file && <div className="text-danger fs-12">{errors.file}</div>}
           </div>
           <div className="modal-footer">
             <button type="button" className="btn btn-default" onClick={() => setShowForm(!show)}>
@@ -330,9 +324,9 @@ const deleteItem = (ids, dispatch) => {
   const payload = {
     id: ids,
   };
-  FoodieAlert.confirmAction('Are you sure you want to delete this category ?').then((isYes) => {
+  FoodieAlert.confirmAction('Are you sure you want to delete this country ?').then((isYes) => {
     if (isYes) {
-      deleteMenuCategoryAction(payload)(dispatch);
+      deleteCountryAction(payload)(dispatch);
     }
   });
 };
@@ -341,9 +335,9 @@ const deleteSelected = (dispatch) => {
   const payload = {
     id: selectedItemIds,
   };
-  FoodieAlert.confirmAction('Are you sure you want to delete selected category ?').then((isYes) => {
+  FoodieAlert.confirmAction('Are you sure you want to delete selected country ?').then((isYes) => {
     if (isYes) {
-      deleteMenuCategoryAction(payload)(dispatch);
+      deleteCountryAction(payload)(dispatch);
     }
   });
 };
