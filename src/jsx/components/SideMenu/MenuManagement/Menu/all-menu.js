@@ -25,6 +25,7 @@ import { formatDate } from '../../../../utils/common';
 import swal from 'sweetalert';
 
 let selectedItemIds = [];
+let discountedPrice = 0;
 const AllRestaurantMenu = (props) => {
   const menuCategory = useParams();
   const [menuItem, setMenuItem] = useState(null);
@@ -326,25 +327,7 @@ function Form({ show, setShowForm, dispatch, categoryId, selectedItem, setSelect
       <div className="modal-body">
         <form onSubmit={handleSubmit}>
           <div className="row modal-inside">
-            <div className="col-6">
-              <label htmlFor="val-name" className="form-label">
-                Menu <span className="text-danger">*</span>
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                id="val-name"
-                name="val-name"
-                placeholder="Enter menu"
-                value={values.name}
-                onChange={(e) => {
-                  handleChange('name');
-                  setFieldValue('name', e.target.value);
-                }}
-              />
-              {errors.name && touched.name && <div className="text-danger fs-12">{errors.name}</div>}
-            </div>
-            <div className="col-6">
+          <div className="col-6">
               <label htmlFor="val-category" className="form-label">
                 Category <span className="text-danger">*</span>
               </label>
@@ -368,6 +351,24 @@ function Form({ show, setShowForm, dispatch, categoryId, selectedItem, setSelect
               </select>
               {errors.category && touched.category && <div className="text-danger fs-12">{errors.category}</div>}
             </div>
+            <div className="col-6">
+              <label htmlFor="val-name" className="form-label">
+                Menu <span className="text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="val-name"
+                name="val-name"
+                placeholder="Enter menu"
+                value={values.name}
+                onChange={(e) => {
+                  handleChange('name');
+                  setFieldValue('name', e.target.value);
+                }}
+              />
+              {errors.name && touched.name && <div className="text-danger fs-12">{errors.name}</div>}
+            </div>
           </div>
           <div className="modal-inside row">
             <div className="col-6">
@@ -382,6 +383,8 @@ function Form({ show, setShowForm, dispatch, categoryId, selectedItem, setSelect
                 placeholder="Enter price"
                 value={values.price}
                 onChange={(e) => {
+                  values.discount = 0;
+                  discountedPrice = 0;
                   handleChange('price');
                   setFieldValue('price', e.target.value);
                 }}
@@ -449,25 +452,20 @@ function Form({ show, setShowForm, dispatch, categoryId, selectedItem, setSelect
 
           <div className="row modal-inside">
             <div className="col-6">
-              <label htmlFor="val-name" className="form-label">
+              <label htmlFor="val-discountpercent" className="form-label">
                 Discount (Discount in %) eg. 0.4%
               </label>
               <input
                 type="number"
                 className="form-control"
-                id="val-discount"
-                name="val-discount"
+                id="val-discountpercent"
+                name="val-discountpercent"
                 placeholder="Enter discount"
                 // value={values.discount}
                 onChange={(e) => {
-                  if (values.price < 1) {
-                    swal('');
-                    return;
-                  }
-
-                  const percentageAmount = (values.price * e.target.value) / 100;
+                discountedPrice = handleDiscount(values.price, e.target.value)
                   handleChange('discount');
-                  setFieldValue('discount', values.price - percentageAmount);
+                  setFieldValue('discount', discountedPrice);
                 }}
               />
               {errors.discount && touched.discount && <div className="text-danger fs-12">{errors.discount}</div>}
@@ -802,3 +800,22 @@ const DropMenu = ({ row, dispatch, editItem }) => (
     </Dropdown.Menu>
   </Dropdown>
 );
+
+const handleDiscount = (price, discount) => {
+      if (price < 1) {
+        swal('Error!','Price should not be less than 1');
+        return 0;
+      }
+      if (discount < 0) {
+        swal('Error!', 'Discount should not be less than 1');
+        return 0;
+      }
+      if (discount > 100) {
+        swal('Error!', 'Discount should not be greater than 100');
+        return 0;
+      }
+
+      const percentageAmount = (price * discount) / 100;
+      const discountedPrice = price - percentageAmount;
+      return discountedPrice;
+}

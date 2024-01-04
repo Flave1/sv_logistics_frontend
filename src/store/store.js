@@ -6,6 +6,7 @@ import todoReducers from './selectors/reducers/Reducers';
 import { UserReducer } from './selectors/reducers/UserReducer';
 import { SocketReducer } from './selectors/reducers/socket-reducer';
 import { MenuCategoryReducer, MenuReducer } from './selectors/reducers/MenuCategoryReducer';
+import { CountryReducer } from './selectors/reducers/CountryReducer';
 //import { reducer as reduxFormReducer } from 'redux-form';
 const middleware = applyMiddleware(thunk);
 
@@ -18,6 +19,7 @@ const reducers = combineReducers({
     user: UserReducer,
     menuCategory: MenuCategoryReducer,
     menu: MenuReducer,
+    country: CountryReducer,
     socket: SocketReducer
 	//form: reduxFormReducer,	
 	

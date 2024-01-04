@@ -1,4 +1,5 @@
 import { getAllDrivers, getAllCustomers, getAllStaff } from "../../store/actions";
+import { getAllCountryAction } from "../../store/actions/CountryActions";
 import { getMenuCategoriesAction, getMenuByCategoryIdAction, getAllMenuAction } from "../../store/actions/MenuActions";
 
 export const eventActions = [
@@ -38,12 +39,20 @@ export const eventActions = [
     action: getAllMenuAction,
     event: "get_restaurant_menu_event",
     dispatchAble: true,
-  }
+  },
   // {
   //   action: getMenuByCategoryIdAction(),
   //   event: "get_restaurant_menu_by_category_event",
   //   dispatchAble: true,
   // },
+
+
+  ///Country
+  {
+    action: getAllCountryAction,
+    event: "get_countries_event",
+    dispatchAble: true,
+  }
 ];
 
 function onConnect() {
