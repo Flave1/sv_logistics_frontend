@@ -128,6 +128,7 @@ import CustomerList from "./components/SideMenu/UserManagment/Customers/customer
 import MenuCategoryList from "./components/SideMenu/MenuManagement/MenuCategory/menu-category";
 import AllRestaurantMenu from "./components/SideMenu/MenuManagement/Menu/all-menu";
 import CountryList from "./components/SideMenu/Settings/Country/country-list";
+import RestaurantList from "./components/SideMenu/Settings/Restaurant/restaurant-list";
 
 
 const Markup = () => {
@@ -162,6 +163,7 @@ const Markup = () => {
 
     //Settings
     { url: "country-list", component: <CountryList /> },
+    { url: "restaurant-list", component: <RestaurantList /> },
 
     
     // Restaurant

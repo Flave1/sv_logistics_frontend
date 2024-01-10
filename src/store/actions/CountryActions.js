@@ -18,6 +18,17 @@ export function getAllCountryAction() {
         });
     };
   }
+
+  export function getAllCountryAction2() {
+    return getAllCountry()
+      .then((response) => {
+          return response.data;
+      })
+      .catch((error) => {
+        const errorMessage = error.response;
+        swal('Oops', errorMessage, 'error');
+      });
+  }
   
   export function createCountryAction(payload, setShowForm, resetForm) {
     return (dispatch) => {

@@ -7,6 +7,7 @@ import { UserReducer } from './selectors/reducers/UserReducer';
 import { SocketReducer } from './selectors/reducers/socket-reducer';
 import { MenuCategoryReducer, MenuReducer } from './selectors/reducers/MenuCategoryReducer';
 import { CountryReducer } from './selectors/reducers/CountryReducer';
+import { RestaurantReducer } from './selectors/reducers/RestaurantReducer';
 //import { reducer as reduxFormReducer } from 'redux-form';
 const middleware = applyMiddleware(thunk);
 
@@ -20,6 +21,7 @@ const reducers = combineReducers({
     menuCategory: MenuCategoryReducer,
     menu: MenuReducer,
     country: CountryReducer,
+    restaurant: RestaurantReducer,
     socket: SocketReducer
 	//form: reduxFormReducer,	
 	

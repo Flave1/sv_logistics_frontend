@@ -1,6 +1,7 @@
 import { getAllDrivers, getAllCustomers, getAllStaff } from "../../store/actions";
 import { getAllCountryAction } from "../../store/actions/CountryActions";
 import { getMenuCategoriesAction, getMenuByCategoryIdAction, getAllMenuAction } from "../../store/actions/MenuActions";
+import { getAllRestaurantsAction } from "../../store/actions/RestaurantAction";
 
 export const eventActions = [
   {
@@ -52,8 +53,16 @@ export const eventActions = [
     action: getAllCountryAction,
     event: "get_countries_event",
     dispatchAble: true,
+  },
+
+///Restaurant
+  {
+    action: getAllRestaurantsAction,
+    event: "get_restaurants_event",
+    dispatchAble: true,
   }
 ];
+
 
 function onConnect() {
   console.log("Socket is connected");

@@ -37,6 +37,7 @@
     "react-linear-gradient-picker": "^3.0.1",
     "react-multiselect-dropdown-bootstrap": "^1.1.0",
     "react-perfect-scrollbar": "^1.5.8",
+    "react-places-autocomplete": "^7.3.0",
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.4.4",
     "react-scripts": "5.0.1",
