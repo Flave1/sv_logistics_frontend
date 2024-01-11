@@ -136,6 +136,10 @@ export const MenuList = [
     iconStyle: "bi bi-gear",
     content: [
       {
+        title: "Restaurant",
+        to: "restaurant-list",
+      },
+      {
         title: "Country",
         to: "country-list",
       },
