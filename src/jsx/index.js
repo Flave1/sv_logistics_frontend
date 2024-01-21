@@ -129,6 +129,7 @@ import MenuCategoryList from "./components/SideMenu/MenuManagement/MenuCategory/
 import AllRestaurantMenu from "./components/SideMenu/MenuManagement/Menu/all-menu";
 import CountryList from "./components/SideMenu/Settings/Country/country-list";
 import RestaurantList from "./components/SideMenu/Settings/Restaurant/restaurant-list";
+import GenerateQrCode from "./components/SideMenu/Settings/QrCode/generate-qrcode";
 
 
 const Markup = () => {
@@ -164,6 +165,7 @@ const Markup = () => {
     //Settings
     { url: "country-list", component: <CountryList /> },
     { url: "restaurant-list", component: <RestaurantList /> },
+    { url: "generate-qrcode", component: <GenerateQrCode /> },
 
     
     // Restaurant
