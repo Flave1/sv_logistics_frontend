@@ -16,3 +16,7 @@ export function createRestaurant(payload) {
   export function deleteRestaurant(payload) {
     return axiosInstance.post(`restaurant/delete`, payload);
   }
+
+  export function createQrCode(payload) {
+    return axiosInstance.post(`restaurant/create-qrcode`, payload);
+  }

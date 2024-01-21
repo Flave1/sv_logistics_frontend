@@ -1,4 +1,4 @@
-import { createRestaurant, deleteRestaurant, getAllRestaurants, updateRestaurant } from "../../services/RestaurantService";
+import { createRestaurant, deleteRestaurant, getAllRestaurants, updateRestaurant, createQrCode } from "../../services/RestaurantService";
 import swal from 'sweetalert';
 
 export const GET_ALL_RESTAURANT = '[GET_ALL_CLIENT] get all restaurants';
@@ -55,6 +55,20 @@ export function createRestaurantAction(payload, setShowForm, resetForm) {
       deleteRestaurant(payload)
         .then((response) => {
           swal('Successful', 'Restaurant successfully deleted', 'success');
+          return response.data;
+        })
+        .catch((error) => {
+          const errorMessage = error.response.data.message;
+          swal('Oops', errorMessage, 'error');
+        });
+    };
+  }
+
+  export function CreateQrCodeAction(payload) {
+    return (dispatch) => {
+      createQrCode(payload)
+        .then((response) => {
+          swal('Successful', 'QrCode successfully created', 'success');
           return response.data;
         })
         .catch((error) => {

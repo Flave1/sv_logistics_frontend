@@ -1,15 +1,17 @@
 import React, { Fragment, useState } from 'react';
 import PageTitle from '../../../../layouts/PageTitle';
 import { useFormik } from 'formik';
-import * as Yup from 'yup';
 import swal from 'sweetalert';
+import { useDispatch } from 'react-redux';
+import { CreateQrCodeAction } from '../../../../../store/actions/RestaurantAction';
 
 const GenerateQrCode = (props) => {
-  const [type, setType] = useState(false);
-  const [isSequential, setSequential] = useState(false);
-  const [isNonSequential, setNonSequential] = useState(false);
+  const dispatch = useDispatch();
+  let [isSequential, setSequential] = useState(false);
+  let [isNonSequential, setNonSequential] = useState(false);
+  let [sequentialArray, setSequentialArray] = useState([]);
 
-  const [fields, setFields] = useState(['']);
+  let [fields, setFields] = useState(['']);
 
   const addField = () => {
     setFields([...fields, '']);
@@ -29,7 +31,18 @@ const GenerateQrCode = (props) => {
     }
   };
 
-  const { handleChange, handleSubmit, values, setFieldValue, handleBlur, errors, touched } = useFormik({
+  const isAnyFieldEmpty = () => {
+    return fields.some(field => field.trim() === '');
+  };
+
+  const resetFormFields = () => {
+    isSequential = false;
+    isNonSequential = false;
+    fields = ['']
+    sequentialArray = []
+  };
+
+  const { handleChange, handleSubmit, values, setFieldValue } = useFormik({
     initialValues: {
       start: '',
       end: '',
@@ -44,18 +57,44 @@ const GenerateQrCode = (props) => {
       }
 
       if (isSequential) {
-        if(!values.end || !values.start)
+        if(!values.start || !values.end)
         {
           swal('Oops', 'Please Input Start & End Value', 'error');
           return;
         }
+
+        if(isNaN(values.start) || isNaN(values.end))
+        {
+          swal('Oops', 'Please Input Numeric Values', 'error');
+          return;
+        }
+
+        setSequentialArray([...sequentialArray, values.start, values.end]);
+        const payload = {
+          table: sequentialArray,
+          isSequential: true
+        };
+        CreateQrCodeAction(payload)(dispatch);
+        resetFormFields()
       }
 
       if (isNonSequential) {
-        console.log("fields ",fields)
+        if(isAnyFieldEmpty())
+        {
+          swal('Oops', 'All fields must be filled', 'error');
+          return;
+        }
+        const payload = {
+          table: fields,
+          isSequential: false
+        };
+        CreateQrCodeAction(payload)(dispatch);
+        resetFormFields()
       }
     },
   });
+
+
 
   return (
     <Fragment>
