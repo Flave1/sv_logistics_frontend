@@ -15,11 +15,11 @@ const GenerateQrCode = (props) => {
     setFields([...fields, '']);
   };
 
-  // const handleChange = (index, value) => {
-  //   const newFields = [...fields];
-  //   newFields[index] = value;
-  //   setFields(newFields);
-  // };
+  const addFieldValue = (index, value) => {
+    const newFields = [...fields];
+    newFields[index] = value;
+    setFields(newFields);
+  };
 
   const removeField = () => {
     if (fields.length > 1) {
@@ -29,33 +29,29 @@ const GenerateQrCode = (props) => {
     }
   };
 
-  const validation = Yup.object().shape({
-    // name: Yup.string().required().min(2, 'Menu Is Too Short!').max(50, 'Menu Is Too Long!'),
-    // description: Yup.string().required('Description Is Required').min(4, 'Description must be a minimum of 4 characters'),
-    
-  });
-
   const { handleChange, handleSubmit, values, setFieldValue, handleBlur, errors, touched } = useFormik({
     initialValues: {
-      countryName: ''
+      start: '',
+      end: '',
+      table: ''
     },
     enableReinitialize: true,
-    validationSchema: validation,
     onSubmit: (values, { resetForm }) => {
-      if (!values.sequential && !values.nonsequential) {
+      
+      if (!isSequential && !isNonSequential) {
         swal('Oops', 'Please Select Type', 'error');
         return;
       }
 
-      if (values.sequential) {
+      if (isSequential) {
         if(!values.end || !values.start)
         {
           swal('Oops', 'Please Input Start & End Value', 'error');
           return;
         }
       }
-      
-      if (values.nonsequential) {
+
+      if (isNonSequential) {
         console.log("fields ",fields)
       }
     },
@@ -82,7 +78,7 @@ const GenerateQrCode = (props) => {
                       name="val-type"
                       id="val-sequential"
                       //checked={type == false}
-                      value={type}
+                      value={values.sequential}
                       onChange={(e) => {
                         handleChange('sequential');
                         setFieldValue('sequential', e.target.value);
@@ -93,7 +89,6 @@ const GenerateQrCode = (props) => {
                     <label className="form-check-label" htmlFor="val-sequential">
                       Sequential
                     </label>
-                    {/* {errors.sequential && touched.sequential && <div className="text-danger fs-12">{errors.sequential}</div>} */}
                   </div>
                   <div className="col-3">
                     <input
@@ -102,7 +97,7 @@ const GenerateQrCode = (props) => {
                       name="val-type"
                       id="val-nonsequential"
                       //checked={type == false}
-                      value={type}
+                      value={values.nonsequential}
                       onChange={(e) => {
                         handleChange('nonsequential');
                         setFieldValue('nonsequential', e.target.value);
@@ -113,7 +108,6 @@ const GenerateQrCode = (props) => {
                     <label className="form-check-label" htmlFor="val-nonsequential">
                       Non Sequential
                     </label>
-                    {errors.nonsequential && touched.nonsequential && <div className="text-danger fs-12">{errors.nonsequential}</div>}
                   </div>
                 </div>
                 {isSequential == true ? (
@@ -134,7 +128,6 @@ const GenerateQrCode = (props) => {
                           setFieldValue('start', e.target.value);
                         }}
                       />
-                      {errors.start && touched.start && <div className="text-danger fs-12">{errors.start}</div>}
                     </div>
                     <div className="col-3">
                       <input
@@ -149,7 +142,6 @@ const GenerateQrCode = (props) => {
                           setFieldValue('end', e.target.value);
                         }}
                       />
-                      {errors.end && touched.end && <div className="text-danger fs-12">{errors.end}</div>}
                     </div>
                   </div>
                 ) : (
@@ -171,7 +163,7 @@ const GenerateQrCode = (props) => {
                         key={index}
                         value={values.field}
                         onChange={(e) => {
-                          handleChange('table');
+                          addFieldValue(index, e.target.value);
                           setFieldValue('table', e.target.value);
                         }}
                       />
