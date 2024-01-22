@@ -159,7 +159,6 @@ function Form({ show, setShowForm, dispatch, selectedItem, setSelectedItem }) {
   }, [selectedItem?.image]);
 
   console.log('show', show);
-  
 
   const { handleChange, handleSubmit, values, setFieldValue, handleBlur, errors, touched } = useFormik({
     initialValues: {

@@ -2,19 +2,18 @@ import React, { useState } from "react";
 import { Modal, Nav, Tab } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import classnames from 'classnames';
-import avater1 from "../../../../../images/avatar/1.jpg";
-import product1 from "../../../../../images/product/1.jpg";
-import product2 from "../../../../../images/product/2.jpg";
-import product3 from "../../../../../images/product/3.jpg";
-import product4 from "../../../../../images/product/4.jpg";
-import tab1 from "../../../../../images/tab/1.jpg";
-import tab2 from "../../../../../images/tab/2.jpg";
-import tab3 from "../../../../../images/tab/3.jpg";
-import tab4 from "../../../../../images/tab/4.jpg";
-import PageTitle from "../../../../layouts/PageTitle";
-//import StarRating from './../ProductList/StarRating';
+import avater1 from "../../../../images/avatar/1.jpg";
+import product1 from "../../../../images/product/1.jpg";
+import product2 from "../../../../images/product/2.jpg";
+import product3 from "../../../../images/product/3.jpg";
+import product4 from "../../../../images/product/4.jpg";
+import tab1 from "../../../../images/tab/1.jpg";
+import tab2 from "../../../../images/tab/2.jpg";
+import tab3 from "../../../../images/tab/3.jpg";
+import tab4 from "../../../../images/tab/4.jpg";
+// import StarRating from './../ProductList/StarRating';
 
-const ProductDetail = () => {
+const MenuDetail = () => {
 	const [reviewToggle, setReviewToggle] = useState(false);
 	const [activeTab, setActiveTab] = useState('0');
     const toggle = tab => {
@@ -22,7 +21,6 @@ const ProductDetail = () => {
     }
   return (
     <>
-      <PageTitle motherMenu="Layout" activeMenu="Blank" />
       <div className="row">
         <div className="col-lg-12">
           <div className="card">
@@ -227,4 +225,4 @@ const ProductDetail = () => {
   );
 };
 
-export default ProductDetail;
+export default MenuDetail;

@@ -1,8 +1,8 @@
 import { lazy, Suspense, useEffect } from 'react';
 
 /// Components
-import Index from './jsx';
-import { connect, useDispatch } from 'react-redux';
+import Index, { CustomerLayout } from './jsx';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { Route, Routes, useLocation, useNavigate, useParams } from 'react-router-dom';
 // action
 import { checkAutoLogin } from './services/AuthService';
@@ -13,6 +13,9 @@ import './css/style.css';
 import { socket } from './services/socket/SocketService';
 import { eventActions } from './services/socket/map-event-actions';
 import React from 'react';
+// import CustomerHome from './jsx/components/Customers/Home';
+import { customerRoutes } from './jsx/pages/routes/customerRoutes';
+import { generateTemporalId } from './store/actions';
 
 const SignUp = lazy(() => import('./jsx/pages/Registration'));
 const ForgotPassword = lazy(() => import('./jsx/pages/ForgotPassword'));
@@ -38,6 +41,10 @@ function App(props) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   useEffect(() => {
+    generateTemporalId()(dispatch);
+  }, []);
+
+  useEffect(() => {
     checkAutoLogin(dispatch, navigate);
   }, []);
 
@@ -52,7 +59,6 @@ function App(props) {
         props.socket.rooms.forEach((evAc) => {
           const roomid = evAc.roomId;
           socket.emit('join_room', { roomName: roomid }, (response) => {
-            console.log('response', response);
             socket.on(roomid, () => evAc.action(roomid));
           });
         });
@@ -90,6 +96,11 @@ function App(props) {
       <Route path="/login" element={<Login />} />
       <Route path="/page-register" element={<SignUp />} />
       <Route path="/page-forgot-password" element={<ForgotPassword history={undefined} />} />
+      <Route element={<CustomerLayout />}>
+        {customerRoutes.map((data, i) => (
+          <Route key={i} path={`${data.url}`} element={data.component} />
+        ))}
+      </Route>
     </Routes>
   );
   if (props.isAuthenticated) {
