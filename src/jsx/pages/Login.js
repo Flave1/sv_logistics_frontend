@@ -36,7 +36,7 @@ function Login (props) {
 		
 		dispatch(loadingToggleAction(true));
 
-		dispatch(loginAction(email, password, navigate));
+		loginAction(email, password, navigate)(dispatch);
 		
 		/* dispatch(loginAction(email, password, props.history)).then((result) => {
 			if(typeof(result) != 'undefined' && result != null && result.registered == true){
