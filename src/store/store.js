@@ -8,6 +8,9 @@ import { SocketReducer } from './selectors/reducers/socket-reducer';
 import { MenuCategoryReducer, MenuReducer } from './selectors/reducers/MenuCategoryReducer';
 import { CountryReducer } from './selectors/reducers/CountryReducer';
 import { RestaurantReducer } from './selectors/reducers/RestaurantReducer';
+import { CustomerReducer } from './selectors/reducers/CustomerReducer';
+import { persistReducer, persistStore } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 //import { reducer as reduxFormReducer } from 'redux-form';
 const middleware = applyMiddleware(thunk);
 
@@ -22,11 +25,20 @@ const reducers = combineReducers({
     menu: MenuReducer,
     country: CountryReducer,
     restaurant: RestaurantReducer,
-    socket: SocketReducer
+    socket: SocketReducer,
+    customer: CustomerReducer
 	//form: reduxFormReducer,	
 	
 });
 
-//const store = createStore(rootReducers);
+const persistConfig = {
+  key: 'root',
+  storage,
+  // blacklist: ['shopReducer'],
+  //   whitelist: ['authReducer'],
+};
 
-export const store = createStore(reducers, composeEnhancers(middleware));
+
+const persistedReducer = persistReducer(persistConfig, reducers);
+export const store = createStore(persistedReducer);
+export const persistor = persistStore(store);

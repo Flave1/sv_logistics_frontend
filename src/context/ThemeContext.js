@@ -18,7 +18,7 @@ const initialState = {
   navigationHader: "color_3",
   haderColor: "color_3",
   sidebarColor: "color_1",
-  background : {value:"dark", label:"Light"},
+  background : {value:"light", label:"Light"},
   containerPositionSize: {value: "wide-boxed", label: "Wide Boxed"},
   iconHover: false,
   menuToggle: false,
@@ -203,7 +203,7 @@ const {
   };
 
   const changeBackground = (name) => {
-    body.setAttribute("data-theme-version", 'dark');//name.value
+    body.setAttribute("data-theme-version", name.value);//dark
    
     dispatch({background: name});
   };
@@ -265,7 +265,7 @@ const {
   useEffect(() => {
 	const body = document.querySelector("body");
     body.setAttribute("data-typography", "poppins");
-    body.setAttribute("data-theme-version", "dark");
+    body.setAttribute("data-theme-version", "light");//dark
     body.setAttribute("data-layout", "vertical");
     body.setAttribute("data-primary", "color_1");
     body.setAttribute("data-nav-headerbg", "color_3");

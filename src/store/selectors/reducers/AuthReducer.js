@@ -1,4 +1,6 @@
+import { GenerateUUID } from '../../../jsx/utils/common';
 import {
+  GENERATE_TEMP_ID,
   LOADING_TOGGLE_ACTION,
   LOGIN_CONFIRMED_ACTION,
   LOGIN_FAILED_ACTION,
@@ -19,6 +21,7 @@ const initialState = {
   errorMessage: '',
   successMessage: '',
   showLoading: false,
+  sessionId: '',
 };
 
 export function AuthReducer(state = initialState, action) {
@@ -69,6 +72,13 @@ export function AuthReducer(state = initialState, action) {
     return {
       ...state,
       showLoading: action.payload,
+    };
+  }
+
+  if (action.type === GENERATE_TEMP_ID) {
+    return {
+      ...state,
+      sessionId: !state.sessionId ? GenerateUUID() : state.sessionId,
     };
   }
 
