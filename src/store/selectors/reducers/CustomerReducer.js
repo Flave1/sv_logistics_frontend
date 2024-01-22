@@ -42,7 +42,7 @@ export function CustomerReducer(state = initialState, action) {
     };
   }
 
-  if (action.type === ADD_TO_CART) {
+  if (action.type === ADD_TO_CART) {    
     const existingMenu = state.menuCart.find((cart: any) => cart.menuId === action.payload.menuId);
 
     if (!existingMenu) {

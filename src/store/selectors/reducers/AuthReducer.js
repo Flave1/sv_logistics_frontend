@@ -11,6 +11,7 @@ import {
 
 const initialState = {
   auth: {
+    id:'',
     email: '',
     idToken: '',
     localId: '',

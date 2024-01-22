@@ -65,7 +65,6 @@ export const AddToCartAction = ({ customerId, restaurantId, menuId, quantity, pr
     price,
     temporalId,
   };
-
   return (dispatch) => {
     dispatch({
       type: ADD_TO_CART,

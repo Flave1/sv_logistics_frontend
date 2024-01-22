@@ -12,8 +12,6 @@ import Collapse from "react-bootstrap/Collapse";
 
 /// Link
 import { Link, NavLink } from "react-router-dom";
-
-import { MenuList } from "./Menu";
 import { useScrollPosition } from "@n8tb1t/use-scroll-position";
 import { ThemeContext } from "../../../context/ThemeContext";
 import { CustomerMenuList } from "./CustomerMenu";

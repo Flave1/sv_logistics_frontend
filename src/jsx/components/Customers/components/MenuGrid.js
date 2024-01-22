@@ -4,8 +4,8 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { starFour } from '../../AppsMenu/Shop/productData/ProductStar';
 import classnames from 'classnames';
-import { AddToCartAction, RemoveFromCartAction } from '../../../../store/actions/CustomerActions';
 import { useDispatch, useSelector } from 'react-redux';
+import { AddToCartAction, RemoveFromCartAction } from '../../../../store/actions/CustomerActions';
 
 const MenuGrid = ({ menu, setReviewModal }) => {
   const [activeTab, setActiveTab] = useState('2');
