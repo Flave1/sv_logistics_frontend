@@ -73,6 +73,7 @@ import Widget from "../Widget";
 import MainDashboard from "../dashboard/main-dashboard";
 import MenuCategoryList from "../../components/SideMenu/MenuManagement/MenuCategory/menu-category";
 import AllRestaurantMenu from "../../components/SideMenu/MenuManagement/Menu/all-menu";
+import AdminOrders from "../../components/SideMenu/OrderManagement/AdminOrders";
 
 export const staffRoutes = [
     /// Dashboard
@@ -103,6 +104,9 @@ export const staffRoutes = [
     //Settings
     { url: 'country-list', component: <CountryList /> },
     { url: 'restaurant-list', component: <RestaurantList /> },
+
+    //Order magt
+    { url: 'customer-orders', component: <AdminOrders /> },
 
     // Restaurant
     { url: 'restaurant', component: <Restaurant /> },

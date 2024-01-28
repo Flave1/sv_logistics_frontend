@@ -14,6 +14,11 @@ export async function createUpdateMenuOrder(payload) {
 export async function removeMenuOrder(payload) {
   return await axiosInstance.post(`/customer-web/remove-from-cart`, payload);
 }
+
+export async function checkout(payload) {
+    return await axiosInstance.post(`/customer-web/checkout`, payload);
+  }
+
 export async function clearMenuOrder() {
   return await axiosInstance.post(``);
 }

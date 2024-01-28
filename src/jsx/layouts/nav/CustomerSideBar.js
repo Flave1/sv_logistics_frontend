@@ -1,20 +1,16 @@
 /// Menu
-import React, {
-  useContext,
-  useEffect,
-  useReducer,
-  useState,
-} from "react";
+import React, { useContext, useEffect, useReducer, useState } from 'react';
 
 /// Scroll
-import PerfectScrollbar from "react-perfect-scrollbar";
-import Collapse from "react-bootstrap/Collapse";
+import PerfectScrollbar from 'react-perfect-scrollbar';
+import Collapse from 'react-bootstrap/Collapse';
 
 /// Link
-import { Link, NavLink } from "react-router-dom";
-import { useScrollPosition } from "@n8tb1t/use-scroll-position";
-import { ThemeContext } from "../../../context/ThemeContext";
-import { CustomerMenuList } from "./CustomerMenu";
+import { Link, NavLink } from 'react-router-dom';
+import { useScrollPosition } from '@n8tb1t/use-scroll-position';
+import { ThemeContext } from '../../../context/ThemeContext';
+import { useSelector } from 'react-redux';
+import { CustomerMenuList } from './CustomerMenu';
 
 const reducer = (previousState, updatedState) => ({
   ...previousState,
@@ -22,21 +18,21 @@ const reducer = (previousState, updatedState) => ({
 });
 
 const initialState = {
-  active: "",
-  activeSubmenu: "",
+  active: '',
+  activeSubmenu: '',
 };
 
 const CustomerSideBar = () => {
-  const { iconHover, sidebarposition, headerposition, sidebarLayout } =
-    useContext(ThemeContext);
+  const { iconHover, sidebarposition, headerposition, sidebarLayout } = useContext(ThemeContext);
 
   const [state, setState] = useReducer(reducer, initialState);
 
-  let handleheartBlast = document.querySelector(".heart");
+  let handleheartBlast = document.querySelector('.heart');
   function heartBlast() {
-    return handleheartBlast.classList.toggle("heart-blast");
+    return handleheartBlast.classList.toggle('heart-blast');
   }
 
+  const { restaurantPath } = useSelector((state) => state.customer);
   useEffect(() => {}, []);
   //For scroll
   const [hideOnScroll, setHideOnScroll] = useState(true);
@@ -45,20 +41,20 @@ const CustomerSideBar = () => {
       const isShow = currPos.y > prevPos.y;
       if (isShow !== hideOnScroll) setHideOnScroll(isShow);
     },
-    [hideOnScroll]
+    [hideOnScroll],
   );
 
   const handleMenuActive = (status) => {
     setState({ active: status });
     if (state.active === status) {
       //setActive('');
-      setState({ active: "" });
+      setState({ active: '' });
     }
   };
   const handleSubmenuActive = (status) => {
     setState({ activeSubmenu: status });
     if (state.activeSubmenu === status) {
-      setState({ activeSubmenu: "" });
+      setState({ activeSubmenu: '' });
     }
     //status.preventDefault();
   };
@@ -66,20 +62,18 @@ const CustomerSideBar = () => {
 
   /// Path
   let path = window.location.pathname;
-  path = path.split("/");
+  path = path.split('/');
   path = path[path.length - 1];
   /// Active menu
 
   return (
     <div
       className={`dlabnav  border-right ${iconHover} ${
-        sidebarposition.value === "fixed" &&
-        sidebarLayout.value === "horizontal" &&
-        headerposition.value === "static"
+        sidebarposition.value === 'fixed' && sidebarLayout.value === 'horizontal' && headerposition.value === 'static'
           ? hideOnScroll > 120
-            ? "fixed"
-            : ""
-          : ""
+            ? 'fixed'
+            : ''
+          : ''
       }`}
     >
       <PerfectScrollbar className="dlabnav-scroll">
@@ -87,14 +81,18 @@ const CustomerSideBar = () => {
           {/* <li className="menu-title"> Main Menu</li> */}
           {CustomerMenuList.map((data, index) => {
             let menuClass = data.classsChange;
-            if (menuClass === "menu-title") {
-              return <li key={index} className={menuClass}>{data.title}</li>;
+            if (menuClass === 'menu-title') {
+              return (
+                <li key={index} className={menuClass}>
+                  {data.title}
+                </li>
+              );
             } else {
               return (
-                <li className={` ${ state.active === data.title ? "mm-active" : "" }`} key={index} >
+                <li className={` ${state.active === data.title ? 'mm-active' : ''}`} key={index}>
                   {data.content && data.content.length > 0 ? (
                     <Link
-                      to={"#"}
+                      to={'#'}
                       className="has-arrow"
                       onClick={() => {
                         handleMenuActive(data.title);
@@ -104,77 +102,47 @@ const CustomerSideBar = () => {
                       <span className="nav-text">{data.title}</span>
                     </Link>
                   ) : (
-                    <NavLink to={data.to}>
+                    <NavLink to={data.title == 'Home' ? restaurantPath : data.title == 'Cart' ? restaurantPath+'/Cart' : data.to}>
                       <i className={data.iconStyle}></i>
                       <span className="nav-text">{data.title}</span>
                     </NavLink>
                   )}
                   <Collapse in={state.active === data.title ? true : false}>
-                    <ul
-                      className={`${
-                        menuClass === "mm-collapse" ? "mm-show" : ""
-                      }`}
-                    >
+                    <ul className={`${menuClass === 'mm-collapse' ? 'mm-show' : ''}`}>
                       {data.content &&
                         data.content.map((data, index) => {
                           return (
-                            <li
-                                key={index}
-                                className={`${
-                                  state.activeSubmenu === data.title
-                                    ? "mm-active"
-                                    : ""
-                                }`}
-                              >
-                                {data.content && data.content.length > 0 ? (
-                                  <NavLink
-                                    to={data.to}
-                                    className={data.hasMenu ? "has-arrow" : ""}
-                                    onClick={() => {
-                                      handleSubmenuActive(data.title);
-                                    }}
-                                  >
-                                    {data.title}
-                                  </NavLink>
-                                ) : (
-                                  <Link to={data.to}>{data.title}</Link>
-                                )}
-                                <Collapse
-                                  in={
-                                    state.activeSubmenu === data.title
-                                      ? true
-                                      : false
-                                  }
+                            <li key={index} className={`${state.activeSubmenu === data.title ? 'mm-active' : ''}`}>
+                              {data.content && data.content.length > 0 ? (
+                                <NavLink
+                                  to={data.to}
+                                  className={data.hasMenu ? 'has-arrow' : ''}
+                                  onClick={() => {
+                                    handleSubmenuActive(data.title);
+                                  }}
                                 >
-                                  <ul
-                                    className={`${
-                                      menuClass === "mm-collapse"
-                                        ? "mm-show"
-                                        : ""
-                                    }`}
-                                  >
-                                    {data.content &&
-                                      data.content.map((data, index) => {
-                                        return (
-                                          <>
-                                            <li key={index}>
-                                              <Link
-                                                className={`${
-                                                  path === data.to
-                                                    ? "mm-active"
-                                                    : ""
-                                                }`}
-                                                to={data.to}
-                                              >
-                                                {data.title}
-                                              </Link>
-                                            </li>
-                                          </>
-                                        );
-                                      })}
-                                  </ul>
-                                </Collapse>
-                              </li>
+                                  {data.title}
+                                </NavLink>
+                              ) : (
+                                <Link to={data.to}>{data.title}</Link>
+                              )}
+                              <Collapse in={state.activeSubmenu === data.title ? true : false}>
+                                <ul className={`${menuClass === 'mm-collapse' ? 'mm-show' : ''}`}>
+                                  {data.content &&
+                                    data.content.map((data, index) => {
+                                      return (
+                                        <>
+                                          <li key={index}>
+                                            <Link className={`${path === data.to ? 'mm-active' : ''}`} to={data.to}>
+                                              {data.title}
+                                            </Link>
+                                          </li>
+                                        </>
+                                      );
+                                    })}
+                                </ul>
+                              </Collapse>
+                            </li>
                           );
                         })}
                     </ul>

@@ -7,9 +7,10 @@ import BannerSlider from '../Dashboard/Dashboard/BannerSlider';
 import CategorySlider from '../Dashboard/Dashboard/CategorySlider';
 
 
-import Restaurant from './components/Restaurant';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPopularRestaurantsAction } from '../../../store/actions/CustomerActions';
+import Restaurant from './components/Restaurant';
+// import { getPopularRestaurantsAction } from '../../../store/actions/CustomerActions';
 
 
 const reducer = (previousState, updatedState) => ({

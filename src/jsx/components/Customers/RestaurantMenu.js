@@ -1,11 +1,12 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import MenuGrid from './components/MenuGrid';
 import CategorySlider from '../Dashboard/Dashboard/CategorySlider';
 import { Modal } from 'react-bootstrap';
 import avatar1 from '../../../images/avatar/1.jpg';
 import { useLocation } from 'react-router-dom';
-import { getRestaurantsMenuAction } from '../../../store/actions/CustomerActions';
 import { useDispatch, useSelector } from 'react-redux';
+import { getRestaurantsMenuAction, setShopPathAction } from '../../../store/actions/CustomerActions';
+import MenuGrid from './components/MenuGrid';
+import FloatingButton from './components/FloatingButton';
 
 function RestaurantMenu() {
   const [reviewModal, setReviewModal] = useState(false);
@@ -13,12 +14,16 @@ function RestaurantMenu() {
   const [restaurantParam, setRestaurantParam] = useState({ name: '', id: '', table: '' });
   const location = useLocation();
 
+  const { sessionId, auth } = useSelector((state) => state.auth);
+  const { menuCart } = useSelector((state) => state.customer);
+  localStorage.setItem('pathname', location.pathname);
   useEffect(() => {
     const pathName = location.pathname.split('/');
     setRestaurantParam({ name: pathName[1], id: pathName[2], table: pathName[4] });
   }, [location.pathname]);
 
-  const { menuList } = useSelector((state) => state.customer);
+  const { menuList, restaurantPath } = useSelector((state) => state.customer);
+
 
   useEffect(() => {
     async function fetchData() {
@@ -26,6 +31,10 @@ function RestaurantMenu() {
     }
     restaurantParam.id && fetchData();
   }, [restaurantParam.id]);
+
+  useEffect(() => {
+    setShopPathAction(location.pathname)(dispatch);
+  }, [location.pathname]);
 
   function renderCategories() {
     return (
@@ -43,9 +52,17 @@ function RestaurantMenu() {
   function renaderMenu() {
     return (
       <Fragment>
-        <div className="row">
+        <div className="row" style={{ marginBottom: 100 }}>
           {menuList.map((menu, index) => (
-            <MenuGrid key={index} menu={menu} setReviewModal={setReviewModal} />
+            <MenuGrid
+              pathname={location.pathname}
+              key={index}
+              menu={menu}
+              setReviewModal={setReviewModal}
+              sessionId={sessionId}
+              auth={auth}
+              menuCart={menuCart}
+            />
           ))}
           <Modal show={reviewModal} onHide={setReviewModal} className="modal fade" id="reviewModal">
             <>
@@ -98,6 +115,7 @@ function RestaurantMenu() {
             </>
           </Modal>
         </div>
+        <FloatingButton />
       </Fragment>
     );
   }

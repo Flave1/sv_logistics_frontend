@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Tab, Nav } from 'react-bootstrap';
+import { Link, useNavigate } from 'react-router-dom';
+import { Tab, Nav, Button } from 'react-bootstrap';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { AddToCartAction, ClearCartAction, GetCartListAction, RemoveFromCartAction } from '../../../store/actions/CustomerActions';
+import { AddToCartAction, CheckoutAction, ClearCartAction, GetCartListAction, RemoveFromCartAction } from '../../../store/actions/CustomerActions';
 import CartList from './components/CartList';
 import PaymentOption from './components/PaymentOption';
 import OrderSuccess from './components/OrderSuccess';
@@ -19,15 +19,14 @@ const orderTab = [
 
 const CustomerCart = () => {
   const [location, setLocation] = useState({ latitude: 0, longitude: 0 });
-  const { allRestaurants, menuCart } = useSelector((state: any) => state.customer);
+  const { allRestaurants, menuCart, restaurantPath } = useSelector((state: any) => state.customer);
   const { auth: user, sessionId } = useSelector((state: any) => state.auth);
   const [shop, setShop] = useState({});
   const dispatch = useDispatch();
   const [menu, setMenu] = useState([{ id: -1, image: '', name: '_______________', price: '____', restaurantId: -1 }]);
   const [slider, setSlider] = useState('cart');
-
-  //   console.log('user.id', user.id);
-  //   console.log('sessionId', sessionId);
+  const [paymentOption, setPaymentOption] = useState(1);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if ('geolocation' in navigator) {
@@ -141,15 +140,8 @@ const CustomerCart = () => {
         {menuCart &&
           menuCart.length > 0 &&
           menuCart.map((item, index) => {
-            return (
-              <CartList
-                menu={item}
-                key={index}
-                addToCart={addToCart}
-                removeFromCart={removeFromCart}
-                quantity={menuCart.find((mn) => mn.menuId == item.menuId)?.quantity ?? 0}
-              />
-            );
+            const quantity = menuCart.find((mn) => mn.menuId == item.menuId)?.quantity ?? 0;
+            return <CartList menu={item} key={index} addToCart={addToCart} removeFromCart={removeFromCart} quantity={quantity} />;
           })}
       </div>
     );
@@ -160,18 +152,21 @@ const CustomerCart = () => {
         <hr style={{ opacity: '0.7' }} />
         <div className="d-flex align-items-center justify-content-between">
           <h4 className="font-w500 mb-0">Total</h4>
-          <h4 className="cate-title text-primary"> ${menuCart.reduce((sum, menu) => sum + menu.price * menu.quantity, 0)}</h4>
+          <h4 className="cate-title text-primary"> ${menuCart && menuCart.reduce((sum, menu) => sum + menu.price * menu.quantity, 0)}</h4>
         </div>
       </>
     );
   }
 
+  const goBack = () => {
+    navigate(restaurantPath);
+  };
   return (
     <>
       <div className="row">
         <div className="col-xl-8">
           <div className="card border-0">
-            {slider == 'cart' && <h4 className="cate-title mb-sm-3 mb-2 mt-xl-0 mt-3">Order Details</h4>}
+            {slider == 'cart' && <h4 className="cate-title mb-sm-3 mb-2 mt-xl-0 mt-3">Cart </h4>}
             {slider == 'paymentoption' && <h4 className="cate-title mb-sm-3 mb-2 mt-xl-0 mt-3">Payment Option</h4>}
             {slider == 'ordersuccess' && <h4 className="cate-title mb-sm-3 mb-2 mt-xl-0 mt-3">Order Sucess</h4>}
             <div className="card h-auto">
@@ -186,23 +181,28 @@ const CustomerCart = () => {
                   {renderTotal()}
                 </div>
               )}
-              {slider == 'paymentoption' && <PaymentOption />}
+              {slider == 'paymentoption' && <PaymentOption setPaymentOption={setPaymentOption} />}
 
               {slider == 'ordersuccess' && <OrderSuccess />}
             </div>
             <div className="text-end">
-              {slider == 'cart' && (
-                <Link
-                  onClick={() => {
-                    setTimeout(() => {
-                      setSlider('paymentoption');
-                    }, 400);
-                  }}
-                  to={'#'}
-                  className="btn btn-primary"
-                >
-                  Checkout
-                </Link>
+              {slider == 'cart' && menuCart && menuCart.length > 0 && (
+                <>
+                  <a onClick={goBack} className="btn btn-outline-primary">
+                    Back
+                  </a>{' '}
+                  <Link
+                    onClick={() => {
+                      setTimeout(() => {
+                        setSlider('paymentoption');
+                      }, 400);
+                    }}
+                    to={'#'}
+                    className="btn btn-primary"
+                  >
+                    Checkout
+                  </Link>
+                </>
               )}{' '}
               {slider == 'paymentoption' && (
                 <Link
@@ -217,23 +217,29 @@ const CustomerCart = () => {
                   Back
                 </Link>
               )}{' '}
-              {slider == 'paymentoption' && (
-                <Link
+              {slider == 'paymentoption' && menuCart && menuCart.length > 0 && (
+                <Button
                   onClick={() => {
-                    setTimeout(() => {
-                      setSlider('ordersuccess');
-                    }, 400);
+                    CheckoutAction(
+                      shop.id,
+                      menuCart.map((mn) => mn.menuId),
+                      user.id,
+                      sessionId,
+                      setSlider,
+                    )(dispatch);
                   }}
-                  to={'#'}
                   className="btn btn-primary"
                 >
                   Continue
-                </Link>
+                </Button>
               )}
             </div>
+            <a onClick={goBack} className="text-primary">
+              .... Go back to menu
+            </a>
           </div>
         </div>
-        <div className="col-xl-4">
+        {/* <div className="col-xl-4">
           <div className="card">
             <Tab.Container defaultActiveKey="Order">
               <div className="card-body">
@@ -303,7 +309,7 @@ const CustomerCart = () => {
               </div>
             </Tab.Container>
           </div>
-        </div>
+        </div> */}
       </div>
     </>
   );

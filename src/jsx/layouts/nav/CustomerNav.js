@@ -1,10 +1,9 @@
 import React, { Fragment, useState } from "react";
 
-import SideBar from "./SideBar";
-import Header from "./Header";
 import ChatBox from "../ChatBox";
-import CustomerNavHeader from "./CustomerNavHader";
+import CustomerNavHeader from "./CustomerNavHeader";
 import CustomerSideBar from "./CustomerSideBar";
+import CustomerHeader from "./CustomerHeader";
 
 const CustomerNav = ({ title, onClick: ClickToAddEvent, onClick2, onClick3 }) => {
   const [toggle, setToggle] = useState("");
@@ -13,7 +12,7 @@ const CustomerNav = ({ title, onClick: ClickToAddEvent, onClick2, onClick3 }) =>
     <Fragment>
       <CustomerNavHeader />
       <ChatBox onClick={() => onClick("chatbox")} toggle={toggle} />
-      <Header
+      <CustomerHeader
           onNote={() => onClick("chatbox")}
           onNotification={() => onClick("notification")}
           onProfile={() => onClick("profile")}

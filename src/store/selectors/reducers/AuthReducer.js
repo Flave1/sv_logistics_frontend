@@ -18,6 +18,7 @@ const initialState = {
     expiresIn: '',
     refreshToken: '',
     socket: null,
+    restaurantId: ''
   },
   errorMessage: '',
   successMessage: '',

@@ -1,0 +1,26 @@
+.buttonTab{
+    width: 70px;
+    height: 70px;
+    background-color: #FC8019 ;
+    border-radius: 100px !important;
+    border:none;
+    text-align: center;
+}
+.bi-handbag{
+    font-size: 40px;
+    color: white;
+}
+.cartValue{
+    padding: 3px;
+    background-color: white;
+    color: #FC8019;
+    border-radius: 100px;
+    position: relative;
+    bottom:30px;
+    left: 20px;
+    font-size: 12px;
+}
+.cartTotal{
+    border: 1px solid red;
+    margin: auto;
+}

@@ -1,6 +1,14 @@
 export const CustomerMenuList = [
   //Home
-  {
+  // {
+  //   title: "Home",
+  //   classsChange: "mm-collapse",
+  //   iconStyle: "bi bi-shop-window",
+  //   to: "shops",
+  //   content:[]
+  // },
+
+    {
     title: "Home",
     classsChange: "mm-collapse",
     iconStyle: "bi bi-shop-window",

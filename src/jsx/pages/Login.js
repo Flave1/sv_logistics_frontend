@@ -11,7 +11,7 @@ import bgimage from '../../images/login-img/pic-5.jpg';
 
 function Login (props) {
 	const navigate = useNavigate();
-    const [email, setEmail] = useState('cafayadmin@gmail.com');//demo@example.com
+    const [email, setEmail] = useState('cafayadmin@gmail.com');//favouremmanuel433@gmail.com
     let errorsObj = { email: '', password: '' };
     const [errors, setErrors] = useState(errorsObj);
     const [password, setPassword] = useState('Password123');
@@ -36,7 +36,7 @@ function Login (props) {
 		
 		dispatch(loadingToggleAction(true));
 
-		dispatch(loginAction(email, password, navigate));
+		loginAction(email, password, navigate)(dispatch);
 		
 		/* dispatch(loginAction(email, password, props.history)).then((result) => {
 			if(typeof(result) != 'undefined' && result != null && result.registered == true){
