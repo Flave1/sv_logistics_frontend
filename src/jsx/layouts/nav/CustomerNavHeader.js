@@ -14,6 +14,13 @@ export function NavMenuToggle() {
   }, 200);
 }
 
+// function searchRestaurant(){
+//   if (socket) {
+//     socket.emit('send_order', { roomName: 'get_orders', orderData: yourOrderData });
+//   }
+// }
+
+
 const CustomerNavHeader = () => {
   const [toggle, setToggle] = useState(false);
   const { navigationHader, openMenuToggle, background } = useContext(ThemeContext);

@@ -34,7 +34,7 @@ function AddSearchSlider() {
   }, 100);
 }
 
-const Header = ({ onNote }) => {
+const CustomerHeader = ({ onNote }) => {
   //const [rightSelect, setRightSelect] = useState('Eng');
   const [selectCountry, setSelectCountry] = useState([countries[0]]);
   //For fix header
@@ -63,7 +63,7 @@ const Header = ({ onNote }) => {
           <div className="container d-block my-0">
             <div className="d-flex align-items-center justify-content-sm-between justify-content-end">
               <div className="header-left">
-                {/* <div className="nav-item d-flex align-items-center">
+                <div className="nav-item d-flex align-items-center">
                   <div className="d-flex header-bx" id="Search-Blog">
                     <Dropdown className="bootstrap-select">
                       <Dropdown.Toggle className="header-select-toggle btn btn-light i-false" as="div">
@@ -139,7 +139,7 @@ const Header = ({ onNote }) => {
                       <div id="close-searchbox" onClick={() => AddSearchSlider()}></div>
                     </div>
                   </div>
-                </div> */}
+                </div>
               </div>
               <ul className="navbar-nav header-right">
                 <li>
@@ -292,4 +292,4 @@ const Header = ({ onNote }) => {
   );
 };
 
-export default Header;
+export default CustomerHeader;

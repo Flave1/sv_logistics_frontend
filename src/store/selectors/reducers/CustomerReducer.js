@@ -1,11 +1,12 @@
 import {
-  ADD_TO_CART,
-  CLEAR_CART,
-  REMOVE_FROM_CART,
   SET_CUSTOMER_DETAILS,
-  SET_MENU,
   SET_POPULAR_RESTAURANTS,
+  SET_MENU,
+  ADD_TO_CART,
+  REMOVE_FROM_CART,
   UPDATE_CART_LIST,
+  CLEAR_CART,
+  SET_SHOP_PATH,
 } from '../../actions/CustomerActions';
 
 const initialState = {
@@ -15,6 +16,7 @@ const initialState = {
   successMessage: '',
   showLoading: false,
   menuCart: [],
+  restaurantPath: '',
 };
 
 export function CustomerReducer(state = initialState, action) {
@@ -105,7 +107,12 @@ export function CustomerReducer(state = initialState, action) {
     };
   }
 
-  return state;
+  if (action.type == SET_SHOP_PATH) {    
+    return {
+      ...state,
+      restaurantPath: action.payload,
+    };
+  }
 
   return state;
 }

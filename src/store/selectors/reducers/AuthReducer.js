@@ -11,12 +11,14 @@ import {
 
 const initialState = {
   auth: {
+    id:'',
     email: '',
     idToken: '',
     localId: '',
     expiresIn: '',
     refreshToken: '',
     socket: null,
+    restaurantId: ''
   },
   errorMessage: '',
   successMessage: '',

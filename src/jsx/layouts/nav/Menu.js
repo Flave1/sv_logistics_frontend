@@ -21,7 +21,7 @@ export const MenuList = [
     content: [
       {
         title: "Customer orders",
-        to: "dashboard",
+        to: "customer-orders",
       },
       {
         title: "Order history",
@@ -30,11 +30,7 @@ export const MenuList = [
       {
         title: "Order Tracking",
         to: "track-order",
-      },
-      {
-        title: "Order Notification",
-        to: "food-order",
-      },
+      }
     ],
   },
   //Payment

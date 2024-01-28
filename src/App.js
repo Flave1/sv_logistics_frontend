@@ -52,7 +52,7 @@ function App(props) {
     if (evAc.dispatchAble) return evAc.action()(dispatch);
     else return evAc.action();
   }
-
+ 
   useEffect(() => {
     if (socket) {
       props.socket.rooms.length > 0 &&

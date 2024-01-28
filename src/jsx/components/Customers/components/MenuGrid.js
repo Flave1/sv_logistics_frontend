@@ -4,19 +4,16 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { starFour } from '../../AppsMenu/Shop/productData/ProductStar';
 import classnames from 'classnames';
-import { AddToCartAction, RemoveFromCartAction } from '../../../../store/actions/CustomerActions';
 import { useDispatch, useSelector } from 'react-redux';
+import { AddToCartAction, RemoveFromCartAction } from '../../../../store/actions/CustomerActions';
 
-const MenuGrid = ({ menu, setReviewModal }) => {
+const MenuGrid = ({ menu, setReviewModal, sessionId, auth, menuCart, pathname }) => {
   const [activeTab, setActiveTab] = useState('2');
   const dispatch = useDispatch();
   const toggle = (tab) => {
     if (activeTab !== tab) setActiveTab(tab);
   };
 
-  const { sessionId, auth } = useSelector((state: any) => state.auth);
-  const { menuCart } = useSelector((state: any) => state.customer);
-  
   function addToCart() {
     AddToCartAction({
       customerId: auth.id,
@@ -31,6 +28,7 @@ const MenuGrid = ({ menu, setReviewModal }) => {
     RemoveFromCartAction(menu.id, auth.id, sessionId)(dispatch);
   }
 
+  const quantity =  menuCart.find((mn) => mn.menuId == menu.id)?.quantity ?? 0;
   return (
     <div className="col-lg-12 col-xl-6">
       <div className="card">
@@ -97,7 +95,7 @@ const MenuGrid = ({ menu, setReviewModal }) => {
                       toggle('2');
                     }}
                   >
-                    {menuCart.find(mn => mn.menuId == menu.id)?.quantity ?? 0}
+                    {quantity}
                   </label>
                   <label
                     className={classnames({ active: activeTab === '3' }) + ' btn btn-outline-primary '}

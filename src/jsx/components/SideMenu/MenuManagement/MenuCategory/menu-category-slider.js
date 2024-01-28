@@ -95,7 +95,7 @@ const MenuCategorySlider = (props) => {
               },
             }}
           >
-            {props.menucategories.map((item, idx) => (
+            {props.menucategories && props.menucategories.map((item, idx) => (
               <SwiperSlide key={idx}>
                 <div className="cate-bx text-center "  >
                   <div className="card">

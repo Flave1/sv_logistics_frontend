@@ -30,7 +30,6 @@ import { staffRoutes } from './pages/routes/staffRoutes';
 
 const Markup = () => {
   const { auth } = useSelector((state) => state.auth);
-  console.log('auth', auth);
 
   return (
     <>
