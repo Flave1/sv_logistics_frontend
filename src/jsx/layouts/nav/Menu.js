@@ -139,6 +139,10 @@ export const MenuList = [
         title: "Country",
         to: "country-list",
       },
+      {
+        title: "QR Code",
+        to: "generate-qrcode",
+      },
     ],
   },
   //Restaurant

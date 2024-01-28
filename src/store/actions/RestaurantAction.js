@@ -9,6 +9,7 @@ import {
   reinstateOrder,
   rejectOrder,
   updateRestaurant,
+  createQrCode
 } from '../../services/RestaurantService';
 import swal from 'sweetalert';
 
@@ -91,6 +92,20 @@ export function getCustomerordersAction(status) {
       });
   };
 }
+
+export function CreateQrCodeAction(payload) {
+    return (dispatch) => {
+      createQrCode(payload)
+        .then((response) => {
+          swal('Successful', 'QrCode successfully created', 'success');
+          return response.data;
+        })
+        .catch((error) => {
+          const errorMessage = error.response.data.message;
+          swal('Oops', errorMessage, 'error');
+        });
+    };
+  }
 
 export function acceptOrderAction(id, setAcceptOrderBtn) {
   const payload = {

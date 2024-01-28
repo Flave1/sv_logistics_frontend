@@ -32,6 +32,13 @@ export function cancelOrder(payload) {
   return axiosInstance.post(`order/cancel`, payload);
 }
 
+  export function deleteRestaurant(payload) {
+    return axiosInstance.post(`restaurant/delete`, payload);
+  }
+
+  export function createQrCode(payload) {
+    return axiosInstance.post(`restaurant/create-qrcode`, payload);
+  }
 export function reinstateOrder(payload) {
   return axiosInstance.post(`order/reinstate`, payload);
 }
