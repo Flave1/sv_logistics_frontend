@@ -14,6 +14,8 @@ import HeaderSlider from './HeaderSlider';
 
 //import avatar from "../../../images/avatar/1.jpg";
 import profile from '../../../images/banner-img/pic-1.png';
+import { socket } from '../../../services/socket/SocketService';
+import { useDispatch, useSelector } from 'react-redux';
 
 const countries = ['Nigeria', 'Sierra Leone', 'Guinea'];
 
@@ -37,6 +39,17 @@ function AddSearchSlider() {
 const CustomerHeader = ({ onNote }) => {
   //const [rightSelect, setRightSelect] = useState('Eng');
   const [selectCountry, setSelectCountry] = useState([countries[0]]);
+  const {
+    sessionId,
+    auth: { restaurantId },
+  } = useSelector((state) => state.auth);
+
+  const [searchQuery, setSearchQuery] = useState('');
+  const dispatch = useDispatch();
+
+  const typingInterval = 50000;
+  const [typingTimer, setTypingTimer] = useState();
+
   //For fix header
   const [headerFix, setheaderFix] = useState(false);
   useEffect(() => {
@@ -55,6 +68,35 @@ const CustomerHeader = ({ onNote }) => {
       setheaderFix(window.scrollY > 50);
     });
   }, []);
+
+  function startListeningToSearch() {
+    socket.on(`header_search_event_responder`, (response) => {
+
+      if (response.status == 200) {
+        // dispatch({
+        //   type: SET_CUSTOMER_SEARCH,
+        //   payload: response.result,
+        // });
+      }
+    });
+    socket.emit('header_search_event_receiver', { sessionId, searchString: searchQuery, restaurantId });
+  }
+
+  function onSearch(value) {
+    setTypingTimer(typingInterval);
+
+    setTimeout(function () {
+      handleInputStop();
+    }, typingTimer);
+  }
+
+  function handleInputStop() {
+    if (socket) {
+      console.log('stopped listening');
+
+      socket.off(`header_search_event_responder${restaurantId}`);
+    }
+  }
 
   return (
     <div className={`header ${headerFix ? 'is-fixed' : ''}`}>
@@ -95,7 +137,13 @@ const CustomerHeader = ({ onNote }) => {
                           </svg>
                         </Link>
                       </span>
-                      <input type="text" className="form-control" placeholder="What do you want eat today" />
+                      <input
+                        type="text"
+                        className="form-control"
+                        onInput={onSearch}
+                        onClick={startListeningToSearch}
+                        placeholder="What do you want eat today"
+                      />
                     </div>
                     <div className="search-drop">
                       <div className="card tag-bx">

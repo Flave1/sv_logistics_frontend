@@ -102,7 +102,7 @@ const CustomerSideBar = () => {
                       <span className="nav-text">{data.title}</span>
                     </Link>
                   ) : (
-                    <NavLink to={data.title == 'Home' ? restaurantPath : data.title == 'Cart' ? restaurantPath+'/Cart' : data.to}>
+                    <NavLink to={data.title == 'Home' ? restaurantPath : data.title == 'Cart' ? restaurantPath + '/Cart' : data.to}>
                       <i className={data.iconStyle}></i>
                       <span className="nav-text">{data.title}</span>
                     </NavLink>
@@ -159,8 +159,8 @@ const CustomerSideBar = () => {
           <Link to={"#"} className="btn bg-white btn-sm">
             Upgrade
           </Link>
-        </div>
-        <div className="copyright mt-0">
+        </div> */}
+        {/* <div className="copyright mt-0">
           <p>
             <strong>Food Desk - Online Food Delivery Admin Dashboard</strong> ©
             2022 All Rights Reserved
@@ -171,6 +171,14 @@ const CustomerSideBar = () => {
             DexignLab
           </p>
         </div> */}
+        <div className="d-block">
+          <div style={{ height: '400px' }}></div>
+          <div className="copyright mt-0">
+            <Link className="text-primary" to={'/shops'}>
+              See all restaurants
+            </Link>
+          </div>
+        </div>
       </PerfectScrollbar>
     </div>
   );

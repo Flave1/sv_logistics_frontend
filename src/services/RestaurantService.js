@@ -1,3 +1,4 @@
+import FoodieAlert from '../jsx/utils/alert';
 import axiosInstance from './axios-instance';
 
 /// Restaurant
@@ -32,13 +33,16 @@ export function cancelOrder(payload) {
   return axiosInstance.post(`order/cancel`, payload);
 }
 
-  export function deleteRestaurant(payload) {
-    return axiosInstance.post(`restaurant/delete`, payload);
+export async function createQrCode(payload) {
+  try {
+    const response = await axiosInstance.post(`restaurant/create-qrcode`, payload);
+    return response.data;
+  } catch (error) {
+    console.log('error.response.data', error.response.data);
+    FoodieAlert.showError(error.response.data);
+    return error;
   }
-
-  export function createQrCode(payload) {
-    return axiosInstance.post(`restaurant/create-qrcode`, payload);
-  }
+}
 export function reinstateOrder(payload) {
   return axiosInstance.post(`order/reinstate`, payload);
 }

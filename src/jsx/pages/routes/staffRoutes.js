@@ -77,6 +77,8 @@ import GenerateQrCode from "../../components/SideMenu/Settings/QrCode/generate-q
 import AdminOrders from "../../components/SideMenu/OrderManagement/AdminOrders";
 
 export const staffRoutes = [
+
+  
     /// Dashboard
     // { url: '', component: <Home /> },
     // { url: 'dashboard', component: <Home /> },

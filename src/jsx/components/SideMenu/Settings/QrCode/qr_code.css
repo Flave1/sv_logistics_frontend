@@ -1,0 +1,16 @@
+.modal-fullscreen {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+}
+
+.modal-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-body {
+  flex: 1;
+  overflow-y: auto;
+}

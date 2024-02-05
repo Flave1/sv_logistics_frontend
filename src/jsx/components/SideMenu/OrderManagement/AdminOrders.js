@@ -61,7 +61,7 @@ const AdminOrders = () => {
   }
 
   console.log('searchByStatus', searchByStatus);
-  
+
   const [fetch, setFetch] = useState(null);
   useEffect(() => {
     getCustomerordersAction(searchByStatus)(dispatch);
@@ -111,13 +111,16 @@ const AdminOrders = () => {
                         </select> */}
             <Dropdown className="order-drop">
               <Dropdown.Toggle as="div" className="form-control default-select border w-auto i-false">
-                {convertObjectToArray(OrderStatus).find(d => d.value == searchByStatus)?.name} <i className="fas fa-chevron-down order-drop-select"></i>
+                {convertObjectToArray(OrderStatus).find((d) => d.value == searchByStatus)?.name}{' '}
+                <i className="fas fa-chevron-down order-drop-select"></i>
               </Dropdown.Toggle>
               <Dropdown.Menu>
                 {convertObjectToArray(OrderStatus).map((item, idx) => {
                   return (
                     <>
-                      <Dropdown.Item defaultValue={-1} onClick={() => setSearchByStatus(item.value)}>{item.name}</Dropdown.Item>
+                      <Dropdown.Item defaultValue={-1} onClick={() => setSearchByStatus(item.value)}>
+                        {item.name}
+                      </Dropdown.Item>
                     </>
                   );
                 })}

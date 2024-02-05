@@ -7,6 +7,7 @@ import {
   UPDATE_CART_LIST,
   CLEAR_CART,
   SET_SHOP_PATH,
+  SET_CUSTOMER_SEARCH,
 } from '../../actions/CustomerActions';
 
 const initialState = {
@@ -17,6 +18,7 @@ const initialState = {
   showLoading: false,
   menuCart: [],
   restaurantPath: '',
+  customerSearch: [],
 };
 
 export function CustomerReducer(state = initialState, action) {
@@ -45,7 +47,7 @@ export function CustomerReducer(state = initialState, action) {
   }
 
   if (action.type === ADD_TO_CART) {
-    const existingMenu = state.menuCart.find((cart: any) => cart.menuId === action.payload.menuId);
+    const existingMenu = state.menuCart.find((cart) => cart.menuId === action.payload.menuId);
 
     if (!existingMenu) {
       // If the menu does not exist in the cart, add it with quantity 1
@@ -55,9 +57,7 @@ export function CustomerReducer(state = initialState, action) {
       };
     } else {
       // If the menu already exists, update its quantity
-      const updatedCart = state.menuCart.map((cart: any) =>
-        cart.menuId === action.payload.menuId ? { ...cart, quantity: cart.quantity + 1 } : cart,
-      );
+      const updatedCart = state.menuCart.map((cart) => (cart.menuId === action.payload.menuId ? { ...cart, quantity: cart.quantity + 1 } : cart));
 
       return {
         ...state,
@@ -67,19 +67,19 @@ export function CustomerReducer(state = initialState, action) {
   }
 
   if (action.type === REMOVE_FROM_CART) {
-    let menu: any = state.menuCart.find((cart: any) => cart.menuId === action.payload.menuId);
+    let menu = state.menuCart.find((cart) => cart.menuId === action.payload.menuId);
 
     if (menu) {
       if (menu.quantity > 1) {
         menu.quantity = menu.quantity - 1;
-        const updatedCart = state.menuCart.map((cart: any) => (cart.menuId === action.payload.menuId ? menu : cart));
+        const updatedCart = state.menuCart.map((cart) => (cart.menuId === action.payload.menuId ? menu : cart));
 
         return {
           ...state,
           menuCart: updatedCart,
         };
       } else {
-        const updatedCart = state.menuCart.filter((cart: any) => cart.menuId !== action.payload.menuId);
+        const updatedCart = state.menuCart.filter((cart) => cart.menuId !== action.payload.menuId);
 
         return {
           ...state,
@@ -107,10 +107,16 @@ export function CustomerReducer(state = initialState, action) {
     };
   }
 
-  if (action.type == SET_SHOP_PATH) {    
+  if (action.type == SET_SHOP_PATH) {
     return {
       ...state,
       restaurantPath: action.payload,
+    };
+  }
+
+  if (action.type == SET_CUSTOMER_SEARCH) {
+    return {
+      customerSearch: action.payload
     };
   }
 

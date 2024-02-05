@@ -17,6 +17,7 @@ export const UPDATE_CART_LIST = '[UPDATE_CART_LIST] Update cart list';
 export const REMOVE_FROM_CART = '[REMOVE_FROM_CART] Remove from cart';
 export const CLEAR_CART = '[CLEAR_CART] Clear cart';
 export const SET_SHOP_PATH = '[SET_SHOP_PATH] Set restaurant url';
+export const SET_CUSTOMER_SEARCH = '[SET_CUSTOMER_SEARCH] Searchies';
 
 export function getPopularRestaurantsAction() {
   return (dispatch) => {
@@ -85,6 +86,7 @@ export const AddToCartAction = ({ customerId, restaurantId, menuId, quantity, pr
       })
       .catch((error) => {
         const errorMessage = error.response.data.message;
+        FoodieAlert.showError(errorMessage);
         RemoveFromCartOnServerErrorAction(menuId, customerId, temporalId)(dispatch);
       });
   };
