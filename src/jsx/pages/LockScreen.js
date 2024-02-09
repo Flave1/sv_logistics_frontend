@@ -7,7 +7,7 @@ const LockScreen = ({ history }) => {
     const nav = useNavigate();
     const submitHandler = (e) => {
         e.preventDefault();
-        nav("/dashboard");
+        nav("/main-dashboard");
     };
   return (
 
@@ -21,7 +21,7 @@ const LockScreen = ({ history }) => {
                                 <div className="col-xl-12">
                                     <div className="auth-form">
                                       <div className="text-center mb-3">
-                                        <Link to="/dashboard">
+                                        <Link to="/main-dashboard">
                                             <img src={logo} alt="" />
                                         </Link>
                                       </div>

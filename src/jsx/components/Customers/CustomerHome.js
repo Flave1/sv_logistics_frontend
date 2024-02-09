@@ -6,18 +6,16 @@ import { ThemeContext } from '../../../context/ThemeContext';
 import BannerSlider from '../Dashboard/Dashboard/BannerSlider';
 import CategorySlider from '../Dashboard/Dashboard/CategorySlider';
 
-
 import { useDispatch, useSelector } from 'react-redux';
 import { getPopularRestaurantsAction } from '../../../store/actions/CustomerActions';
 import Restaurant from './components/Restaurant';
+import { spinner } from '../../../store/actions';
 // import { getPopularRestaurantsAction } from '../../../store/actions/CustomerActions';
-
 
 const reducer = (previousState, updatedState) => ({
   ...previousState,
   ...updatedState,
 });
-
 
 const CustomerHome = () => {
   const [dropSelect, setDropSelect] = useState('Other');
@@ -69,7 +67,7 @@ const CustomerHome = () => {
         </div>
         <div className="row">
           {allRestaurants.map((restaurant, index) => (
-            <Restaurant key={index} restaurant={restaurant} navigation={navigation}/>
+            <Restaurant key={index} restaurant={restaurant} navigation={navigation} />
           ))}
         </div>
       </Fragment>

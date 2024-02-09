@@ -7,6 +7,7 @@ import { AddToCartAction, CheckoutAction, ClearCartAction, GetCartListAction, Re
 import CartList from './components/CartList';
 import PaymentOption from './components/PaymentOption';
 import OrderSuccess from './components/OrderSuccess';
+import { formatNumberWithSeparator } from '../../utils/common';
 
 const orderTab = [
   { order: '1', title: 'Prepared', title2: 'Delivered' },
@@ -19,13 +20,14 @@ const orderTab = [
 
 const CustomerCart = () => {
   const [location, setLocation] = useState({ latitude: 0, longitude: 0 });
-  const { allRestaurants, menuCart, restaurantPath } = useSelector((state: any) => state.customer);
-  const { auth: user, sessionId } = useSelector((state: any) => state.auth);
+  const { allRestaurants, menuCart, restaurantPath } = useSelector((state) => state.customer);
+  const { auth: user, sessionId } = useSelector((state) => state.auth);
   const [shop, setShop] = useState({});
   const dispatch = useDispatch();
   const [menu, setMenu] = useState([{ id: -1, image: '', name: '_______________', price: '____', restaurantId: -1 }]);
   const [slider, setSlider] = useState('cart');
   const [paymentOption, setPaymentOption] = useState(1);
+  const [currency, setCurrency] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -63,6 +65,9 @@ const CustomerCart = () => {
     }
     sessionId && fetchData(); //user.id ||
   }, [user.id, sessionId]);
+  useEffect(() => {
+    menuCart && menuCart.length > 0 && setCurrency(menuCart[0].currencyCode)
+  }, [menuCart])
 
   //   useEffect(() => {
   //     const payload = {
@@ -152,7 +157,11 @@ const CustomerCart = () => {
         <hr style={{ opacity: '0.7' }} />
         <div className="d-flex align-items-center justify-content-between">
           <h4 className="font-w500 mb-0">Total</h4>
-          <h4 className="cate-title text-primary"> ${menuCart && menuCart.reduce((sum, menu) => sum + menu.price * menu.quantity, 0)}</h4>
+          <h4 className="cate-title text-primary">
+            {' '}
+            {currency}
+            {formatNumberWithSeparator(menuCart && menuCart.reduce((sum, menu) => sum + menu.price * menu.quantity, 0))}
+          </h4>
         </div>
       </>
     );

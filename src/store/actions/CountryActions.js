@@ -34,6 +34,7 @@ export function getAllCountryAction() {
     return (dispatch) => {
         createCountry(payload)
         .then((response) => {
+          getAllCountryAction()(dispatch)
           setShowForm(false);
           resetForm();
           swal('Successful', 'Country successfully created', 'success');
@@ -65,6 +66,7 @@ export function getAllCountryAction() {
     return (dispatch) => {
         updateCountry(payload)
         .then((response) => {
+          getAllCountryAction()(dispatch)
           setShowForm(false);
           resetForm();
           setSelectedItem(null);
@@ -81,6 +83,7 @@ export function getAllCountryAction() {
     return (dispatch) => {
       deleteCountry(payload)
         .then((response) => {
+          getAllCountryAction()(dispatch)
           swal('Successful', 'Country successfully deleted', 'success');
           return response.data;
         })

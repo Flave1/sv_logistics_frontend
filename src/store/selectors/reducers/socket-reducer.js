@@ -9,7 +9,7 @@ const initialState = {
 
 export function SocketReducer(state = initialState, action) {
   if (action.type === JOIN_ROOM) {    
-    const isDuplicate = state.rooms.some((room: any) => room.roomId === action.payload.roomId);
+    const isDuplicate = state.rooms.some((room) => room.roomId === action.payload.roomId);
     if (!isDuplicate) {
       return {
         ...state,
@@ -17,9 +17,9 @@ export function SocketReducer(state = initialState, action) {
       };
     }
   }
-
+  
   if (action.type === LEAVE_ROOM) {
-    const updatedRooms = state.rooms.filter((room: any) => room.roomId !== action.payload);
+    const updatedRooms = state.rooms.filter((room) => room.roomId !== action.payload);
     return {
       ...state,
       rooms: updatedRooms,

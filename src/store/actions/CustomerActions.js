@@ -8,6 +8,7 @@ import {
   removeMenuOrder,
 } from '../../services/CustomerService';
 import FoodieAlert from '../../jsx/utils/alert';
+import { spinner } from './AuthActions';
 
 export const SET_CUSTOMER_DETAILS = '[SET_CUSTOMER_DETAILS] set customer details';
 export const SET_POPULAR_RESTAURANTS = '[SET_POPULAR_RESTAURANTS] set popular restaurants';
@@ -21,14 +22,17 @@ export const SET_CUSTOMER_SEARCH = '[SET_CUSTOMER_SEARCH] Searchies';
 
 export function getPopularRestaurantsAction() {
   return (dispatch) => {
+    dispatch(spinner(true));
     getPopularRestaurants()
       .then((response) => {
+        dispatch(spinner(false));
         dispatch({
           type: SET_POPULAR_RESTAURANTS,
           payload: response.data,
         });
       })
       .catch((error) => {
+        dispatch(spinner(false));
         const errorMessage = error.response;
         swal('Oops', errorMessage, 'error');
       });
@@ -37,14 +41,17 @@ export function getPopularRestaurantsAction() {
 
 export function getRestaurantsMenuAction(restaurantId) {
   return (dispatch) => {
+    dispatch(spinner(true));
     getRestaurantMenu(restaurantId)
       .then((response) => {
+        dispatch(spinner(false));
         dispatch({
           type: SET_MENU,
           payload: response.data,
         });
       })
       .catch((error) => {
+        dispatch(spinner(false));
         const errorMessage = error.response;
         swal('Oops', errorMessage, 'error');
       });
@@ -52,18 +59,22 @@ export function getRestaurantsMenuAction(restaurantId) {
 }
 
 export const GetCartListAction = ({ customerId, temporalId }) => {
-  return (dispatch) =>
+  return (dispatch) => {
+    dispatch(spinner(true));
     getCartList(customerId, temporalId)
       .then((response) => {
+        dispatch(spinner(false));
         dispatch({
           type: UPDATE_CART_LIST,
           payload: response.data,
         });
       })
       .catch((error) => {
+        dispatch(spinner(false));
         const errorMessage = error.response.data.message;
         console.log('errorMessage', errorMessage);
       });
+  };
 };
 
 export const AddToCartAction = ({ customerId, restaurantId, menuId, quantity, price, temporalId }) => {
@@ -164,14 +175,17 @@ export const CheckoutAction = (restaurantId, menuIds, customerId, temporalId, se
   };
 
   return (dispatch) => {
+    dispatch(spinner(true));
     checkout(payload)
       .then((response) => {
         ClearCartAction()(dispatch);
         setSlider('ordersuccess');
         FoodieAlert.showSuccess('Order Success');
+        dispatch(spinner(false));
         return response.data;
       })
       .catch((error) => {
+        dispatch(spinner(false));
         const errorMessage = error.response.data.message;
         console.log('errorMessage', errorMessage);
         FoodieAlert.showError(errorMessage);

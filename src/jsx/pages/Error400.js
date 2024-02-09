@@ -16,7 +16,7 @@ const Error400 = () => {
                      </h4>
                      <p>Your Request resulted in an error</p>
                      <div>
-                        <Link className="btn btn-primary" to="/dashboard">
+                        <Link className="btn btn-primary" to="#">
                            Back to Home
                         </Link>
                      </div>

@@ -16,6 +16,7 @@ import React from 'react';
 // import CustomerHome from './jsx/components/Customers/Home';
 import { customerRoutes } from './jsx/pages/routes/customerRoutes';
 import { generateTemporalId } from './store/actions';
+import FoodDeliverySpinner from './jsx/utils/spinner';
 
 const SignUp = lazy(() => import('./jsx/pages/Registration'));
 const ForgotPassword = lazy(() => import('./jsx/pages/ForgotPassword'));
@@ -52,7 +53,7 @@ function App(props) {
     if (evAc.dispatchAble) return evAc.action()(dispatch);
     else return evAc.action();
   }
- 
+
   useEffect(() => {
     if (socket) {
       props.socket.rooms.length > 0 &&
@@ -117,7 +118,10 @@ function App(props) {
             </div>
           }
         >
-          <Index />
+          <>
+            <FoodDeliverySpinner />
+            <Index />
+          </>
         </Suspense>
       </>
     );
@@ -135,10 +139,13 @@ function App(props) {
             </div>
           }
         >
-          {routeblog}
+          <>
+            <FoodDeliverySpinner />
+            {routeblog}
+          </>
         </Suspense>
       </div>
-    );
+    );  
   }
 }
 

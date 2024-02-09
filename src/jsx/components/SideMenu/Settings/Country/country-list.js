@@ -10,7 +10,6 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import FoodieAlert from '../../../../utils/alert';
 import { formatDate } from '../../../../utils/common';
-import swal from 'sweetalert';
 import { createCountryAction, deleteCountryAction, getAllCountryAction, updateCountryAction } from '../../../../../store/actions/CountryActions';
 
 let selectedItemIds = [];
@@ -114,9 +113,7 @@ function TR({ row, dispatch, editItem }) {
         <Check i={1} row={row} />
       </td>
       <td className="">
-        <Link onClick={() => editItem(row)}>
-          {row.countryName}
-        </Link>
+        <Link onClick={() => editItem(row)}>{row.countryName}</Link>
       </td>
       <td className="py-2">{row.countryCode}</td>
       <td className="py-2">{row.currencyName}</td>
@@ -134,7 +131,7 @@ function Form({ show, setShowForm, dispatch, selectedItem, setSelectedItem }) {
   const [image, setImage] = useState();
   const [title, setTitle] = useState();
   const validation = Yup.object().shape({
-    countryName: Yup.string().required("Country Name Is Required").min(2, 'Country Name Is Too Short!').max(50, 'Country Name Is Too Long!'),
+    countryName: Yup.string().required('Country Name Is Required').min(2, 'Country Name Is Too Short!').max(50, 'Country Name Is Too Long!'),
     countryCode: Yup.string().required('Country Code Is Required'),
     currencyName: Yup.string().required('Currency Name Is Required'),
     currencyCode: Yup.string().required('Currency Code Is Required'),
@@ -153,7 +150,6 @@ function Form({ show, setShowForm, dispatch, selectedItem, setSelectedItem }) {
       setImage(null);
     }
   }, [selectedItem?.image]);
-  
 
   const { handleChange, handleSubmit, values, setFieldValue, handleBlur, errors, touched } = useFormik({
     initialValues: {

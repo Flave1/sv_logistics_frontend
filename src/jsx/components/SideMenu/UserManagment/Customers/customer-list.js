@@ -1,21 +1,18 @@
-import React, { Fragment, useEffect } from "react";
-import PageTitle from "../../../../layouts/PageTitle";
-import { Dropdown } from "react-bootstrap";
+import React, { Fragment, useEffect, useState } from 'react';
+import PageTitle from '../../../../layouts/PageTitle';
+import { Dropdown } from 'react-bootstrap';
 
 /// images
-import avartar5 from "../../../../../images/avatar/5.png";
-import { Link } from "react-router-dom";
-import { connect } from "react-redux";
-import { getAllCustomers } from "../../../../../store/actions/UserActions";
+import avartar5 from '../../../../../images/avatar/5.png';
+import { Link } from 'react-router-dom';
+import { connect, useSelector } from 'react-redux';
+import { getAllCustomers } from '../../../../../store/actions/UserActions';
+import { socket } from '../../../../../services/socket/SocketService';
 
 const CustomerList = (props) => {
-
   const drop = (
     <Dropdown>
-      <Dropdown.Toggle
-        variant=""
-        className="btn btn-primary tp-btn-light sharp i-false"
-      >
+      <Dropdown.Toggle variant="" className="btn btn-primary tp-btn-light sharp i-false">
         <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
           <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
             <rect x="0" y="0" width="24" height="24"></rect>
@@ -35,12 +32,12 @@ const CustomerList = (props) => {
   );
   const chackboxFun = (type) => {
     setTimeout(() => {
-      const chackbox = document.querySelectorAll(".customer_shop_single input");
-      const motherChackBox = document.querySelector(".customer_shop input");
+      const chackbox = document.querySelectorAll('.customer_shop_single input');
+      const motherChackBox = document.querySelector('.customer_shop input');
 
       for (let i = 0; i < chackbox.length; i++) {
         const element = chackbox[i];
-        if (type === "all") {
+        if (type === 'all') {
           if (motherChackBox.checked) {
             element.checked = true;
           } else {
@@ -59,21 +56,40 @@ const CustomerList = (props) => {
   };
   const chack = (i) => (
     <div className={`form-check custom-checkbox ms-2`}>
-      <input
-        type="checkbox"
-        className="form-check-input "
-        id={`checkAll${i}`}
-        required=""
-        onClick={() => chackboxFun()}
-      />
+      <input type="checkbox" className="form-check-input " id={`checkAll${i}`} required="" onClick={() => chackboxFun()} />
       <label className="form-check-label" htmlFor={`checkAll${i}`}></label>
     </div>
   );
-  
+  const {
+    auth: { restaurantId },
+  } = useSelector((state) => state.auth);
+
+  const [fetch, setFetch] = useState(null);
+  socket.on(`get_all_customers_event_${restaurantId}`, (response) => {
+    setFetch(response);
+  });
   useEffect(() => {
     props.get_customers();
-  }, []);
+  }, [fetch]);
 
+  useEffect(() => {
+    const joinRoom = () => {
+      if (socket) {
+        socket.emit('join_room', { roomName: `get_all_customers_event_${restaurantId}` });
+      }
+    };
+
+    joinRoom();
+
+    return () => {
+      if (socket) {
+        socket.emit('leave_room', { roomName: `get_all_customers_event_${restaurantId}` }, (response) => {
+          console.log(`left ${response}`);
+        });
+        socket.off(`get_all_customers_event_${restaurantId}`);
+      }
+    };
+  }, []);
 
   return (
     <Fragment>
@@ -88,16 +104,8 @@ const CustomerList = (props) => {
                     <tr>
                       <th className="customer_shop">
                         <div className="form-check custom-checkbox mx-2">
-                          <input
-                            type="checkbox"
-                            className="form-check-input"
-                            id="checkAll"
-                            onClick={() => chackboxFun("all")}
-                          />
-                          <label
-                            className="form-check-label"
-                            htmlFor="checkAll"
-                          ></label>
+                          <input type="checkbox" className="form-check-input" id="checkAll" onClick={() => chackboxFun('all')} />
+                          <label className="form-check-label" htmlFor="checkAll"></label>
                         </div>
                       </th>
                       <th>Name</th>
@@ -111,7 +119,7 @@ const CustomerList = (props) => {
                   <tbody id="customers">
                     {props.customers &&
                       props.customers.map((row, idx) => {
-                        return <TR row={row} chack={chack} drop={drop} key={idx}/>;
+                        return <TR row={row} chack={chack} drop={drop} key={idx} />;
                       })}
                   </tbody>
                 </table>
@@ -144,18 +152,11 @@ function TR({ row, chack, drop }) {
           <div className="media d-flex align-items-center">
             <div className="avatar avatar-xl me-2">
               <div className="">
-                <img
-                  className="rounded-circle img-fluid"
-                  src={avartar5}
-                  width="30"
-                  alt=""
-                />
+                <img className="rounded-circle img-fluid" src={avartar5} width="30" alt="" />
               </div>
             </div>
             <div className="media-body">
-              <h5 className="mb-0 fs--1">
-                {row.firstName + " " + row.lastName}
-              </h5>
+              <h5 className="mb-0 fs--1">{row.firstName + ' ' + row.lastName}</h5>
             </div>
           </div>
         </Link>
@@ -164,7 +165,7 @@ function TR({ row, chack, drop }) {
         <a href="mailto:${row.email}">{row.email}</a>
       </td>
       <td className="py-2">
-        {" "}
+        {' '}
         <a href="tel:2012001851">{row.phoneNumber}</a>
       </td>
       <td className="py-2 ps-5 wspace-no">{row.address}</td>

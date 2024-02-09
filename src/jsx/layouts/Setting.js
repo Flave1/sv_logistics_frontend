@@ -250,7 +250,7 @@ const Setting = () => {
 									<img src={demo1} alt="" className="w-100" />
 								</div>
 								<div className="overlay-layer">											
-									<Link to={"/dashboard"} onClick={() => {setDemoTheme(1,'ltr');setDemoToggle(!demoToggle);}} data-theme="1" className="btn dlab_theme_demo btn-secondary btn-sm mr-2">Demo 1</Link>
+									<Link to={"#"} onClick={() => {setDemoTheme(1,'ltr');setDemoToggle(!demoToggle);}} data-theme="1" className="btn dlab_theme_demo btn-secondary btn-sm mr-2">Demo 1</Link>
 								</div>
 							</div>
 							<h5 className="text-white mb-3">Demo 1</h5>
@@ -261,7 +261,7 @@ const Setting = () => {
 									<img src={demo2} alt="" className="w-100" />
 								</div>
 								<div className="overlay-layer">											
-									<Link to={"/dashboard"} onClick={() => {setDemoTheme(2,'ltr');setDemoToggle(!demoToggle);}} data-theme="2" className="btn dlab_theme_demo btn-secondary btn-sm mr-2">
+									<Link to={"#"} onClick={() => {setDemoTheme(2,'ltr');setDemoToggle(!demoToggle);}} data-theme="2" className="btn dlab_theme_demo btn-secondary btn-sm mr-2">
 										Demo 2
 									</Link>
 								</div>
@@ -274,7 +274,7 @@ const Setting = () => {
 									<img src={demo3} alt="" className="w-100" />
 								</div>
 								<div className="overlay-layer">											
-									<Link to={"/dashboard"} onClick={() => {setDemoTheme(3,'ltr');setDemoToggle(!demoToggle);}} data-theme="3" className="btn dlab_theme_demo btn-secondary btn-sm mr-2">Demo 3</Link>
+									<Link to={"#"} onClick={() => {setDemoTheme(3,'ltr');setDemoToggle(!demoToggle);}} data-theme="3" className="btn dlab_theme_demo btn-secondary btn-sm mr-2">Demo 3</Link>
 								</div>
 							</div>
 							<h5 className="text-white mb-3">Demo 3</h5>
@@ -285,7 +285,7 @@ const Setting = () => {
 									<img src={demo4} alt="" className="w-100" />
 								</div>
 								<div className="overlay-layer">											
-									<Link to={"/dashboard"} onClick={() => {setDemoTheme(4,'ltr');setDemoToggle(!demoToggle);}} data-theme="4" className="btn dlab_theme_demo btn-secondary btn-sm mr-2">Demo 4</Link>
+									<Link to={"#"} onClick={() => {setDemoTheme(4,'ltr');setDemoToggle(!demoToggle);}} data-theme="4" className="btn dlab_theme_demo btn-secondary btn-sm mr-2">Demo 4</Link>
 								</div>
 							</div>
 							<h5 className="text-white mb-3">Demo 4</h5>
@@ -296,7 +296,7 @@ const Setting = () => {
 									<img src={demo5} alt="" className="w-100" />
 								</div>
 								<div className="overlay-layer">											
-									<Link to={"/dashboard"} onClick={() => {setDemoTheme(5,'ltr');setDemoToggle(!demoToggle);}} data-theme="5" className="btn dlab_theme_demo btn-secondary btn-sm mr-2">Demo 5</Link>
+									<Link to={"#"} onClick={() => {setDemoTheme(5,'ltr');setDemoToggle(!demoToggle);}} data-theme="5" className="btn dlab_theme_demo btn-secondary btn-sm mr-2">Demo 5</Link>
 								</div>
 							</div>
 							<h5 className="text-white mb-3">Demo 5</h5>
@@ -307,7 +307,7 @@ const Setting = () => {
 									<img src={demo6} alt="" className="w-100" />
 								</div>
 								<div className="overlay-layer">											
-									<Link to={"/dashboard"} onClick={() => {setDemoTheme(6,'ltr');setDemoToggle(!demoToggle);}} data-theme="6" className="btn dlab_theme_demo btn-secondary btn-sm mr-2">Demo 6</Link>
+									<Link to={"#"} onClick={() => {setDemoTheme(6,'ltr');setDemoToggle(!demoToggle);}} data-theme="6" className="btn dlab_theme_demo btn-secondary btn-sm mr-2">Demo 6</Link>
 								</div>
 							</div>
 							<h5 className="text-white mb-3">Demo 6</h5>
@@ -318,7 +318,7 @@ const Setting = () => {
 									<img src={demo7} alt="" className="w-100" />
 								</div>
 								<div className="overlay-layer">											
-									<Link to={"/dashboard"} onClick={() => {setDemoTheme(7,'ltr');setDemoToggle(!demoToggle);}} data-theme="7" className="btn dlab_theme_demo btn-secondary btn-sm mr-2">Demo 7</Link>
+									<Link to={"#"} onClick={() => {setDemoTheme(7,'ltr');setDemoToggle(!demoToggle);}} data-theme="7" className="btn dlab_theme_demo btn-secondary btn-sm mr-2">Demo 7</Link>
 								</div>
 							</div>
 							<h5 className="text-white mb-3">Demo 7</h5>
@@ -329,7 +329,7 @@ const Setting = () => {
 									<img src={demo8} alt="" className="w-100" />
 								</div>
 								<div className="overlay-layer">											
-									<Link to={"/dashboard"} onClick={() => {setDemoTheme(8,'ltr');setDemoToggle(!demoToggle);}} data-theme="8" className="btn dlab_theme_demo btn-secondary btn-sm mr-2">Demo 8</Link>
+									<Link to={"#"} onClick={() => {setDemoTheme(8,'ltr');setDemoToggle(!demoToggle);}} data-theme="8" className="btn dlab_theme_demo btn-secondary btn-sm mr-2">Demo 8</Link>
 								</div>
 							</div>
 							<h5 className="text-white mb-3">Demo 8</h5>

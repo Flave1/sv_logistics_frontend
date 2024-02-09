@@ -28,7 +28,7 @@ const MenuGrid = ({ menu, setReviewModal, sessionId, auth, menuCart, pathname })
     RemoveFromCartAction(menu.id, auth.id, sessionId)(dispatch);
   }
 
-  const quantity =  menuCart.find((mn) => mn.menuId == menu.id)?.quantity ?? 0;
+  const quantity = menuCart.find((mn) => mn.menuId == menu.id)?.quantity ?? 0;
   return (
     <div className="col-lg-12 col-xl-6">
       <div className="card">
@@ -52,7 +52,10 @@ const MenuGrid = ({ menu, setReviewModal, sessionId, auth, menuCart, pathname })
                   <a className="product-review" data-toggle="modal" onClick={() => setReviewModal(true)} data-target="#reviewModal">
                     Write a review?
                   </a>
-                  <p className="price">${menu.price}</p>
+                  <p className="price">
+                    {menu.currencyCode}
+                    {menu.price}
+                  </p>
                 </div>
                 <p>
                   Availability:{' '}
@@ -75,7 +78,9 @@ const MenuGrid = ({ menu, setReviewModal, sessionId, auth, menuCart, pathname })
                 {/* <p>
                   Brand: <span className="item">Lee</span>
                 </p> */}
-                <p className="text-content">{menu.dietaryInformation}</p>
+                <p className="text-content" style={{ maxHeight: '150px', overflow: 'scroll', textOverflow: 'ellipsis' }}>
+                  {menu.dietaryInformation}
+                </p>
                 {/* <div className="d-flex align-items-center justify-content-between">
                   <strong className="text-primary"></strong>
                 </div> */}

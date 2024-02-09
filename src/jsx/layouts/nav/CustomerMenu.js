@@ -13,7 +13,7 @@ export const CustomerMenuList = [
     classsChange: "mm-collapse",
     iconStyle: "bi bi-shop-window",
     to: "shops",
-    content:[]
+    // content:[]
   },
   //Menu Management
   {
@@ -21,15 +21,15 @@ export const CustomerMenuList = [
     classsChange: "mm-collapse",
     iconStyle: "bi bi-cart2",
     to: "cart",
-    content:[]
+    // content:[]
   },
    //Order History
    {
     title: "Order History",
     classsChange: "mm-collapse",
     iconStyle: "bi bi-clock-history",
-    to: "restaurant-menu",
-    content:[]
+    to: "maintenance",
+    // content:[]
   },
   
 ];

@@ -14,7 +14,7 @@ const OrderSuccess = () => {
               </h4>
               <p>Your meal is currently being prepared with care</p>
               <div>
-                <Link className="btn btn-success" to="/dashboard">
+                <Link className="btn btn-success" to="#">
                   CLICK HERE TO SEE ORDER STATUS
                 </Link>
               </div>

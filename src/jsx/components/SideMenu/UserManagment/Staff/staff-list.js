@@ -5,12 +5,14 @@ import { Button, Modal } from 'react-bootstrap';
 /// images
 import avartar5 from '../../../../../images/avatar/5.png';
 import { Link } from 'react-router-dom';
-import { connect, useDispatch } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { createStaffAction, deleteStaffAction, getAllStaff, getSingleStaffAction, updateStaffAction } from '../../../../../store/actions/UserActions';
 import { useFormik } from 'formik';
 
 import * as Yup from 'yup';
 import FoodieAlert from '../../../../utils/alert';
+import { socket } from '../../../../../services/socket/SocketService';
+import { spinner } from '../../../../../store/actions';
 
 let selectedItemIds = [];
 const StaffList = (props) => {
@@ -18,23 +20,52 @@ const StaffList = (props) => {
   const dispatch = useDispatch();
   const [selectedItem, setSelectedItem] = useState(null);
 
+  const {
+    auth: { restaurantId },
+  } = useSelector((state) => state.auth);
+
   const editItem = async (row) => {
+    dispatch(spinner(true));
     const itemInfo = await getSingleStaffAction(row.id);
+    dispatch(spinner(false));
     if (itemInfo) {
       setSelectedItem(itemInfo);
       setShowForm(true);
     }
   };
 
+  const [fetch, setFetch] = useState(null);
+  socket.on(`get_all_staff_event_${restaurantId}`, (response) => {
+    setFetch(response);
+  });
   useEffect(() => {
     props.get_staff();
-  }, []);
+  }, [fetch]);
+
+  useEffect(() => {
+    const joinRoom = () => {
+      if (socket) {
+        socket.emit('join_room', { roomName: `get_all_staff_event_${restaurantId}` });
+      }
+    };
+
+    joinRoom();
+
+    return () => {
+      if (socket) {
+        socket.emit('leave_room', { roomName: `get_all_staff_event_${restaurantId}` }, (response) => {
+          console.log(`left ${response}`);
+        });
+        socket.off(`get_all_staff_event_${restaurantId}`);
+      }
+    };
+  }, [restaurantId]);
 
   return (
     <Fragment>
       <div className="d-flex align-items-center justify-content-between">
         <PageTitle activeMenu="Staff List" motherMenu="User Management" />
-        <button type="button" className="me-2 btn" id='deleteBtn' style={{display: 'none'}} onClick={() => deleteSelected(dispatch)}>
+        <button type="button" className="me-2 btn" id="deleteBtn" style={{ display: 'none' }} onClick={() => deleteSelected(dispatch)}>
           <span className="btn-icon-start text-info">
             <i className="fa fa-trash"></i>
           </span>
@@ -45,7 +76,6 @@ const StaffList = (props) => {
           </span>
           Add
         </button>
-      
       </div>
 
       <div className="row">
@@ -73,7 +103,7 @@ const StaffList = (props) => {
                   <tbody id="customers">
                     {props.staffs &&
                       props.staffs.map((row, idx) => {
-                        return <TR row={row} dispatch={dispatch} editItem={editItem} key={idx}/>;
+                        return <TR row={row} dispatch={dispatch} editItem={editItem} key={idx} />;
                       })}
                   </tbody>
                 </table>
@@ -107,7 +137,7 @@ function TR({ row, dispatch, editItem }) {
         <Check i={1} row={row} />
       </td>
       <td className="py-3">
-        <Link to="/ecom-customers">
+        <Link to="" onClick={() => editItem(row)}>
           <div className="media d-flex align-items-center">
             <div className="avatar avatar-xl me-2">
               <div className="">
@@ -145,7 +175,7 @@ function Form({ show, setShowForm, dispatch, selectedItem, setSelectedItem }) {
     address: Yup.string().required('Address Required').min(4, 'Address must be a minimum of 4 characters'),
   });
 
-  const { handleChange, handleSubmit, values, setFieldValue, handleBlur, errors, touched } = useFormik({
+  const { handleChange, handleSubmit, values, setFieldValue, errors, touched } = useFormik({
     initialValues: {
       email: selectedItem ? selectedItem.email : '',
       firstName: selectedItem ? selectedItem.firstName : '',
@@ -169,7 +199,7 @@ function Form({ show, setShowForm, dispatch, selectedItem, setSelectedItem }) {
     <Modal show={show} className="modal fade" id="staffModal">
       <div className="modal-content">
         <div className="modal-header">
-          <h5 className="modal-title">Add Staff</h5>
+          <h5 className="modal-title">{selectedItem ? 'Edit Staff' : 'Add Staff'}</h5>
           <Button variant="" type="button" className="close" data-dismiss="modal" onClick={() => setShowForm(!show)}>
             <span>×</span>
           </Button>
@@ -377,10 +407,10 @@ const checkboxFun = (type) => {
     }
   }, 100);
 
-  if(selectedItemIds.length > 0){
-    deleteBtn.style.display = 'block'
-  }else{
-    deleteBtn.style.display = 'none'
+  if (selectedItemIds.length > 0) {
+    deleteBtn.style.display = 'block';
+  } else {
+    deleteBtn.style.display = 'none';
   }
 };
 
@@ -392,12 +422,11 @@ const Check = ({ i, row }) => (
 );
 
 const pushItemId = (id, checked = false) => {
-  
-  if (!selectedItemIds.includes(id) && checked == true) {
+  if (!selectedItemIds.includes(id) && checked === true) {
     selectedItemIds.push(id);
   }
 
-  if (selectedItemIds.includes(id) && checked == false) {
+  if (selectedItemIds.includes(id) && checked === false) {
     const index = selectedItemIds.indexOf(id);
     if (index !== -1) {
       selectedItemIds.splice(index, 1);

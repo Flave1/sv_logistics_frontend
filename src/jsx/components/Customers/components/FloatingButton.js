@@ -4,6 +4,7 @@ import { Button } from 'react-bootstrap';
 import './customer.css';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { formatNumberWithSeparator } from '../../../utils/common';
 
 const FloatingButton = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -41,7 +42,7 @@ const FloatingButton = () => {
       <i className="bi bi-handbag" style={{ position: 'relative', bottom: '10px', right: '5px' }}></i>
       <span className="cartValue"> +{menuCart.length}</span>
       <span className="text-primary" style={{ position: 'relative', right: '28px' }}>
-        ${menuCart.reduce((sum, menu) => sum + menu.price * menu.quantity, 0)}
+        {formatNumberWithSeparator(menuCart.reduce((sum, menu) => sum + menu.price * menu.quantity, 0))}
       </span>
     </Button>
 

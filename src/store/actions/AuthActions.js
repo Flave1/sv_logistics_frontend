@@ -11,7 +11,6 @@ import {
   signUp,
 } from '../../services/AuthService';
 import swal from 'sweetalert';
-import { SET_CUSTOMER_DETAILS } from './CustomerActions';
 
 export const SIGNUP_CONFIRMED_ACTION = '[signup action] confirmed signup';
 export const SIGNUP_FAILED_ACTION = '[signup action] failed signup';
@@ -20,6 +19,7 @@ export const LOGIN_FAILED_ACTION = '[login action] failed login';
 export const LOADING_TOGGLE_ACTION = '[Loading action] toggle loading';
 export const LOGOUT_ACTION = '[Logout action] logout action';
 export const GENERATE_TEMP_ID = '[GENERATE_TEMP_ID] temp id';
+export const SPIN = '[SPIN] spin';
 
 export function signupAction(email, password, navigate) {
   return (dispatch) => {
@@ -59,7 +59,7 @@ export function loginAction(email, password, navigate) {
             saveTokenDeatailInLocalStorage(context.data);
             runLogoutTimer(dispatch, context.data.expiresIn * 1000, navigate);
             dispatch(loginConfirmedAction(context.data));
-            if (context.data.userTypeId == UserType.Staff) {
+            if (context.data.userTypeId === UserType.Staff) {
               navigate('/main-dashboard');
             } else {
               navigate('/shops');
@@ -115,4 +115,8 @@ export function generateTemporalId() {
       type: GENERATE_TEMP_ID,
     });
   };
+}
+
+export function spinner(spin) {
+  return { type: SPIN, payload: spin };
 }

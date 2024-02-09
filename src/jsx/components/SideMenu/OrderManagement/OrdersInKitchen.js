@@ -2,102 +2,72 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Accordion, Dropdown } from 'react-bootstrap';
 
-import {
-  GET_CSUTOMER_ORDERS,
-  acceptOrderAction,
-  cancelOrderAction,
-  getCustomerordersAction,
-  reinstateOrderAction,
-  rejectOrderAction,
-} from '../../../../store/actions/RestaurantAction';
+import { getOrdersInKitchenAction } from '../../../../store/actions/RestaurantAction';
 import { useDispatch, useSelector } from 'react-redux';
 import { formatDateTime, formatNumberWithSeparator } from '../../../utils/common';
 import { socket } from '../../../../services/socket/SocketService';
 import { convertObjectToArray } from '../../../utils/constants';
+import { spinner } from '../../../../store/actions';
+import { prepareOrder } from '../../../../services/RestaurantService';
 
 const OrderStatus = {
   All: -1,
-  Pending: 0,
-  CheckedOut: 1,
+  // Pending: 0,
+  // CheckedOut: 1,
   OrderAccepted: 2,
   Packaged: 3,
-  Delivered: 4,
-  Cancelled: 5,
-  Rejected: 6,
+  // Delivered: 4,
+  // Cancelled: 5,
+  // Rejected: 6,
 };
 
-const AdminOrders = () => {
+const OrdersInKitchen = () => {
   const [searchByStatus, setSearchByStatus] = useState(-1);
   const dispatch = useDispatch();
-  const { customerOrders } = useSelector((state) => state.restaurant);
+  const { ordersInKitchen } = useSelector((state) => state.restaurant);
   const {
     auth: { restaurantId },
-    sessionId,
   } = useSelector((state) => state.auth);
-  const [acceptOrderbtn, setAcceptOrderBtn] = useState('ACCEPT ORDER');
-  const [rejectOrderbtn, setRejectOrderBtn] = useState('REJECT');
-  const [cancelOrderbtn, setCancelOrderBtn] = useState('CANCEL ORDER');
-  const [reinstateOrderbtn, setReinstateOrderBtn] = useState('REINSTATE ORDER');
 
-  function acceptOrder(id) {
-    acceptOrderAction(id, setAcceptOrderBtn)(dispatch);
-  }
-  function rejectOrder(id) {
-    rejectOrderAction(id, setRejectOrderBtn)(dispatch);
-  }
+  const [preparedOrderBtn] = useState('SET ORDER TO PREPARED');
 
-  function cancelOrder(id) {
-    cancelOrderAction(id, setCancelOrderBtn)(dispatch);
-  }
-
-  function reinstateOrder(id) {
-    reinstateOrderAction(id, setReinstateOrderBtn)(dispatch);
-  }
-
-  socket.on(`search_event_responder`, (response) => {
-    if (response.status === 200) {
-      dispatch({
-        type: GET_CSUTOMER_ORDERS,
-        payload: response.result,
-      });
-    }
-  });
-
-  function onSearch(value) {
-    socket.emit('search_event_receiver', { sessionId, searchString: value, restaurantId });
+  async function setAsPrepared(id) {
+    dispatch(spinner(true));
+    await prepareOrder(id);
+    dispatch(spinner(false));
   }
 
   const [fetch, setFetch] = useState(null);
-  socket.on(`get_orders_${restaurantId}`, (response) => {
+  socket.on(`get_orders_in_kitchen_${restaurantId}`, (response) => {
     setFetch(response);
   });
   useEffect(() => {
-    getCustomerordersAction(searchByStatus)(dispatch);
+    getOrdersInKitchenAction(searchByStatus)(dispatch);
   }, [fetch, searchByStatus]);
 
   useEffect(() => {
     const joinRoom = () => {
       if (socket) {
-        socket.emit('join_room', { roomName: `get_orders_${restaurantId}` });
+        socket.emit('join_room', { roomName: `get_orders_in_kitchen_${restaurantId}` });
       }
     };
     joinRoom();
     return () => {
       if (socket) {
-        socket.emit('leave_room', { roomName: `get_orders_${restaurantId}` }, (response) => {
+        socket.emit('leave_room', { roomName: `get_orders_in_kitchen_${restaurantId}` }, (response) => {
           console.log(`left ${response}`);
         });
-        socket.off(`get_orders_${restaurantId}`);
+        socket.off(`get_orders_in_kitchen_${restaurantId}`);
       }
     };
-  }, [dispatch, restaurantId]);
+  }, []);
 
   return (
     <>
       <div className="row">
         <div className="col-xl-12">
           <div className="d-flex align-items-center justify-content-between mb-4">
-            <div className="input-group search-area2">
+            {/* <div className="input-group search-area2">
               <span className="input-group-text p-0">
                 <Link to={'#'}>
                   <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -109,7 +79,7 @@ const AdminOrders = () => {
                 </Link>
               </span>
               <input type="text" className="form-control p-0" placeholder="Search Customer Orders" onChange={(e) => onSearch(e.target.value)} />
-            </div>
+            </div> */}
             {/* <select className="form-control default-select border w-auto">
                             <option>Recently</option>
                             <option>Oldest</option>
@@ -149,9 +119,10 @@ const AdminOrders = () => {
             </div>
             <div className="card-body p-0  overflow-hidden">
               <Accordion id="accordion-one" className="style-1" defaultActiveKey="0">
-                {customerOrders &&
-                  customerOrders.length > 0 &&
-                  customerOrders.map((data, i) => (
+                {ordersInKitchen &&
+                  ordersInKitchen.length > 0 &&
+                  ordersInKitchen.map((data, i) => (
+                    //eventKey={`${i}`}
                     <Accordion.Item eventKey={`${i}`} key={i}>
                       <Accordion.Header>
                         <div className="d-flex align-items-center">
@@ -173,10 +144,7 @@ const AdminOrders = () => {
                           </svg>
                           <h5 className="mb-0">{data.address}</h5>
                         </div>
-                        {/* data.restaurant.country.currencyCode */}
-                        <h4 className="price">
-                          {data.currencyCode} {formatNumberWithSeparator(Number(data.totalPrice))}
-                        </h4>
+                        <h4 className="price">$ {formatNumberWithSeparator(data.totalPrice)}</h4>
                         <h5 className=" cash font-w500 ">{data.paymentMethod}</h5>
                         {/* <span className="accordion-header-indicator style-1"></span> */}
                       </Accordion.Header>
@@ -191,8 +159,8 @@ const AdminOrders = () => {
                                     <div className="d-flex align-items-center justify-content-xl-center justify-content-lg-start  mb-2" key={idx}>
                                       <img className="me-2" src={item.image} alt="" />
                                       <div>
-                                        <h6 className="font-w600 text-nowrap mb-0">{item.name}</h6>
-                                        <p className="mb-0">{item.menuName}</p>
+                                        <h6 className=" mb-0 p-0">{item.name}</h6>
+                                        <p className="mb-0 p-0">{item.menuName}</p>
                                       </div>
                                       <div>
                                         <p className="mb-0">
@@ -258,40 +226,12 @@ const AdminOrders = () => {
                           </div>
                           <div className="col-xl-3 col-xxl-6 col-sm-6 mt-4 ms-sm-0 ms-3">
                             <p className="fs-18 font-w500">Total</p>
-                            <h4 className="cate-title text-primary">
-                              {data.currencyCode}
-                              {formatNumberWithSeparator(Number(data.totalPrice))}
-                            </h4>
+                            <h4 className="cate-title text-primary">${formatNumberWithSeparator(data.totalPrice)}</h4>
                             <div className="d-flex align-items-center p-3 justify-content-between">
-                              {data.status === 1 && (
-                                <>
-                                  <button className="btn btn-sm btn-danger" onClick={() => rejectOrder(data.id)}>
-                                    {rejectOrderbtn}
-                                  </button>
-                                  <button className="btn btn-sm btn-success" onClick={() => acceptOrder(data.id)}>
-                                    {acceptOrderbtn}
-                                  </button>
-                                </>
-                              )}
                               {data.status === 2 && (
                                 <>
-                                  <button className="btn btn-sm btn-danger" onClick={() => cancelOrder(data.id)}>
-                                    {cancelOrderbtn}
-                                  </button>
-                                </>
-                              )}
-
-                              {data.status === 5 && (
-                                <>
-                                  <button className="btn btn-sm btn-info" onClick={() => reinstateOrder(data.id)}>
-                                    {reinstateOrderbtn}
-                                  </button>
-                                </>
-                              )}
-                              {data.status === 6 && (
-                                <>
-                                  <button className="btn btn-sm btn-info" onClick={() => reinstateOrder(data.id)}>
-                                    {reinstateOrderbtn}
+                                  <button className="btn btn-sm btn-info" onClick={async () => setAsPrepared(data.id)}>
+                                    {preparedOrderBtn}
                                   </button>
                                 </>
                               )}
@@ -331,4 +271,4 @@ const AdminOrders = () => {
     </>
   );
 };
-export default AdminOrders;
+export default OrdersInKitchen;

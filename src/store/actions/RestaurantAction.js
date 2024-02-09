@@ -6,14 +6,19 @@ import {
   deleteRestaurant,
   getAllRestaurants,
   getCustomerOrders,
+  getDashboardStats,
+  getOrdersInKitchen,
   reinstateOrder,
   rejectOrder,
   updateRestaurant,
 } from '../../services/RestaurantService';
 import swal from 'sweetalert';
+import { spinner } from './AuthActions';
 
 export const GET_ALL_RESTAURANT = '[GET_ALL_CLIENT] get all restaurants';
 export const GET_CSUTOMER_ORDERS = '[GET_CSUTOMER_ORDERS] get orders';
+export const GET_ORDERS_IN_KITCHEN = '[GET_ORDERS_IN_KITCHEN] get orders';
+export const SET_DASHBOARD_STATS = '[SET_DASHBOARD_STATS] get stats';
 ///Menu Actions
 export function getAllRestaurantsAction() {
   return (dispatch) => {
@@ -78,8 +83,10 @@ export function deleteRestaurantAction(payload) {
 
 export function getCustomerordersAction(status) {
   return (dispatch) => {
+    dispatch(spinner(true));
     getCustomerOrders(status)
       .then((response) => {
+        dispatch(spinner(false));
         dispatch({
           type: GET_CSUTOMER_ORDERS,
           payload: response.data,
@@ -92,6 +99,23 @@ export function getCustomerordersAction(status) {
   };
 }
 
+export function getOrdersInKitchenAction(status) {
+  return (dispatch) => {
+    dispatch(spinner(true));
+    getOrdersInKitchen(status)
+      .then((response) => {
+        dispatch(spinner(false));
+        dispatch({
+          type: GET_ORDERS_IN_KITCHEN,
+          payload: response.data,
+        });
+      })
+      .catch((error) => {
+        const errorMessage = error.response.data.message;
+        FoodieAlert.showError(errorMessage);
+      });
+  };
+}
 
 export function acceptOrderAction(id, setAcceptOrderBtn) {
   const payload = {
@@ -102,7 +126,7 @@ export function acceptOrderAction(id, setAcceptOrderBtn) {
     acceptOrder(payload)
       .then((response) => {
         setAcceptOrderBtn('ACCEPT ORDER');
-        FoodieAlert.showSuccess("Order Accepted Successfully");
+        FoodieAlert.showSuccess('Order Accepted Successfully');
         return response.data;
       })
       .catch((error) => {
@@ -112,6 +136,7 @@ export function acceptOrderAction(id, setAcceptOrderBtn) {
       });
   };
 }
+
 export function rejectOrderAction(id, setRejectOrderBtn) {
   const payload = {
     checkoutOrderId: id,
@@ -121,7 +146,7 @@ export function rejectOrderAction(id, setRejectOrderBtn) {
     rejectOrder(payload)
       .then((response) => {
         setRejectOrderBtn('REJECT');
-        FoodieAlert.showSuccess("Order Rejected Successfully");
+        FoodieAlert.showSuccess('Order Rejected Successfully');
         return response.data;
       })
       .catch((error) => {
@@ -140,7 +165,7 @@ export function cancelOrderAction(id, setCancelOrderBtn) {
     cancelOrder(payload)
       .then((response) => {
         setCancelOrderBtn('CANCEL ORDER');
-        FoodieAlert.showSuccess("Order Cancelled Successfully");
+        FoodieAlert.showSuccess('Order Cancelled Successfully');
         return response.data;
       })
       .catch((error) => {
@@ -160,11 +185,28 @@ export function reinstateOrderAction(id, setReinstateOrderBtn) {
     reinstateOrder(payload)
       .then((response) => {
         setReinstateOrderBtn('REINSTATE ORDER');
-        FoodieAlert.showSuccess("Order Reinstated Successfully");
+        FoodieAlert.showSuccess('Order Reinstated Successfully');
         return response.data;
       })
       .catch((error) => {
         setReinstateOrderBtn('REINSTATE ORDER');
+        const errorMessage = error.response.data.message;
+        FoodieAlert.showError(errorMessage);
+      });
+  };
+}
+
+export function getDashboardAction() {
+  return (dispatch) => {
+    getDashboardStats()
+      .then((response) => {
+        dispatch({
+          type: SET_DASHBOARD_STATS,
+          payload: response.data,
+        });
+        return response.data;
+      })
+      .catch((error) => {
         const errorMessage = error.response.data.message;
         FoodieAlert.showError(errorMessage);
       });

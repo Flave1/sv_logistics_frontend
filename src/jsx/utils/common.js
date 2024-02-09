@@ -15,7 +15,7 @@ export function formatDateTime(inputDateString) {
     hour: 'numeric',
     minute: 'numeric',
     // second: 'numeric',
-    hour12: true // Use 12-hour clock format
+    hour12: true, // Use 12-hour clock format
   };
 
   return inputDate.toLocaleDateString('en-US', options);
@@ -27,4 +27,8 @@ export function GenerateUUID() {
     const v = c === 'x' ? r : (r & 0x3) | 0x8;
     return v.toString(16);
   });
+}
+
+export function formatNumberWithSeparator(number) {
+  return number.toLocaleString();
 }

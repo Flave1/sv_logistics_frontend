@@ -4,7 +4,7 @@ import { Dropdown } from 'react-bootstrap';
 import { Modal } from 'react-bootstrap';
 /// images
 import { Link } from 'react-router-dom';
-import { connect, useDispatch } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import {
   createCategoryAction,
   getMenuCategoriesAction,
@@ -17,11 +17,17 @@ import * as Yup from 'yup';
 import FoodieAlert from '../../../../utils/alert';
 import { formatDate } from '../../../../utils/common';
 import swal from 'sweetalert';
+import { socket } from '../../../../../services/socket/SocketService';
 
 let selectedItemIds = [];
 const MenuCategoryList = (props) => {
   const [showForm, setShowForm] = useState(false);
   const dispatch = useDispatch();
+  
+  const {
+    auth: { restaurantId },
+  } = useSelector((state) => state.auth);
+
   const [selectedItem, setSelectedItem] = useState(null);
   const editItem = async (row) => {
     if (row) {
@@ -30,8 +36,29 @@ const MenuCategoryList = (props) => {
     }
   };
 
+  const [fetch, setFetch] = useState(null);
+  socket.on(`get_restaurant_menu_categories_event_${restaurantId}`, (response) => {
+    setFetch(response);
+  });
   useEffect(() => {
     props.get_restaurant_menu_categories();
+  }, [fetch]);
+
+  useEffect(() => {
+    const joinRoom = () => {
+      if (socket) {
+        socket.emit('join_room', { roomName: `get_restaurant_menu_categories_event_${restaurantId}` });
+      }
+    };
+    joinRoom();
+    return () => {
+      if (socket) {
+        socket.emit('leave_room', { roomName: `get_restaurant_menu_categories_event_${restaurantId}` }, (response) => {
+          console.log(`left ${response}`);
+        });
+        socket.off(`get_restaurant_menu_categories_event_${restaurantId}`);
+      }
+    };
   }, []);
 
   return (

@@ -1,4 +1,4 @@
-import { GET_ALL_RESTAURANT, GET_CSUTOMER_ORDERS } from '../../actions/RestaurantAction';
+import { GET_ALL_RESTAURANT, GET_CSUTOMER_ORDERS, GET_ORDERS_IN_KITCHEN, SET_DASHBOARD_STATS } from '../../actions/RestaurantAction';
 
 const initialState = {
   allrestaurant: [],
@@ -6,6 +6,8 @@ const initialState = {
   successMessage: '',
   showLoading: false,
   customerOrders: [],
+  ordersInKitchen: [],
+  dasboardStats: null,
 };
 
 export function RestaurantReducer(state = initialState, action) {
@@ -24,6 +26,21 @@ export function RestaurantReducer(state = initialState, action) {
       ...state,
       customerOrders: action.payload,
       showLoading: false,
+    };
+  }
+
+  if (action.type === GET_ORDERS_IN_KITCHEN) {
+    return {
+      ...state,
+      ordersInKitchen: action.payload,
+      showLoading: false,
+    };
+  }
+
+  if (action.type === SET_DASHBOARD_STATS) {
+    return {
+      ...state, 
+      dasboardStats: action.payload,
     };
   }
 

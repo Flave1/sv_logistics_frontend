@@ -41,9 +41,13 @@ const Markup = () => {
         <Route path="page-error-500" element={<Error500 />} />
         <Route path="page-error-503" element={<Error503 />} />
 
-        {auth.userTypeId == UserType.Staff ? (
+        {auth.userTypeId === UserType.Staff ? (
           <Route element={<MainLayout />}>
             {staffRoutes.map((data, i) => (
+              <Route key={i} exact path={`${data.url}`} element={data.component} />
+            ))}
+
+            {customerRoutes.map((data, i) => (
               <Route key={i} exact path={`${data.url}`} element={data.component} />
             ))}
           </Route>

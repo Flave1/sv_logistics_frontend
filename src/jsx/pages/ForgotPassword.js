@@ -1,19 +1,18 @@
-import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 // image
-import logo from "../../images/logo-full.png";
+import logo from '../../images/logo-full.png';
 const ForgotPassword = ({ history }) => {
   const navigate = useNavigate();
 
   const onSubmit = (e) => {
     e.preventDefault();
-    //history.push("/dashboard");
-    navigate("/dashboard");
+    navigate('/main-dashboard');
   };
   return (
     <div className="authincation h-100 p-meddle">
       <div className="container h-100">
-        {" "}
+        {' '}
         <div className="row justify-content-center h-100 align-items-center">
           <div className="col-md-6">
             <div className="authincation-content">
@@ -21,7 +20,7 @@ const ForgotPassword = ({ history }) => {
                 <div className="col-xl-12">
                   <div className="auth-form">
                     <div className="text-center mb-3">
-                      <Link to="/dashboard">
+                      <Link to="/main-dashboard">
                         <img src={logo} alt="" />
                       </Link>
                     </div>
@@ -31,17 +30,10 @@ const ForgotPassword = ({ history }) => {
                         <label className="">
                           <strong>Email</strong>
                         </label>
-                        <input
-                          type="email"
-                          className="form-control"
-                          defaultValue="hello@example.com"
-                        />
+                        <input type="email" className="form-control" defaultValue="hello@example.com" />
                       </div>
                       <div className="text-center">
-                        <button
-                          type="submit"
-                          className="btn btn-primary btn-block"
-                        >
+                        <button type="submit" className="btn btn-primary btn-block">
                           SUBMIT
                         </button>
                       </div>

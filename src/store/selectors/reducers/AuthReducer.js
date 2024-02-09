@@ -7,18 +7,19 @@ import {
   LOGOUT_ACTION,
   SIGNUP_CONFIRMED_ACTION,
   SIGNUP_FAILED_ACTION,
+  SPIN,
 } from '../../actions/AuthActions';
 
 const initialState = {
   auth: {
-    id:'',
+    id: '',
     email: '',
     idToken: '',
     localId: '',
     expiresIn: '',
     refreshToken: '',
     socket: null,
-    restaurantId: ''
+    restaurantId: '',
   },
   errorMessage: '',
   successMessage: '',
@@ -81,6 +82,13 @@ export function AuthReducer(state = initialState, action) {
     return {
       ...state,
       sessionId: !state.sessionId ? GenerateUUID() : state.sessionId,
+    };
+  }
+
+  if (action.type === SPIN) {
+    return {
+      ...state,
+      showLoading: action.payload,
     };
   }
 

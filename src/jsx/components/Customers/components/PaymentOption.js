@@ -6,7 +6,7 @@ export default function PaymentOption(setPaymentOption) {
         <div className="nav-link setting-bx d-flex" id="pills-account-tab">
           <input type="radio" defaultChecked name="paymentoption" onClick={() => setPaymentOption(1)} className="m-3" style={{ width: 40 }} />
           <div className="setting-info">
-            <h6>Pay At The Restaurant</h6>
+            <h6>Pay At Restaurant</h6>
             <p className="mb-0">
               This option provides the flexibility for customers to pay in-person at the restaurant, ensuring a seamless and convenient dining
               experience.

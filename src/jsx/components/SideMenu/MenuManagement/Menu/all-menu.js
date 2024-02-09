@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Tab, Nav } from 'react-bootstrap';
 import { Modal } from 'react-bootstrap';
-import { useDispatch, connect } from 'react-redux';
+import { useDispatch, connect, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import {
@@ -19,26 +19,30 @@ import {
 import { Dropdown } from 'react-bootstrap';
 import FoodieAlert from '../../../../utils/alert';
 import MenuCategorySlider from '../MenuCategory/menu-category-slider';
-import { getMenuByCategoryId } from '../../../../../services/MenuService';
-import MenuList from '../../../Dashboard/Favorite/MenuList';
-import { formatDate } from '../../../../utils/common';
+import { formatDate, formatNumberWithSeparator } from '../../../../utils/common';
 import swal from 'sweetalert';
+import { spinner } from '../../../../../store/actions';
+import { socket } from '../../../../../services/socket/SocketService';
 
 let selectedItemIds = [];
 let discountedPrice = 0;
 const AllRestaurantMenu = (props) => {
   const menuCategory = useParams();
-  const [menuItem, setMenuItem] = useState(null);
   const dispatch = useDispatch();
   const [showForm, setShowForm] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [categoryList, setCategoryList] = useState(null);
+  const {
+    auth: { restaurantId },
+  } = useSelector((state) => state.auth);
 
   const params = new URLSearchParams(window.location.search);
   const categoryId = params.get('categoryId') || null;
 
   const editItem = async (row) => {
+    dispatch(spinner(true));
     const itemInfo = await getSingleMenuAction(row.id);
+    dispatch(spinner(false));
     if (itemInfo) {
       setSelectedItem(itemInfo);
       setShowForm(true);
@@ -47,7 +51,9 @@ const AllRestaurantMenu = (props) => {
 
   useEffect(() => {
     const getCategories = async (item) => {
+      dispatch(spinner(true));
       const categories = await getMenuCategoriesAction2();
+      dispatch(spinner(false));
       if (categories) {
         setCategoryList(categories);
       }
@@ -55,13 +61,36 @@ const AllRestaurantMenu = (props) => {
 
     getCategories();
   }, []);
+
+  const [fetch, setFetch] = useState(null);
+  socket.on(`get_restaurant_menu_event_${restaurantId}`, (response) => {
+    setFetch(response);
+  });
   useEffect(() => {
     if (categoryId) {
       getMenuByCategoryIdAction(categoryId)(dispatch);
     } else {
       props.get_all_restaurant_menu();
     }
-  }, [categoryId]);
+  }, [fetch, categoryId]);
+
+  useEffect(() => {
+    const joinRoom = () => {
+      if (socket) {
+        socket.emit('join_room', { roomName: `get_restaurant_menu_event_${restaurantId}` });
+      }
+    };
+    joinRoom();
+    return () => {
+      if (socket) {
+        socket.emit('leave_room', { roomName: `get_restaurant_menu_event_${restaurantId}` }, (response) => {
+          console.log(`left ${response}`);
+        });
+        socket.off(`get_restaurant_menu_event_${restaurantId}`);
+      }
+    };
+  }, []);
+
   return (
     <>
       <div className="row">
@@ -220,7 +249,10 @@ const AllRestaurantMenu = (props) => {
                                 <Link onClick={() => editItem(item)}>
                                   <h4>{item.name}</h4>
                                 </Link>
-                                <h3 className=" mb-0 text-primary">&#8358;{item.price}</h3>
+                                <h3 className=" mb-0 text-primary">
+                                  {item.restaurant.country.currencyCode}
+                                  {formatNumberWithSeparator(Number(item.price))}
+                                </h3>
                               </div>
                             </div>
                           </div>
@@ -327,7 +359,7 @@ function Form({ show, setShowForm, dispatch, categoryId, selectedItem, setSelect
       <div className="modal-body">
         <form onSubmit={handleSubmit}>
           <div className="row modal-inside">
-          <div className="col-6">
+            <div className="col-6">
               <label htmlFor="val-category" className="form-label">
                 Category <span className="text-danger">*</span>
               </label>
@@ -463,7 +495,7 @@ function Form({ show, setShowForm, dispatch, categoryId, selectedItem, setSelect
                 placeholder="Enter discount"
                 // value={values.discount}
                 onChange={(e) => {
-                discountedPrice = handleDiscount(values.price, e.target.value)
+                  discountedPrice = handleDiscount(values.price, e.target.value);
                   handleChange('discount');
                   setFieldValue('discount', discountedPrice);
                 }}
@@ -606,7 +638,7 @@ function TR({ row, dispatch, editItem }) {
           </div>
         </Link>
       </td>
-      <td className="py-2">{row.price}</td>
+      <td className="py-2">{formatNumberWithSeparator(Number(row.price))}</td>
       <td className="py-2">{row.menuCategory.name}</td>
       <td className="py-2">{row.status ? 'Active' : 'InActive'}</td>
       <td className="py-2">{formatDate(row.createdAt)}</td>
@@ -802,20 +834,20 @@ const DropMenu = ({ row, dispatch, editItem }) => (
 );
 
 const handleDiscount = (price, discount) => {
-      if (price < 1) {
-        swal('Error!','Price should not be less than 1');
-        return 0;
-      }
-      if (discount < 0) {
-        swal('Error!', 'Discount should not be less than 1');
-        return 0;
-      }
-      if (discount > 100) {
-        swal('Error!', 'Discount should not be greater than 100');
-        return 0;
-      }
+  if (price < 1) {
+    swal('Error!', 'Price should not be less than 1');
+    return 0;
+  }
+  if (discount < 0) {
+    swal('Error!', 'Discount should not be less than 1');
+    return 0;
+  }
+  if (discount > 100) {
+    swal('Error!', 'Discount should not be greater than 100');
+    return 0;
+  }
 
-      const percentageAmount = (price * discount) / 100;
-      const discountedPrice = price - percentageAmount;
-      return discountedPrice;
-}
+  const percentageAmount = (price * discount) / 100;
+  const discountedPrice = price - percentageAmount;
+  return discountedPrice;
+};

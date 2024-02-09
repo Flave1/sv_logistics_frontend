@@ -14,7 +14,10 @@ export default function CartList({ menu, addToCart, removeFromCart, quantity }) 
               <Link to={'#'}>{menu.menuName}</Link>
             </h4>
           </div>
-          <h4 className="text-primary ms-2">+${menu.price}</h4>
+          <h4 className="text-primary ms-2">
+            +{menu.currencyCode}
+            {menu.price}
+          </h4>
         </div>
         <div className="d-flex align-items-center justify-content-between">
           <span></span>

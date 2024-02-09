@@ -16,7 +16,7 @@ const Error503 = () => {
                      </h4>
                      <p>Sorry, we are under maintenance!</p>
                      <div>
-                        <Link className="btn btn-primary" to="/dashboard">
+                        <Link className="btn btn-primary" to="#">
                            Back to Home
                         </Link>
                      </div>

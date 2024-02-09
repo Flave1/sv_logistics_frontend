@@ -10,33 +10,37 @@ import { Link } from 'react-router-dom';
 //import { Dropdown } from "react-bootstrap";
 import LogoutPage from './Logout';
 
-import HeaderSlider from './HeaderSlider';
 
 //import avatar from "../../../images/avatar/1.jpg";
-import profile from '../../../images/banner-img/pic-1.png';
+import { useSelector } from 'react-redux';
 
-const countries = ['Nigeria', 'Sierra Leone', 'Guinea'];
+// const countries = ['Nigeria', 'Sierra Leone', 'Guinea'];
 
-const LocationIcon = ({ key }) => <i className="fa-solid fa-location-dot mx-2 " key={key} />;
+// const LocationIcon = ({ key }) => <i className="fa-solid fa-location-dot mx-2 " key={key} />;
 
 //return BoxTab.classList.toggle("active"),SearchBlog.classList.toggle("active");
 
-function AddSearchSlider() {
-  //alert(111);
-  let SearchBlog = document.getElementById('Search-Blog');
-  let BoxTab = document.getElementById('close-searchbox');
-  setTimeout(() => {
-    if (BoxTab.classList.contains('active')) {
-      return BoxTab.classList.remove('active'), SearchBlog.classList.remove('active');
-    } else {
-      return BoxTab.classList.add('active'), SearchBlog.classList.add('active');
-    }
-  }, 100);
-}
+// function AddSearchSlider() {
+//   //alert(111);
+//   let SearchBlog = document.getElementById('Search-Blog');
+//   let BoxTab = document.getElementById('close-searchbox');
+//   setTimeout(() => {
+//     if (BoxTab.classList.contains('active')) {
+//       return BoxTab.classList.remove('active'), SearchBlog.classList.remove('active');
+//     } else {
+//       return BoxTab.classList.add('active'), SearchBlog.classList.add('active');
+//     }
+//   }, 100);
+// }
 
 const Header = ({ onNote }) => {
   //const [rightSelect, setRightSelect] = useState('Eng');
-  const [selectCountry, setSelectCountry] = useState([countries[0]]);
+  // const [selectCountry, setSelectCountry] = useState([countries[0]]);
+
+  const {
+    auth: { lastName },
+  } = useSelector((state) => state.auth);
+
   //For fix header
   const [headerFix, setheaderFix] = useState(false);
   useEffect(() => {
@@ -151,10 +155,10 @@ const Header = ({ onNote }) => {
                       //onClick={DropBtnblog()}
                     >
                       <div className="header-info2 d-flex align-items-center">
-                        <img src={profile} alt="" />
+                        <img src={'https://static.vecteezy.com/system/resources/thumbnails/006/487/917/small/man-avatar-icon-free-vector.jpg'} alt="" />
                         <div className="d-flex align-items-center sidebar-info">
                           <div>
-                            <h6 className="font-w500 mb-0 ms-2">Joshua</h6>
+                            <h6 className="font-w500 mb-0 ms-2">{lastName}</h6>
                           </div>
                           <i className="fas fa-chevron-down"></i>
                         </div>
@@ -179,7 +183,7 @@ const Header = ({ onNote }) => {
                         </svg>
                         <span className="ms-2">Profile</span>
                       </Link>
-                      <Link to="./email-inbox" className="dropdown-item ai-icon">
+                      {/* <Link to="./email-inbox" className="dropdown-item ai-icon">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           className="text-primary"
@@ -196,8 +200,8 @@ const Header = ({ onNote }) => {
                           <polyline points="22,6 12,13 2,6"></polyline>
                         </svg>
                         <span className="ms-2">Inbox</span>
-                      </Link>
-                      <Link to="./edit-profile" className="dropdown-item ai-icon">
+                      </Link> */}
+                      <Link to="#" className="dropdown-item ai-icon">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           className="text-primary"
@@ -215,7 +219,7 @@ const Header = ({ onNote }) => {
                         </svg>
                         <span className="ms-2">Edit Profile</span>
                       </Link>
-                      <Link to="./message" className="dropdown-item ai-icon ">
+                      {/* <Link to="./message" className="dropdown-item ai-icon ">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           width="24px"
@@ -233,8 +237,8 @@ const Header = ({ onNote }) => {
                           </g>
                         </svg>
                         <span className="ms-2">Message</span>
-                      </Link>
-                      <Link to="./notification" className="dropdown-item ai-icon ">
+                      </Link> */}
+                      <Link to="#" className="dropdown-item ai-icon ">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           width="24px"
@@ -254,7 +258,7 @@ const Header = ({ onNote }) => {
                         </svg>
                         <span className="ms-2">Notification </span>
                       </Link>
-                      <Link to="./setting" className="dropdown-item ai-icon ">
+                      {/* <Link to="./setting" className="dropdown-item ai-icon ">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           width="24px"
@@ -278,7 +282,7 @@ const Header = ({ onNote }) => {
                           </g>
                         </svg>
                         <span className="ms-2">Settings </span>
-                      </Link>
+                      </Link> */}
                       <LogoutPage />
                     </Dropdown.Menu>
                   </Dropdown>
