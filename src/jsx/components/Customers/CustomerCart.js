@@ -111,7 +111,7 @@ const CustomerCart = () => {
               {location.latitude} - {location.longitude}
             </h4>
           </div>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. </p>
+          {/* <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. </p> */}
         </div>
       </div>
     );

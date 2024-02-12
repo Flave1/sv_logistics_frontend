@@ -37,8 +37,6 @@ function MainDashboard() {
   const { dasboardStats } = useSelector((state) => state.restaurant);
   const { categories } = useSelector((state) => state.menuCategory);
 
-  console.log('dasboardStats', dasboardStats);
-
   const {
     auth: { restaurantId },
   } = useSelector((state) => state.auth);
@@ -86,16 +84,16 @@ function MainDashboard() {
                       <div className="line position-relative">
                         <p className="font-w500 mb-0">Total Income</p>
                         <h2 className="mb-0 text-primary">
-                          {dasboardStats.currency}
-                          {dasboardStats.totalIncome}
+                          {dasboardStats?.currency}
+                          {dasboardStats?.totalIncome}
                         </h2>
                       </div>
                     </div>
                     <div className="col-xl-3 col-lg-3 col-6">
                       <p className="font-w500 text-success mb-0">Income</p>
                       <h4 className="cate-title data">
-                        {dasboardStats.currency}
-                        {dasboardStats.income}
+                        {dasboardStats?.currency}
+                        {dasboardStats?.income}
                       </h4>
                       <ul className="d-flex align-items-center">
                         <li>
@@ -119,8 +117,8 @@ function MainDashboard() {
                     <div className="col-xl-2 col-lg-2 col-6">
                       <p className="font-w500 text-danger mb-0">Expense</p>
                       <h4 className="cate-title data">
-                        {dasboardStats.currency}
-                        {dasboardStats.expense}
+                        {dasboardStats?.currency}
+                        {dasboardStats?.expense}
                       </h4>
                       <ul className="d-flex align-items-center">
                         <li>
@@ -289,7 +287,7 @@ function MainDashboard() {
                     </div>
                     <div>
                       <p className="font-w500 mb-0">Total Order Complete</p>
-                      <h4 className="cate-title mb-0">{dasboardStats.delivered}</h4>
+                      <h4 className="cate-title mb-0">{dasboardStats?.delivered}</h4>
                     </div>
                   </div>
                   <div className="d-flex align-items-center mb-4">
@@ -307,7 +305,7 @@ function MainDashboard() {
                     </div>
                     <div>
                       <p className="font-w500 mb-0">Total Order Delivered</p>
-                      <h4 className="cate-title mb-0">{dasboardStats.completedOrder}</h4>
+                      <h4 className="cate-title mb-0">{dasboardStats?.completedOrder}</h4>
                     </div>
                   </div>
                   <div className="d-flex align-items-center mb-4">
@@ -325,7 +323,7 @@ function MainDashboard() {
                     </div>
                     <div>
                       <p className="font-w500 mb-0">Total Order Canceled</p>
-                      <h4 className="cate-title mb-0">{dasboardStats.canceled}</h4>
+                      <h4 className="cate-title mb-0">{dasboardStats?.canceled}</h4>
                     </div>
                   </div>
                   <div className="d-flex align-items-center mb-0">
@@ -343,7 +341,7 @@ function MainDashboard() {
                     </div>
                     <div>
                       <p className="font-w500 mb-0">Order Pending</p>
-                      <h4 className="cate-title mb-0">{dasboardStats.pending}</h4>
+                      <h4 className="cate-title mb-0">{dasboardStats?.pending}</h4>
                     </div>
                   </div>
                 </div>

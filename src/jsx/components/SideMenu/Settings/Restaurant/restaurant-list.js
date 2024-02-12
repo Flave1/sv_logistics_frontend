@@ -11,13 +11,7 @@ import * as Yup from 'yup';
 import FoodieAlert from '../../../../utils/alert';
 import { formatDate } from '../../../../utils/common';
 import swal from 'sweetalert';
-import {
-  createCountryAction,
-  deleteCountryAction,
-  getAllCountryAction,
-  getAllCountryAction2,
-  updateCountryAction,
-} from '../../../../../store/actions/CountryActions';
+import { getAllCountryAction2 } from '../../../../../store/actions/CountryActions';
 import { getAllClientsAction } from '../../../../../store/actions/ClientActions';
 import {
   createRestaurantAction,
@@ -43,7 +37,7 @@ const RestaurantList = (props) => {
   };
 
   useEffect(() => {
-    const getClients = async (item) => {
+    const getClients = async () => {
       const clients = await getAllClientsAction();
       if (clients) {
         setClients(clients);
@@ -51,7 +45,7 @@ const RestaurantList = (props) => {
     };
     getClients();
 
-    const getCountries = async (item) => {
+    const getCountries = async () => {
       const countries = await getAllCountryAction2();
       if (countries) {
         setCountries(countries);
@@ -85,7 +79,7 @@ const RestaurantList = (props) => {
   return (
     <Fragment>
       <div className="d-flex align-items-center justify-content-between">
-        <PageTitle activeMenu="Restaurant List" motherMenu="Restaurant Management" />
+        <PageTitle activeMenu="Restaurant List" motherMenu="Restaurant Management" pageContent={undefined} />
         <button type="button" className="me-2 btn" id="deleteBtn" style={{ display: 'none' }} onClick={() => deleteSelected(dispatch)}>
           <span className="btn-icon-start text-info">
             <i className="fa fa-trash"></i>
@@ -175,7 +169,9 @@ function TR({ row, dispatch, editItem }) {
         <Check i={1} row={row} />
       </td>
       <td className="">
-        <Link onClick={() => editItem(row)}>{row.name}</Link>
+        <Link onClick={() => editItem(row)} to={''}>
+          {row.name}
+        </Link>
       </td>
       <td className="py-2">{row.email}</td>
       <td className="py-2">{row.phoneNumber}</td>
@@ -189,8 +185,8 @@ function TR({ row, dispatch, editItem }) {
 }
 
 function Form({ show, setShowForm, dispatch, selectedItem, setSelectedItem, clientsList, location, countryList }) {
-  const [image, setImage] = useState();
-  const [title, setTitle] = useState();
+  const [image, setImage] = useState(null);
+  const [title, setTitle] = useState('');
   const validation = Yup.object().shape({
     name: Yup.string().required('Restaurant Name Is Required').min(2, 'Restaurant Name Is Too Short!').max(50, 'Restaurant Name Is Too Long!'),
     client: Yup.string().required('Client Is Required'),

@@ -70,7 +70,7 @@ const AllRestaurantMenu = (props) => {
     if (categoryId) {
       getMenuByCategoryIdAction(categoryId)(dispatch);
     } else {
-      props.get_all_restaurant_menu();
+      getAllMenuAction()(dispatch);
     }
   }, [fetch, categoryId]);
 
@@ -185,7 +185,7 @@ const AllRestaurantMenu = (props) => {
                               </tr>
                             </thead>
                             <tbody id="customers">
-                              {props?.menu &&
+                              {props?.menu && props?.menu.length > 0 &&
                                 props.menu.map((row, idx) => {
                                   return <TR dispatch={dispatch} row={row} key={idx} editItem={editItem} />;
                                 })}
@@ -736,13 +736,8 @@ const mapStateToProps = (state) => {
     menu: state.menu.allmenu,
   };
 };
-const mapDispatchToProps = (dispatch) => {
-  return {
-    get_all_restaurant_menu: () => getAllMenuAction()(dispatch),
-  };
-};
 
-export default connect(mapStateToProps, mapDispatchToProps)(AllRestaurantMenu);
+export default connect(mapStateToProps)(AllRestaurantMenu);
 
 const CategorySidebar = ({ categoryList }) => {
   const [selectedCat, setSelectedCat] = useState('all');

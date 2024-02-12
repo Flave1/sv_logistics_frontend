@@ -98,7 +98,6 @@ export const staffRoutes = [
   //MenuManagement
   { url: 'menu-category', component: <MenuCategoryList /> },
   { url: 'restaurant-menu', component: <AllRestaurantMenu /> },
-  // { url: "restaurant-menu/:categoryId", component: <RestaurantMenu /> },
 
   //user management
   { url: 'staff-users', component: <StaffList /> },

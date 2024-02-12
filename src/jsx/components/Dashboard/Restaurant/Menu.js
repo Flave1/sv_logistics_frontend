@@ -72,43 +72,43 @@ const Menu = () =>{
                         <div className="d-flex align-items-center veg justify-content-center">
                             <div className="form-check me-3 ">
                                 <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" />
-                                <label className="form-check-label" for="flexRadioDefault1">Non veg</label>
+                                <label className="form-check-label" htmlFor="flexRadioDefault1">Non veg</label>
                             </div>   
                             <div className="form-check style-1">
                                 <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" />
-                                <label className="form-check-label" for="flexRadioDefault2">Veg</label>
+                                <label className="form-check-label" htmlFor="flexRadioDefault2">Veg</label>
                             </div>
                         </div>
                         <div className="modal-inside">
-                            <label for="exampleInputText" className="form-label">Item Title</label>
+                            <label htmlFor="exampleInputText" className="form-label">Item Title</label>
                             <input type="text" className="form-control" id="exampleInputText" placeholder="" />                                    
                         </div>
                         <div className="row">
                             <div className="col-xl-4">
                                 <div className="modal-inside">
-                                    <label for="exampleInputnumber" className="form-label mb-2">Item Pricing</label>
+                                    <label htmlFor="exampleInputnumber" className="form-label mb-2">Item Pricing</label>
                                     <input type="number" className="form-control" id="exampleInputnumber" />
                                 </div>
                             </div>
                             <div className="col-xl-4">
                                 <div className="modal-inside">
-                                    <label for="exampleInputnumber-1" className="form-label mb-2">Delivery Charge</label>
+                                    <label htmlFor="exampleInputnumber-1" className="form-label mb-2">Delivery Charge</label>
                                     <input type="number" className="form-control" id="exampleInputnumber-1" />
                                 </div>
                             </div>
                             <div className="col-xl-4">
                                 <div className="modal-inside">
-                                    <label for="exampleInputnumber-2" className="form-label mb-2">GST</label>
+                                    <label htmlFor="exampleInputnumber-2" className="form-label mb-2">GST</label>
                                     <input type="number" className="form-control" id="exampleInputnumber-2" />
                                 </div>
                             </div>
                         </div>
                         <div className="modal-inside">
-                            <label for="exampleInputnumber-3" className="form-label mb-2">Phone Number</label>
+                            <label htmlFor="exampleInputnumber-3" className="form-label mb-2">Phone Number</label>
                             <input type="number" className="form-control" id="exampleInputnumber-3" />
                         </div>
                         <div className="modal-inside">
-                            <label for="exampleInputEmail1" className="form-label mb-2">Email Address</label>
+                            <label htmlFor="exampleInputEmail1" className="form-label mb-2">Email Address</label>
                             <input type="email" className="form-control" id="exampleInputEmail1" />
                         </div>
                     </form>

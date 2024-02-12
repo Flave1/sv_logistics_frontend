@@ -199,7 +199,7 @@ const CustomerHeader = ({ onNote }) => {
                       //onClick={DropBtnblog()}
                     >
                       <div className="header-info2 d-flex align-items-center">
-                        <img src={profile} alt="" />
+                      <img src={'https://static.vecteezy.com/system/resources/thumbnails/006/487/917/small/man-avatar-icon-free-vector.jpg'} alt="" />
                         <div className="d-flex align-items-center sidebar-info">
                           <div>
                             <h6 className="font-w500 mb-0 ms-2">Joshua</h6>
@@ -220,14 +220,14 @@ const CustomerHeader = ({ onNote }) => {
                           stroke="currentColor"
                           strokeWidth="2"
                           stroke-linecap="round"
-                          stroke-linejoin="round"
+                          strokeLinejoin="round"
                         >
                           <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                           <circle cx="12" cy="7" r="4"></circle>
                         </svg>
                         <span className="ms-2">Profile</span>
                       </Link>
-                      <Link to="./email-inbox" className="dropdown-item ai-icon">
+                      {/* <Link to="./email-inbox" className="dropdown-item ai-icon">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           className="text-primary"
@@ -244,8 +244,8 @@ const CustomerHeader = ({ onNote }) => {
                           <polyline points="22,6 12,13 2,6"></polyline>
                         </svg>
                         <span className="ms-2">Inbox</span>
-                      </Link>
-                      <Link to="./edit-profile" className="dropdown-item ai-icon">
+                      </Link> */}
+                      <Link to="#" className="dropdown-item ai-icon">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           className="text-primary"
@@ -255,15 +255,15 @@ const CustomerHeader = ({ onNote }) => {
                           fill="none"
                           stroke="currentColor"
                           strokeWidth="2"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
                         >
                           <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
                           <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
                         </svg>
                         <span className="ms-2">Edit Profile</span>
                       </Link>
-                      <Link to="./message" className="dropdown-item ai-icon ">
+                      {/* <Link to="./message" className="dropdown-item ai-icon ">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           width="24px"
@@ -281,8 +281,8 @@ const CustomerHeader = ({ onNote }) => {
                           </g>
                         </svg>
                         <span className="ms-2">Message</span>
-                      </Link>
-                      <Link to="./notification" className="dropdown-item ai-icon ">
+                      </Link> */}
+                      <Link to="#" className="dropdown-item ai-icon ">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           width="24px"
@@ -302,7 +302,7 @@ const CustomerHeader = ({ onNote }) => {
                         </svg>
                         <span className="ms-2">Notification </span>
                       </Link>
-                      <Link to="./setting" className="dropdown-item ai-icon ">
+                      {/* <Link to="./setting" className="dropdown-item ai-icon ">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           width="24px"
@@ -326,7 +326,7 @@ const CustomerHeader = ({ onNote }) => {
                           </g>
                         </svg>
                         <span className="ms-2">Settings </span>
-                      </Link>
+                      </Link> */}
                       <LogoutPage />
                     </Dropdown.Menu>
                   </Dropdown>
