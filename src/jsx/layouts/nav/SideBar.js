@@ -160,23 +160,23 @@ const SideBar = () => {
             }
           })}
         </ul>
-        <div className="plus-box">
+        {/* <div className="plus-box">
           <div className="d-flex align-items-center">
             <h5>Upgrade your Account to Get Free Voucher</h5>
           </div>
           <Link to={'#'} className="btn bg-white btn-sm">
             Upgrade
           </Link>
-        </div>
-        <div className="copyright mt-0">
+        </div> */}
+        {/* <div className="copyright mt-0">
           <p>
-            <strong>Food Desk - Online Food Delivery Admin Dashboard</strong> © 2022 All Rights Reserved
+            <strong>Cafay - Online Food Delivery </strong> © 2024 All Rights Reserved
           </p>
           <p className="fs-12">
             Made with
-            <span className="heart" onClick={() => heartBlast()}></span> by DexignLab
+            <span className="heart" onClick={() => heartBlast()}></span> by FlaveConsole
           </p>
-        </div>
+        </div> */}
       </PerfectScrollbar>
     </div>
   );
