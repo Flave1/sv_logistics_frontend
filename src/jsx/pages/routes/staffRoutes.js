@@ -77,6 +77,7 @@ import GenerateQrCode from '../../components/SideMenu/Settings/QrCode/generate-q
 import AdminOrders from '../../components/SideMenu/OrderManagement/AdminOrders';
 import OrdersInKitchen from '../../components/SideMenu/OrderManagement/OrdersInKitchen';
 import Maintenance from '../../utils/maintenance';
+import Permissions from '../../components/SideMenu/UserManagment/Staff/permissions';
 
 export const staffRoutes = [
   /// Dashboard
@@ -103,6 +104,7 @@ export const staffRoutes = [
   { url: 'staff-users', component: <StaffList /> },
   { url: 'driver-users', component: <DriverList /> },
   { url: 'customer-users', component: <CustomerList /> },
+  { url: 'permissions', component: <Permissions /> },
 
   //Settings
   { url: 'country-list', component: <CountryList /> },

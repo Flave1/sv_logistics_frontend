@@ -9,14 +9,7 @@ import PaymentOption from './components/PaymentOption';
 import OrderSuccess from './components/OrderSuccess';
 import { formatNumberWithSeparator } from '../../utils/common';
 
-const orderTab = [
-  { order: '1', title: 'Prepared', title2: 'Delivered' },
-  { order: '2', title: 'Prepared', title2: 'Delivered' },
-  { order: '3', title: 'Prepared', title2: 'Delivered' },
-  { order: '4', title: 'Prepared', title2: 'Delivered' },
-  { order: '5', title: 'Prepared', title2: 'Delivered' },
-  { order: '6', title: 'Prepared', title2: 'Delivered' },
-];
+
 
 const CustomerCart = () => {
   const [location, setLocation] = useState({ latitude: 0, longitude: 0 });
@@ -61,10 +54,10 @@ const CustomerCart = () => {
 
   useEffect(() => {
     async function fetchData() {
-      await GetCartListAction({ customerId: user.id, temporalId: sessionId })(dispatch);
+      await GetCartListAction({ customerId: user?.id, temporalId: sessionId })(dispatch);
     }
-    sessionId && fetchData(); //user.id ||
-  }, [user.id, sessionId]);
+    sessionId && fetchData(); //user?.id ||
+  }, [user?.id, sessionId]);
   useEffect(() => {
     menuCart && menuCart.length > 0 && setCurrency(menuCart[0].currencyCode)
   }, [menuCart])
@@ -84,7 +77,7 @@ const CustomerCart = () => {
 
   function addToCart(item) {
     AddToCartAction({
-      customerId: user.id,
+      customerId: user?.id,
       restaurantId: item.restaurantId,
       menuId: item.menuId,
       quantity: 1,
@@ -93,7 +86,7 @@ const CustomerCart = () => {
     })(dispatch);
   }
   function removeFromCart(item) {
-    RemoveFromCartAction(item.menuId, user.id, sessionId)(dispatch);
+    RemoveFromCartAction(item.menuId, user?.id, sessionId)(dispatch);
   }
   function renderdeliveryAddress() {
     return (
@@ -230,9 +223,9 @@ const CustomerCart = () => {
                 <Button
                   onClick={() => {
                     CheckoutAction(
-                      shop.id,
+                      shop?.id,
                       menuCart.map((mn) => mn.menuId),
-                      user.id,
+                      user?.id,
                       sessionId,
                       setSlider,
                     )(dispatch);

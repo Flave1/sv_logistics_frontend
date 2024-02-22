@@ -13,6 +13,7 @@ import * as Yup from 'yup';
 import FoodieAlert from '../../../../utils/alert';
 import { socket } from '../../../../../services/socket/SocketService';
 import { spinner } from '../../../../../store/actions';
+import { formatDate } from '@fullcalendar/react';
 
 let selectedItemIds = [];
 const StaffList = (props) => {
@@ -158,7 +159,7 @@ function TR({ row, dispatch, editItem }) {
         <a href="tel:2012001851">{row.phoneNumber}</a>
       </td>
       <td className="py-2 ps-5 wspace-no">{row.address}</td>
-      <td className="py-2">{row.createdAt}</td>
+      <td className="py-2">{formatDate(row.createdAt)}</td>
       <td className="py-2 text-right">
         <DropMenu row={row} dispatch={dispatch} editItem={editItem} />
       </td>
@@ -351,6 +352,9 @@ const DropMenu = ({ row, dispatch, editItem }) => (
         }}
       >
         Delete
+      </Dropdown.Item>
+      <Dropdown.Item href="#" className="text-danger">
+        <Link to={`/permissions?userid=${row.id}&type=${1}`}> Permissions</Link>
       </Dropdown.Item>
     </Dropdown.Menu>
   </Dropdown>

@@ -1,4 +1,3 @@
-import swal from 'sweetalert';
 import axiosInstance from './axios-instance';
 
 export function getPopularRestaurants() {

@@ -69,3 +69,27 @@ export async function prepareOrder(id) {
     return error;
   }
 }
+
+export async function getUserPermissions(userId, type) {
+  try {
+    const response = (await axiosInstance.get(`/users/permission/${userId}/${type}`));
+    return response.data;
+  } catch (error) {
+    console.log('error.response.data', error.response.data);
+    FoodieAlert.showError(error.response.data);
+    return error;
+  }
+}
+
+
+export async function savePermissionSettings(payload) {
+  try {
+    const response = await axiosInstance.post(`/users/permission`, payload);
+    return response.data;
+  } catch (error) {
+    console.log('error.response.data', error.response.data);
+    FoodieAlert.showError(error.response.data);
+    return error;
+  }
+}
+

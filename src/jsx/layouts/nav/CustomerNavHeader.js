@@ -31,12 +31,12 @@ const CustomerNavHeader = () => {
       {background.value === 'dark' || navigationHader !== 'color_1' ? (
           <>
             <img src={logo} alt="Logo" width={50} />
-            <h3 style={{ color: 'white' }}>CAFAY</h3>
+            {/* <h3 style={{ color: 'white' }}>CAFAY</h3> */}
           </>
         ) : (
           <>
             <img src={logo} alt="Logo" width={50} />
-            <h3 style={{ color: 'white' }}>CAFAY</h3>
+            {/* <h3 style={{ color: 'white' }}>CAFAY</h3> */}
           </>
         )}
       </Link>

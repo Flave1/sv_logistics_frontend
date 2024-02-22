@@ -202,13 +202,13 @@ const CustomerHeader = ({ onNote }) => {
                       <img src={'https://static.vecteezy.com/system/resources/thumbnails/006/487/917/small/man-avatar-icon-free-vector.jpg'} alt="" />
                         <div className="d-flex align-items-center sidebar-info">
                           <div>
-                            <h6 className="font-w500 mb-0 ms-2">Joshua</h6>
+                            <h6 className="font-w500 mb-0 ms-2">_____</h6>
                           </div>
                           <i className="fas fa-chevron-down"></i>
                         </div>
                       </div>
                     </Dropdown.Toggle>
-                    <Dropdown.Menu className="dropdown-menu-end">
+                    <Dropdown.Menu className="dropdown-menu-end" >
                       <Link to="./app-profile" className="dropdown-item ai-icon ">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
