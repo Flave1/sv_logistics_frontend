@@ -250,7 +250,7 @@ const AllRestaurantMenu = (props) => {
                                   <h4>{item.name}</h4>
                                 </Link>
                                 <h3 className=" mb-0 text-primary">
-                                  {item.restaurant.country.currencyCode}
+                                  {item.restaurant?.country?.currencyCode}
                                   {formatNumberWithSeparator(Number(item.price))}
                                 </h3>
                               </div>

@@ -27,6 +27,7 @@ import { useSelector } from 'react-redux';
 import { UserType } from './utils/constants';
 import { customerRoutes } from './pages/routes/customerRoutes';
 import { staffRoutes } from './pages/routes/staffRoutes';
+import { isAuthenticated } from '../store/selectors/AuthSelectors';
 
 const Markup = () => {
   const { auth } = useSelector((state) => state.auth);
@@ -46,8 +47,7 @@ const Markup = () => {
             {staffRoutes.map((data, i) => (
               <Route key={i} exact path={`${data.url}`} element={data.component} />
             ))}
-
-            {customerRoutes.map((data, i) => (
+                {customerRoutes.map((data, i) => (
               <Route key={i} exact path={`${data.url}`} element={data.component} />
             ))}
           </Route>
@@ -66,6 +66,7 @@ const Markup = () => {
 
 function MainLayout() {
   const { menuToggle } = useContext(ThemeContext);
+  const isLoggedIn = useSelector((state) => isAuthenticated(state));
   return (
     <div id="main-wrapper" className={`show ${menuToggle ? 'menu-toggle' : ''}`}>
       <Nav />

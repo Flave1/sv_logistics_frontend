@@ -11,6 +11,7 @@ import { Link, NavLink } from 'react-router-dom';
 import { MenuList } from './Menu';
 import { useScrollPosition } from '@n8tb1t/use-scroll-position';
 import { ThemeContext } from '../../../context/ThemeContext';
+import { useSelector } from 'react-redux';
 
 const reducer = (previousState, updatedState) => ({
   ...previousState,
@@ -24,15 +25,27 @@ const initialState = {
 
 const SideBar = () => {
   const { iconHover, sidebarposition, headerposition, sidebarLayout } = useContext(ThemeContext);
+  const { menuList } = useSelector((state: any) => state.auth);
+
+  const [userMenuList, setMenuList] = useState([]);
+  useEffect(() => {
+    const getUserAssigneMenu = () => {
+      const filteredMenu = MenuList.filter(
+        (item) => menuList.includes(item.to) || (item.content && item.content.some((mn) => menuList.includes(mn.to))),
+      );
+      setMenuList(filteredMenu);
+    };
+    getUserAssigneMenu();
+  }, [menuList]);
+
 
   const [state, setState] = useReducer(reducer, initialState);
 
-  let handleheartBlast = document.querySelector('.heart');
-  function heartBlast() {
-    return handleheartBlast.classList.toggle('heart-blast');
-  }
+  // let handleheartBlast = document.querySelector('.heart');
+  // function heartBlast() {
+  //   return handleheartBlast.classList.toggle('heart-blast');
+  // }
 
-  useEffect(() => {}, []);
   //For scroll
   const [hideOnScroll, setHideOnScroll] = useState(true);
   useScrollPosition(
@@ -58,7 +71,6 @@ const SideBar = () => {
     }
     //status.preventDefault();
   };
-  // Menu dropdown list End
 
   /// Path
   let path = window.location.pathname;
@@ -86,7 +98,7 @@ const SideBar = () => {
       <PerfectScrollbar className="dlabnav-scroll">
         <ul className="metismenu" id="menu">
           <li className="menu-title"> Main Menu</li>
-          {MenuList.map((data, index) => {
+          {userMenuList.map((data: any, index) => {
             let menuClass = data.classsChange;
             if (menuClass === 'menu-title') {
               return (
@@ -118,41 +130,46 @@ const SideBar = () => {
                   <Collapse in={state.active === data.title ? true : false}>
                     <ul className={`${menuClass === 'mm-collapse' ? 'mm-show' : ''}`}>
                       {data.content &&
-                        data.content.map((data, index) => {
-                          return (
-                            <li key={index} className={`${state.activeSubmenu === data.title ? 'mm-active' : ''}`}>
-                              {data.content && data.content.length > 0 ? (
-                                <NavLink
-                                  to={data.to}
-                                  className={data.hasMenu ? 'has-arrow' : ''}
-                                  onClick={() => {
-                                    handleSubmenuActive(data.title);
-                                  }}
-                                >
-                                  {data.title}
-                                </NavLink>
-                              ) : (
-                                <Link onClick={toggleMenu} to={data.to}>{data.title}</Link>
-                              )}
-                              <Collapse in={state.activeSubmenu === data.title ? true : false}>
-                                <ul className={`${menuClass === 'mm-collapse' ? 'mm-show' : ''}`}>
-                                  {data.content &&
-                                    data.content.map((data, index) => {
-                                      return (
-                                        <>
-                                          <li key={index}>
-                                            <Link className={`${path === data.to ? 'mm-active' : ''}`} to={data.to}>
-                                              {data.title}
-                                            </Link>
-                                          </li>
-                                        </>
-                                      );
-                                    })}
-                                </ul>
-                              </Collapse>
-                            </li>
-                          );
-                        })}
+                        data.content.length > 0 &&
+                        data.content
+                          .filter((con) => menuList.includes(con.to))
+                          .map((data, index) => {
+                            return (
+                              <li key={index} className={`${state.activeSubmenu === data.title ? 'mm-active' : ''}`}>
+                                {data.content && data.content.length > 0 ? (
+                                  <NavLink
+                                    to={data.to}
+                                    className={data.hasMenu ? 'has-arrow' : ''}
+                                    onClick={() => {
+                                      handleSubmenuActive(data.title);
+                                    }}
+                                  >
+                                    {data.title}
+                                  </NavLink>
+                                ) : (
+                                  <Link onClick={toggleMenu} to={data.to}>
+                                    {data.title}
+                                  </Link>
+                                )}
+                                <Collapse in={state.activeSubmenu === data.title ? true : false}>
+                                  <ul className={`${menuClass === 'mm-collapse' ? 'mm-show' : ''}`}>
+                                    {data.content &&
+                                      data.content.map((data, index) => {
+                                        return (
+                                          <>
+                                            <li key={index}>
+                                              <Link className={`${path === data.to ? 'mm-active' : ''}`} to={data.to}>
+                                                {data.title}
+                                              </Link>
+                                            </li>
+                                          </>
+                                        );
+                                      })}
+                                  </ul>
+                                </Collapse>
+                              </li>
+                            );
+                          })}
                     </ul>
                   </Collapse>
                 </li>

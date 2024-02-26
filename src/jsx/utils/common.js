@@ -32,3 +32,4 @@ export function GenerateUUID() {
 export function formatNumberWithSeparator(number) {
   return number.toLocaleString();
 }
+

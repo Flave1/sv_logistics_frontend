@@ -20,6 +20,7 @@ export const LOADING_TOGGLE_ACTION = '[Loading action] toggle loading';
 export const LOGOUT_ACTION = '[Logout action] logout action';
 export const GENERATE_TEMP_ID = '[GENERATE_TEMP_ID] temp id';
 export const SPIN = '[SPIN] spin';
+export const SET_MENU = '[SET_MENU] set menu';
 
 export function signupAction(email, password, navigate) {
   return (dispatch) => {
@@ -56,6 +57,7 @@ export function loginAction(email, password, navigate) {
       .then((response) => {
         saveAccessTokenInSessionStorage(response.data.access_token).then(() => {
           getUserContext().then((context) => {
+            setUserMenu(context.data.permissions)(dispatch);
             saveTokenDeatailInLocalStorage(context.data);
             runLogoutTimer(dispatch, context.data.expiresIn * 1000, navigate);
             dispatch(loginConfirmedAction(context.data));
@@ -113,6 +115,15 @@ export function generateTemporalId() {
   return (dispatch) => {
     dispatch({
       type: GENERATE_TEMP_ID,
+    });
+  };
+}
+
+export function setUserMenu(menuList) {
+  return (dispatch) => {
+    dispatch({
+      type: SET_MENU,
+      payload: menuList,
     });
   };
 }

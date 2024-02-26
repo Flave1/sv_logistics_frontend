@@ -144,7 +144,7 @@ const OrdersInKitchen = () => {
                           </svg>
                           <h5 className="mb-0">{data.address}</h5>
                         </div>
-                        <h4 className="price">$ {formatNumberWithSeparator(data.totalPrice)}</h4>
+                        <h4 className="price"> {formatNumberWithSeparator(data.totalPrice)}</h4>
                         <h5 className=" cash font-w500 ">{data.paymentMethod}</h5>
                         {/* <span className="accordion-header-indicator style-1"></span> */}
                       </Accordion.Header>
@@ -226,7 +226,7 @@ const OrdersInKitchen = () => {
                           </div>
                           <div className="col-xl-3 col-xxl-6 col-sm-6 mt-4 ms-sm-0 ms-3">
                             <p className="fs-18 font-w500">Total</p>
-                            <h4 className="cate-title text-primary">${formatNumberWithSeparator(data.totalPrice)}</h4>
+                            <h4 className="cate-title text-primary">{formatNumberWithSeparator(data.totalPrice)}</h4>
                             <div className="d-flex align-items-center p-3 justify-content-between">
                               {data.status === 2 && (
                                 <>

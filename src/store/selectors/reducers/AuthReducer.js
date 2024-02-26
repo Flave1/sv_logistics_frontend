@@ -5,6 +5,7 @@ import {
   LOGIN_CONFIRMED_ACTION,
   LOGIN_FAILED_ACTION,
   LOGOUT_ACTION,
+  SET_MENU,
   SIGNUP_CONFIRMED_ACTION,
   SIGNUP_FAILED_ACTION,
   SPIN,
@@ -25,6 +26,7 @@ const initialState = {
   successMessage: '',
   showLoading: false,
   sessionId: '',
+  menuList: [],
 };
 
 export function AuthReducer(state = initialState, action) {
@@ -89,6 +91,12 @@ export function AuthReducer(state = initialState, action) {
     return {
       ...state,
       showLoading: action.payload,
+    };
+  }
+  if (action.type === SET_MENU) {
+    return {
+      ...state,
+      menuList: action.payload,
     };
   }
 

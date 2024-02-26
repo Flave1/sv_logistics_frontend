@@ -1,6 +1,6 @@
 import swal from 'sweetalert';
 import { loginConfirmedAction, Logout } from '../store/actions/AuthActions';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import axiosInstance from './axios-instance';
 
 export function signUp(email, password) {
@@ -89,4 +89,17 @@ export function checkAutoLogin(dispatch, navigate) {
   runLogoutTimer(dispatch, timer, navigate);
 }
 
-
+export const refreshToken = async (token) => {
+  try {
+    const token = (await axiosInstance.post('authentication/refresh-token', { token })).data;
+    return {
+      message: token.access_token,
+      status: 201,
+    };
+  } catch (error) {
+    return {
+      message: error.response.data.message,
+      status: error.response.data.status,
+    };
+  }
+};
