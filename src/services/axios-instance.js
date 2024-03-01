@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { refreshToken } from './AuthService';
 const axiosInstance = axios.create({
-  // baseURL: 'http://3.81.254.132:3200/',
-  baseURL: 'http://localhost:3200/',
+  baseURL: 'http://3.81.254.132:3200/',
+  // baseURL: 'http://localhost:3200/',
   headers: {
     Authorization: '',
   },
