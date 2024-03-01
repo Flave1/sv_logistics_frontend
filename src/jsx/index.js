@@ -27,7 +27,9 @@ import { useSelector } from 'react-redux';
 import { UserType } from './utils/constants';
 import { customerRoutes } from './pages/routes/customerRoutes';
 import { staffRoutes } from './pages/routes/staffRoutes';
-import { isAuthenticated } from '../store/selectors/AuthSelectors';
+import Login from './pages/Login';
+import Registration from './pages/Registration';
+import ForgotPassword from './pages/ForgotPassword';
 
 const Markup = () => {
   const { auth } = useSelector((state) => state.auth);
@@ -41,13 +43,16 @@ const Markup = () => {
         <Route path="page-error-404" element={<Error404 />} />
         <Route path="page-error-500" element={<Error500 />} />
         <Route path="page-error-503" element={<Error503 />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/page-register" element={<Registration />} />
+        <Route path="/page-forgot-password" element={<ForgotPassword history={undefined} />} />
 
         {auth.userTypeId === UserType.Staff ? (
           <Route element={<MainLayout />}>
             {staffRoutes.map((data, i) => (
               <Route key={i} exact path={`${data.url}`} element={data.component} />
             ))}
-                {customerRoutes.map((data, i) => (
+            {customerRoutes.map((data, i) => (
               <Route key={i} exact path={`${data.url}`} element={data.component} />
             ))}
           </Route>
@@ -66,7 +71,6 @@ const Markup = () => {
 
 function MainLayout() {
   const { menuToggle } = useContext(ThemeContext);
-  const isLoggedIn = useSelector((state) => isAuthenticated(state));
   return (
     <div id="main-wrapper" className={`show ${menuToggle ? 'menu-toggle' : ''}`}>
       <Nav />

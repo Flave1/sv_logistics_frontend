@@ -89,9 +89,10 @@ export function checkAutoLogin(dispatch, navigate) {
   runLogoutTimer(dispatch, timer, navigate);
 }
 
-export const refreshToken = async (token) => {
+export const refreshToken = async (tokenPayload) => {
+
   try {
-    const token = (await axiosInstance.post('authentication/refresh-token', { token })).data;
+    const token = (await axiosInstance.post('authentication/refresh-token', { token: tokenPayload })).data;
     return {
       message: token.access_token,
       status: 201,
@@ -102,4 +103,8 @@ export const refreshToken = async (token) => {
       status: error.response.data.status,
     };
   }
+};
+
+export const session_Token = () => {
+  return localStorage.getItem('token');
 };

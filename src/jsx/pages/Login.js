@@ -64,7 +64,7 @@ function Login (props) {
 									<div className="sign-in-your">
 										<div className="text-center mb-3">
 											<img src={logo} className="mb-3" alt="" width={120} />
-											<h4 className="fs-20 font-w800 text-black">Create an Account</h4>
+											<h4 className="fs-20 font-w800 text-black">Login into Cafay</h4>
 											<span className="dlab-sign-up">Sign Up</span>
 										</div>
 										{props.errorMessage && (

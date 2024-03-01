@@ -3,7 +3,7 @@ import {connect, useDispatch } from 'react-redux';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import { Logout } from '../../../store/actions/AuthActions';
-import { isAuthenticated } from '../../../store/selectors/AuthSelectors';
+import { session_Token } from '../../../services/AuthService';
 
 
 function withRouter(Component) {
@@ -44,7 +44,7 @@ function LogoutPage(props){
 } 
 const mapStateToProps = (state) => {
     return {
-        isAuthenticated: isAuthenticated(state),
+        isAuthenticated: session_Token(),
     };
 };
 

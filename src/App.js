@@ -5,8 +5,7 @@ import Index, { CustomerLayout } from './jsx';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { Route, Routes, useLocation, useNavigate, useParams } from 'react-router-dom';
 // action
-import { checkAutoLogin } from './services/AuthService';
-import { isAuthenticated } from './store/selectors/AuthSelectors';
+import { checkAutoLogin, session_Token } from './services/AuthService';
 /// Style
 import './vendor/bootstrap-select/dist/css/bootstrap-select.min.css';
 import './css/style.css';
@@ -41,6 +40,14 @@ function withRouter(Component) {
 function App(props) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const token = session_Token();
+
+  useEffect(() => {
+    if (!token) {
+      navigate('/')
+    }
+  }, [token]);
   useEffect(() => {
     generateTemporalId()(dispatch);
   }, []);
@@ -75,6 +82,7 @@ function App(props) {
       };
     }
   }, [socket, props.socket.rooms]);
+  console.log(props.isAuthenticated);
 
   useEffect(() => {
     if (socket) {
@@ -145,13 +153,13 @@ function App(props) {
           </>
         </Suspense>
       </div>
-    );  
+    );
   }
 }
 
 const mapStateToProps = (state) => {
   return {
-    isAuthenticated: isAuthenticated(state),
+    isAuthenticated: session_Token() ? true : false,
     socket: state.socket,
   };
 };

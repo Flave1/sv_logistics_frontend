@@ -12,8 +12,6 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.response.use(
   async (response) => response,
   async (error) => {
-    console.log('error.response.status', error.response.status);
-
     if (error.response.status === 500) {
       console.log('error.response', error.response);
     }
@@ -24,14 +22,18 @@ axiosInstance.interceptors.response.use(
 
     const originalRequest = error.config;
     if (error.response.status === 401 && !originalRequest._retry) {
+      
       originalRequest._retry = true;
-      const sessionToken = await localStorage.getItem('token');
+      const sessionToken = localStorage.getItem('token');
       const resp = await refreshToken(sessionToken);
       if (resp.status === 401) {
-        return
+        localStorage.removeItem('token');
+        return;
       }
+
+      console.log('resp', resp);
       const access_token = resp.message;
-      await localStorage.setItem('token', access_token);
+      localStorage.setItem('token', access_token);
 
       axiosInstance.defaults.headers.Authorization = 'Bearer ' + access_token;
       return axiosInstance(originalRequest);
@@ -44,7 +46,7 @@ axiosInstance.interceptors.response.use(
 
 axiosInstance.interceptors.request.use(
   async (config) => {
-    const sessionToken = await localStorage.getItem('token');
+    const sessionToken = localStorage.getItem('token');
     if (sessionToken !== null && config.headers) {
       config.headers.Authorization = 'Bearer ' + sessionToken;
     }

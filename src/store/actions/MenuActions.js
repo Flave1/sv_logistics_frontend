@@ -91,8 +91,6 @@ export function getAllMenuAction() {
     dispatch(spinner(true));
     getAllRestaurantMenu()
       .then((response) => {
-        console.log('response', response);
-
         dispatch(spinner(false));
         dispatch({
           type: GET_ALL_RESTAURANT_MENU,
@@ -101,7 +99,7 @@ export function getAllMenuAction() {
       })
       .catch((error) => {
         dispatch(spinner(false));
-        const errorMessage = error.response.data.message;
+        const errorMessage = error?.response?.data?.message;
         swal('Oops', errorMessage, 'error');
       });
   };
