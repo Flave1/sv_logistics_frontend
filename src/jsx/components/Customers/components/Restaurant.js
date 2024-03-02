@@ -20,7 +20,7 @@ const Restaurant = ({ restaurant, navigation }) => {
             </div>
             <div className="new-arrival-content text-center mt-3 ">
               <h4>
-                <Link to={`/${restaurant.name.replace(/\s+/g, '-')}/${restaurant.id}/menu/${-1}`}>{restaurant.name}</Link>
+                <Link to={`/${restaurant.name.toLowerCase().replace(/\s+/g, '-')}/${restaurant.id}/menu/${-1}`}>{restaurant.name}</Link>
               </h4>
               {starOne}
               <span className="">{restaurant.address}</span>
