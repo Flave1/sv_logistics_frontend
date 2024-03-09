@@ -25,7 +25,7 @@ const Restaurant = ({ restaurant, navigation }) => {
               {starOne}
               <span className="">{restaurant.address}</span>
               <div className="d-flex align-items-center justify-content-between mb-1 gap">
-                <Link to="/favorite-menu" className="text-primary">
+                <Link to={`/${restaurant.name.toLowerCase().replace(/\s+/g, '-')}/${restaurant.id}/menu/${-1}`} className="text-primary">
                   <i className="bi bi-truck"></i> FREE
                 </Link>
                 <span className="mb-0 text-sm"> 2mins - 5mins</span>

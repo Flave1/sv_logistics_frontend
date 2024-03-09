@@ -3,7 +3,11 @@ import axiosInstance from './axios-instance';
 
 /// Restaurant
 export function getAllRestaurants() {
-  return axiosInstance.get(`restaurant/all`);
+  return axiosInstance.get(`restaurant`);
+}
+
+export function getSingleRestaurant(id) {
+  return axiosInstance.get(`restaurant/${id}`);
 }
 
 export function getDashboardStats() {

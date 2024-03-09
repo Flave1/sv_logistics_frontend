@@ -35,6 +35,9 @@ const StaffList = (props) => {
     }
   };
 
+  console.log('restaurantId', restaurantId);
+  
+
   const [fetch, setFetch] = useState(null);
   socket.on(`get_all_staff_event_${restaurantId}`, (response) => {
     setFetch(response);

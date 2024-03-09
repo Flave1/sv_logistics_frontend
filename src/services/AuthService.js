@@ -90,7 +90,6 @@ export function checkAutoLogin(dispatch, navigate) {
 }
 
 export const refreshToken = async (tokenPayload) => {
-
   try {
     const token = (await axiosInstance.post('authentication/refresh-token', { token: tokenPayload })).data;
     return {
@@ -98,6 +97,8 @@ export const refreshToken = async (tokenPayload) => {
       status: 201,
     };
   } catch (error) {
+    console.log('error on new token', error.response);
+    
     return {
       message: error.response.data.message,
       status: error.response.data.status,

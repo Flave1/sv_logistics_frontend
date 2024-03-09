@@ -64,6 +64,12 @@ export function loginAction(email, password, navigate) {
             dispatch(loginConfirmedAction(context.data));
             if (context.data.userTypeId === UserType.Staff) {
               navigate('/main-dashboard');
+            }
+            if (context.data.userTypeId === UserType.Client) {
+              navigate('/main-dashboard');
+            }
+            if (context.data.userTypeId === UserType.SystemAdmin) {
+              navigate('/main-dashboard');
             } else {
               navigate('/shops');
             }

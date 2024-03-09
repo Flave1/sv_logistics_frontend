@@ -8,6 +8,7 @@ import {
   getCustomerOrders,
   getDashboardStats,
   getOrdersInKitchen,
+  getSingleRestaurant,
   reinstateOrder,
   rejectOrder,
   updateRestaurant,
@@ -36,13 +37,25 @@ export function getAllRestaurantsAction() {
   };
 }
 
+export async function getSingleRestaurantAction(id) {
+  return getSingleRestaurant(id)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      const errorMessage = error.response.data.message;
+      FoodieAlert.showError(errorMessage);
+    });
+}
+
 export function createRestaurantAction(payload, setShowForm, resetForm) {
   return (dispatch) => {
     createRestaurant(payload)
       .then((response) => {
         setShowForm(false);
         resetForm();
-        swal('Successful', 'Restaurant successfully created', 'success');
+        getAllRestaurants()(dispatch);
+        FoodieAlert.showSuccess('Restaurant successfully created');
       })
       .catch((error) => {
         const errorMessage = error.response.data.message;

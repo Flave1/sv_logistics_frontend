@@ -30,6 +30,6 @@ export function GenerateUUID() {
 }
 
 export function formatNumberWithSeparator(number) {
-  return number.toLocaleString();
+  return number ? number.toLocaleString(): '0';
 }
 

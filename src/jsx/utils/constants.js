@@ -3,6 +3,7 @@ export const UserType = {
   Customer: 2,
   Driver: 3,
   Client: 4,
+  SystemAdmin: 5,
 };
 
 export function convertObjectToArray(obj) {

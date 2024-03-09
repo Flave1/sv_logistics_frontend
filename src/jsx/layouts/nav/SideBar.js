@@ -25,7 +25,7 @@ const initialState = {
 
 const SideBar = () => {
   const { iconHover, sidebarposition, headerposition, sidebarLayout } = useContext(ThemeContext);
-  const { menuList } = useSelector((state: any) => state.auth);
+  const { menuList } = useSelector((state) => state.auth);
 
   const [userMenuList, setMenuList] = useState([]);
   useEffect(() => {

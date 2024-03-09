@@ -40,14 +40,14 @@ function withRouter(Component) {
 function App(props) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const token = session_Token();
 
   useEffect(() => {
     if (!token) {
-      navigate('/')
+      navigate('/login');
     }
   }, [token]);
+
   useEffect(() => {
     generateTemporalId()(dispatch);
   }, []);
@@ -82,7 +82,6 @@ function App(props) {
       };
     }
   }, [socket, props.socket.rooms]);
-  console.log(props.isAuthenticated);
 
   useEffect(() => {
     if (socket) {
@@ -112,6 +111,7 @@ function App(props) {
       </Route>
     </Routes>
   );
+
   if (props.isAuthenticated) {
     return (
       <>

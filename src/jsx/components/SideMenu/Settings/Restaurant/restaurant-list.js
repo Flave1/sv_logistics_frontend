@@ -17,64 +17,54 @@ import {
   createRestaurantAction,
   deleteRestaurantAction,
   getAllRestaurantsAction,
+  getSingleRestaurantAction,
   updateRestaurantAction,
 } from '../../../../../store/actions/RestaurantAction';
+import { spinner } from '../../../../../store/actions';
+import { socket } from '../../../../../services/socket/SocketService';
 
 let selectedItemIds = [];
 const RestaurantList = (props) => {
   const [showForm, setShowForm] = useState(false);
   const dispatch = useDispatch();
   const [selectedItem, setSelectedItem] = useState(null);
-  const [clientsList, setClients] = useState(null);
-  const [location, setLocation] = useState(null);
-  const [countryList, setCountries] = useState(null);
 
   const editItem = async (row) => {
-    if (row) {
-      setSelectedItem(row);
+    dispatch(spinner(true));
+    const itemInfo = await getSingleRestaurantAction(row.id);
+    dispatch(spinner(false));
+    if (itemInfo) {
+      setSelectedItem(itemInfo);
       setShowForm(true);
     }
   };
 
+  const [fetch, setFetch] = useState(null);
+  socket.on(`get_restaurants_event`, (response) => {
+    setFetch(response);
+  });
   useEffect(() => {
-    const getClients = async () => {
-      const clients = await getAllClientsAction();
-      if (clients) {
-        setClients(clients);
+    getAllRestaurantsAction()(dispatch);
+  }, [fetch, dispatch]);
+
+  useEffect(() => {
+    const joinRoom = () => {
+      if (socket) {
+        socket.emit('join_room', { roomName: `get_restaurants_event` });
       }
     };
-    getClients();
 
-    const getCountries = async () => {
-      const countries = await getAllCountryAction2();
-      if (countries) {
-        setCountries(countries);
+    joinRoom();
+
+    return () => {
+      if (socket) {
+        socket.emit('leave_room', { roomName: `get_restaurants_event` }, (response) => {
+          console.log(`left ${response}`);
+        });
+        socket.off(`get_restaurants_event`);
       }
     };
-    getCountries();
-  }, []);
-
-  useEffect(() => {
-    props.get_all_restaurants();
-  }, []);
-
-  useEffect(() => {
-    if ('geolocation' in navigator) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const latitude = position.coords.latitude;
-          const longitude = position.coords.longitude;
-          setLocation({ latitude, longitude });
-        },
-        (error) => {
-          console.error('Error getting location:' + error.message);
-        },
-        { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 },
-      );
-    } else {
-      console.error('Geolocation is not supported by your browser.');
-    }
-  }, []);
+  }, [dispatch]);
 
   return (
     <Fragment>
@@ -126,6 +116,8 @@ const RestaurantList = (props) => {
                   <tbody id="customers">
                     {props.allrestaurant &&
                       props.allrestaurant.map((row, idx) => {
+                        console.log('row sd', row);
+                        
                         return <TR row={row} dispatch={dispatch} editItem={editItem} key={idx} />;
                       })}
                   </tbody>
@@ -142,9 +134,6 @@ const RestaurantList = (props) => {
         dispatch={dispatch}
         selectedItem={selectedItem}
         setSelectedItem={setSelectedItem}
-        clientsList={clientsList}
-        location={location}
-        countryList={countryList}
       />
     </Fragment>
   );
@@ -155,12 +144,8 @@ const mapStateToProps = (state) => {
     allrestaurant: state.restaurant.allrestaurant,
   };
 };
-const mapDispatchToProps = (dispatch) => {
-  return {
-    get_all_restaurants: () => getAllRestaurantsAction()(dispatch),
-  };
-};
-export default connect(mapStateToProps, mapDispatchToProps)(RestaurantList);
+
+export default connect(mapStateToProps)(RestaurantList);
 
 function TR({ row, dispatch, editItem }) {
   return (
@@ -170,13 +155,13 @@ function TR({ row, dispatch, editItem }) {
       </td>
       <td className="">
         <Link onClick={() => editItem(row)} to={''}>
-          {row.name}
+          {row.restaurant?.name}
         </Link>
       </td>
-      <td className="py-2">{row.email}</td>
-      <td className="py-2">{row.phoneNumber}</td>
-      {row.status == true ? <td className="py-2">Active</td> : <td className="py-2">InActive</td>}
-      <td className="py-2">{formatDate(row.createdAt)}</td>
+      <td className="py-2">{row.restaurant?.email}</td>
+      <td className="py-2">{row.restaurant?.phoneNumber}</td>
+      {row.restaurant?.status == true ? <td className="py-2">Active</td> : <td className="py-2">InActive</td>}
+      <td className="py-2">{formatDate(row.restaurant?.createdAt)}</td>
       <td className="py-2 text-right">
         <DropMenu row={row} dispatch={dispatch} editItem={editItem} />
       </td>
@@ -184,15 +169,57 @@ function TR({ row, dispatch, editItem }) {
   );
 }
 
-function Form({ show, setShowForm, dispatch, selectedItem, setSelectedItem, clientsList, location, countryList }) {
+function Form({ show, setShowForm, dispatch, selectedItem, setSelectedItem }) {
   const [image, setImage] = useState(null);
+  const [clientsList, setClients] = useState(null);
+  const [countryList, setCountries] = useState(null);
   const [title, setTitle] = useState('');
+  const [location, setLocation] = useState(null);
+
+  useEffect(() => {
+    const getClients = async () => {
+      const clients = await getAllClientsAction();
+      if (clients) {
+        setClients(clients);
+      }
+    };
+    getClients();
+
+    const getCountries = async () => {
+      const countries = await getAllCountryAction2();
+      if (countries) {
+        setCountries(countries);
+      }
+    };
+    getCountries();
+  }, []);
+
+  useEffect(() => {
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const latitude = position.coords.latitude;
+          const longitude = position.coords.longitude;
+          setLocation({ latitude, longitude });
+        },
+        (error) => {
+          console.error('Error getting location:' + error.message);
+        },
+        { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 },
+      );
+    } else {
+      console.error('Geolocation is not supported by your browser.');
+    }
+  }, []);
+
   const validation = Yup.object().shape({
     name: Yup.string().required('Restaurant Name Is Required').min(2, 'Restaurant Name Is Too Short!').max(50, 'Restaurant Name Is Too Long!'),
     client: Yup.string().required('Client Is Required'),
     email: Yup.string().required('Email Is Required').email('Invalid email address'),
     description: Yup.string().required('Description Is Required'),
     phone: Yup.string().required('Phone Is Required'),
+    staffFirstname: Yup.string().required('Manager Firstname Is Required'),
+    staffLastname: Yup.string().required('Manager Lastname Is Required'),
     address: Yup.string().required('Address Is Required'),
     openingTime: Yup.string().required('Opening Time Is Required'),
     closingTime: Yup.string().required('Closing Time Is Required'),
@@ -215,20 +242,22 @@ function Form({ show, setShowForm, dispatch, selectedItem, setSelectedItem, clie
 
   const { handleChange, handleSubmit, values, setFieldValue, handleBlur, errors, touched } = useFormik({
     initialValues: {
-      name: selectedItem ? selectedItem.name : '',
-      client: selectedItem ? selectedItem.clientId : '',
-      email: selectedItem ? selectedItem.email : '',
-      description: selectedItem ? selectedItem.description : '',
-      phone: selectedItem ? selectedItem.phoneNumber : '',
-      address: selectedItem ? selectedItem.address : '',
-      openingTime: selectedItem ? selectedItem.openingTime : '',
-      closingTime: selectedItem ? selectedItem.closingTime : '',
-      status: selectedItem ? selectedItem.status : 'true',
-      hasFreeDelivery: selectedItem ? selectedItem.hasFreeDelivery : 'true',
-      freeDeliveryAmount: selectedItem ? selectedItem.freeDeliveryAmount : '',
-      country: selectedItem ? selectedItem.country : '',
+      name: selectedItem ? selectedItem.restaurant.name : '',
+      client: selectedItem ? selectedItem.restaurant.clientId : '',
+      email: selectedItem ? selectedItem.restaurant.email : '',
+      staffFirstname: selectedItem ? selectedItem.firstName : '',
+      staffLastname: selectedItem ? selectedItem.lastName : '',
+      description: selectedItem ? selectedItem.restaurant.description : '',
+      phone: selectedItem ? selectedItem.restaurant.phoneNumber : '',
+      address: selectedItem ? selectedItem.restaurant.address : '',
+      openingTime: selectedItem ? selectedItem.restaurant.openingTime : '',
+      closingTime: selectedItem ? selectedItem.restaurant.closingTime : '',
+      status: selectedItem ? selectedItem.restaurant.status : true,
+      hasFreeDelivery: selectedItem ? selectedItem.restaurant.hasFreeDelivery : true,
+      freeDeliveryAmount: selectedItem ? selectedItem.restaurant.freeDeliveryAmount : '',
+      country: selectedItem ? selectedItem.restaurant.countryId : '',
       file: null,
-      id: selectedItem ? selectedItem.id : '',
+      id: selectedItem ? selectedItem.restaurant.id : '',
     },
     enableReinitialize: true,
     validationSchema: validation,
@@ -249,6 +278,8 @@ function Form({ show, setShowForm, dispatch, selectedItem, setSelectedItem, clie
       formData.append('countryId', values.country);
       formData.append('latitude', location?.latitude);
       formData.append('longitude', location?.longitude);
+      formData.append('staffFirstname', values?.staffFirstname);
+      formData.append('staffLastname', values?.staffLastname);
       if (values.file) {
         formData.append('file', values.file);
       } else if (!selectedItem && !values.file) {
@@ -263,6 +294,7 @@ function Form({ show, setShowForm, dispatch, selectedItem, setSelectedItem, clie
       }
     },
   });
+
   return (
     <Modal className="modal fade" size="lg" show={show} id="restaurantModal">
       <div className="modal-header">
@@ -335,12 +367,45 @@ function Form({ show, setShowForm, dispatch, selectedItem, setSelectedItem, clie
                 }}
               />
               {errors.email && touched.email && <div className="text-danger fs-12">{errors.email}</div>}
+              <label htmlFor="val-staffFirstname" className="form-label">
+                Manager Firstname <span className="text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="val-staffFirstname"
+                name="val-staffFirstname"
+                placeholder="Enter Firstname "
+                value={values.staffFirstname}
+                onChange={(e) => {
+                  handleChange('staffFirstname');
+                  setFieldValue('staffFirstname', e.target.value);
+                }}
+              />
+              {errors.staffFirstname && touched.staffFirstname && <div className="text-danger fs-12">{errors.staffFirstname}</div>}
+              <label htmlFor="val-staffLastname" className="form-label">
+                Manager Lastname <span className="text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="val-staffLastname"
+                name="val-staffLastname"
+                placeholder="Enter Lastname"
+                value={values.staffLastname}
+                onChange={(e) => {
+                  handleChange('staffLastname');
+                  setFieldValue('staffLastname', e.target.value);
+                }}
+              />
+              {errors.staffLastname && touched.staffLastname && <div className="text-danger fs-12">{errors.staffLastname}</div>}
             </div>
             <div className="col-6">
               <label htmlFor="val-description" className="form-label">
                 Description <span className="text-danger">*</span>
               </label>
               <textarea
+                style={{ height: '204px' }}
                 className="form-control"
                 id="val-description"
                 name="val-description"
@@ -463,6 +528,8 @@ function Form({ show, setShowForm, dispatch, selectedItem, setSelectedItem, clie
                 checked={values.hasFreeDelivery}
                 value={values.hasFreeDelivery}
                 onChange={(e) => {
+                  // console.log('e.target.value', !e.target.value);
+
                   handleChange('hasFreeDelivery');
                   setFieldValue('hasFreeDelivery', e.target.value);
                 }}

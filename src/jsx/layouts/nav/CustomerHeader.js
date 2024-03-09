@@ -50,7 +50,6 @@ const CustomerHeader = ({ onNote }) => {
 
   const [isLoggedIn, setLogin] = useState(false);
   const token = session_Token();
-  console.log('token', token);
   
 
   useEffect(() => {

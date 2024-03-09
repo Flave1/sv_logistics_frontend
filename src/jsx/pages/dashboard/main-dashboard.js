@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getDashboardAction } from '../../../store/actions/RestaurantAction';
 import { socket } from '../../../services/socket/SocketService';
 import { getMenuCategoriesAction } from '../../../store/actions/MenuActions';
+import { formatNumberWithSeparator } from '../../utils/common';
 
 const sparklinedata = [4, 7, 4, 9, 5, 6, 8, 3, 1, 3, 5, 6];
 
@@ -85,7 +86,7 @@ function MainDashboard() {
                         <p className="font-w500 mb-0">Total Income</p>
                         <h2 className="mb-0 text-primary">
                           {dasboardStats?.currency}
-                          {dasboardStats?.totalIncome}
+                          {formatNumberWithSeparator(Number(dasboardStats?.totalIncome))}
                         </h2>
                       </div>
                     </div>
@@ -93,7 +94,7 @@ function MainDashboard() {
                       <p className="font-w500 text-success mb-0">Income</p>
                       <h4 className="cate-title data">
                         {dasboardStats?.currency}
-                        {dasboardStats?.income}
+                        {formatNumberWithSeparator(dasboardStats?.income)}
                       </h4>
                       <ul className="d-flex align-items-center">
                         <li>
@@ -118,7 +119,7 @@ function MainDashboard() {
                       <p className="font-w500 text-danger mb-0">Expense</p>
                       <h4 className="cate-title data">
                         {dasboardStats?.currency}
-                        {dasboardStats?.expense}
+                        {formatNumberWithSeparator(dasboardStats?.expense)}
                       </h4>
                       <ul className="d-flex align-items-center">
                         <li>
@@ -274,24 +275,6 @@ function MainDashboard() {
                 <div className="card-body">
                   <div className="d-flex align-items-center mb-4">
                     <div className="icon-bx style-3 me-3">
-                      <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path
-                          d="M8.26295 22.2499C7.87445 22.2499 7.49046 22.1006 7.19946 21.8096L2.68971 17.2999C2.10246 16.7134 2.10246 15.7609 2.68971 15.1744C3.27696 14.5871 4.22796 14.5871 4.81521 15.1744L8.44145 18.8006L19.3952 11.2819C20.0792 10.8124 21.0152 10.9864 21.4847 11.6704C21.955 12.3551 21.781 13.2904 21.0962 13.7606L9.11346 21.9859C8.85471 22.1629 8.55845 22.2499 8.26295 22.2499Z"
-                          fill="#FC8019"
-                        />
-                        <path
-                          d="M8.26295 13.982C7.87445 13.982 7.49046 13.8328 7.19946 13.5418L2.68971 9.03203C2.10246 8.44479 2.10246 7.49304 2.68971 6.90654C3.27696 6.31929 4.22796 6.31929 4.81521 6.90654L8.44145 10.5328L19.3952 3.01404C20.0792 2.54454 21.0152 2.71854 21.4847 3.40254C21.955 4.08729 21.781 5.02254 21.0962 5.49279L9.11346 13.7188C8.85471 13.8958 8.55845 13.982 8.26295 13.982Z"
-                          fill="#FC8019"
-                        />
-                      </svg>
-                    </div>
-                    <div>
-                      <p className="font-w500 mb-0">Total Order Complete</p>
-                      <h4 className="cate-title mb-0">{dasboardStats?.delivered}</h4>
-                    </div>
-                  </div>
-                  <div className="d-flex align-items-center mb-4">
-                    <div className="icon-bx style-3 me-3">
                       <svg width="18" height="19" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
                           d="M9 18.5C4.05 18.5 0 14.45 0 9.5C0 4.55 4.05 0.5 9 0.5C13.95 0.5 18 4.55 18 9.5C18 14.45 13.95 18.5 9 18.5ZM9 2.375C5.1 2.375 1.875 5.6 1.875 9.5C1.875 13.4 5.1 16.625 9 16.625C12.9 16.625 16.125 13.4 16.125 9.5C16.125 5.6 12.9 2.375 9 2.375Z"
@@ -305,7 +288,25 @@ function MainDashboard() {
                     </div>
                     <div>
                       <p className="font-w500 mb-0">Total Order Delivered</p>
-                      <h4 className="cate-title mb-0">{dasboardStats?.completedOrder}</h4>
+                      <h4 className="cate-title mb-0">{dasboardStats?.delivered}</h4>
+                    </div>
+                  </div>
+                  <div className="d-flex align-items-center mb-4">
+                    <div className="icon-bx style-3 me-3">
+                      <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          d="M8.26295 22.2499C7.87445 22.2499 7.49046 22.1006 7.19946 21.8096L2.68971 17.2999C2.10246 16.7134 2.10246 15.7609 2.68971 15.1744C3.27696 14.5871 4.22796 14.5871 4.81521 15.1744L8.44145 18.8006L19.3952 11.2819C20.0792 10.8124 21.0152 10.9864 21.4847 11.6704C21.955 12.3551 21.781 13.2904 21.0962 13.7606L9.11346 21.9859C8.85471 22.1629 8.55845 22.2499 8.26295 22.2499Z"
+                          fill="#FC8019"
+                        />
+                        <path
+                          d="M8.26295 13.982C7.87445 13.982 7.49046 13.8328 7.19946 13.5418L2.68971 9.03203C2.10246 8.44479 2.10246 7.49304 2.68971 6.90654C3.27696 6.31929 4.22796 6.31929 4.81521 6.90654L8.44145 10.5328L19.3952 3.01404C20.0792 2.54454 21.0152 2.71854 21.4847 3.40254C21.955 4.08729 21.781 5.02254 21.0962 5.49279L9.11346 13.7188C8.85471 13.8958 8.55845 13.982 8.26295 13.982Z"
+                          fill="#FC8019"
+                        />
+                      </svg>
+                    </div>
+                    <div>
+                      <p className="font-w500 mb-0">Total Order Packaged</p>
+                      <h4 className="cate-title mb-0">{dasboardStats?.packaged}</h4>
                     </div>
                   </div>
                   <div className="d-flex align-items-center mb-4">

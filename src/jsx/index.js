@@ -47,7 +47,7 @@ const Markup = () => {
         <Route path="/page-register" element={<Registration />} />
         <Route path="/page-forgot-password" element={<ForgotPassword history={undefined} />} />
 
-        {auth.userTypeId === UserType.Staff ? (
+        {auth.userTypeId === UserType.Staff || auth.userTypeId === UserType.Client || auth.userTypeId === UserType.SystemAdmin ? (
           <Route element={<MainLayout />}>
             {staffRoutes.map((data, i) => (
               <Route key={i} exact path={`${data.url}`} element={data.component} />
@@ -70,6 +70,7 @@ const Markup = () => {
 };
 
 function MainLayout() {
+ 
   const { menuToggle } = useContext(ThemeContext);
   return (
     <div id="main-wrapper" className={`show ${menuToggle ? 'menu-toggle' : ''}`}>

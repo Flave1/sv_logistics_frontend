@@ -67,7 +67,7 @@ function Login (props) {
 											<h4 className="fs-20 font-w800 text-black">Login into Cafay</h4>
 											<span className="dlab-sign-up">Sign Up</span>
 										</div>
-										{props.errorMessage && (
+										{/* {props.errorMessage && (
 											<div className='bg-red-300 text-red-900 border border-red-900 p-1 my-2'>
 												{props.errorMessage}
 											</div>
@@ -76,7 +76,7 @@ function Login (props) {
 											<div className='bg-green-300 text-green-900 border border-green-900 p-1 my-2'>
 												{props.successMessage}
 											</div>
-										)}
+										)} */}
 										<form onSubmit={onLogin}>
 											<div className="mb-3">
 												<label className="mb-1"><strong>Email Address</strong></label>

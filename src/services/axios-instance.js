@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { refreshToken } from './AuthService';
 const axiosInstance = axios.create({
-  // baseURL: 'http://3.81.254.132:3200/',
-  baseURL: 'http://localhost:3200/',
+  baseURL: 'http://3.81.254.132:3200/',
+  // baseURL: 'http://localhost:3200/',
   headers: {
     Authorization: '',
   },
@@ -22,16 +22,19 @@ axiosInstance.interceptors.response.use(
 
     const originalRequest = error.config;
     if (error.response.status === 401 && !originalRequest._retry) {
-      
       originalRequest._retry = true;
       const sessionToken = localStorage.getItem('token');
       const resp = await refreshToken(sessionToken);
       if (resp.status === 401) {
         localStorage.removeItem('token');
-        return;
+        throw error;
       }
 
-      console.log('resp', resp);
+      if (resp.status !== 200) {
+        localStorage.removeItem('token');
+        throw error;
+      }
+
       const access_token = resp.message;
       localStorage.setItem('token', access_token);
 
